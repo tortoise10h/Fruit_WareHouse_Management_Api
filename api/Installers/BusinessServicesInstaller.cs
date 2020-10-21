@@ -11,9 +11,13 @@ namespace api.Installers
     {
         public void InstallServices(IConfiguration configuration, IServiceCollection services)
         {
+            /** Common services */
             services.AddScoped<IPaginationHelpers, PaginationHelpers>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            /** Real business services */
+            services.AddScoped<IProductsService, ProductsService>();
         }
     }
 }
