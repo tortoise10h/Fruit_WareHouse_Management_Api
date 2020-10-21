@@ -8,11 +8,17 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Threading;
 using System;
+using api.Common.Enums;
 
 namespace api.Helpers
 {
     public class DataContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<PurchaseProposalForm> PurchaseProposalForms { get; set; }
+        public DbSet<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
+
         protected readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
