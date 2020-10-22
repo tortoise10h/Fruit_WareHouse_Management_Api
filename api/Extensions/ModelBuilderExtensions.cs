@@ -62,6 +62,9 @@ namespace api.Extensions
             string adminRoleId = Guid.NewGuid().ToString();
             string superAdminRoleId = Guid.NewGuid().ToString();
             string customerRoleId = Guid.NewGuid().ToString();
+            string saleRoleId = Guid.NewGuid().ToString();
+            string warehouseKeeperRoleId = Guid.NewGuid().ToString();
+            string warehouseKeeperManagerRoleId = Guid.NewGuid().ToString();
 
             string adminId = Guid.NewGuid().ToString();
             string superAdminId = Guid.NewGuid().ToString();
@@ -72,14 +75,17 @@ namespace api.Extensions
             string customer5Id = Guid.NewGuid().ToString();
             string customer6Id = Guid.NewGuid().ToString();
             string customer7Id = Guid.NewGuid().ToString();
-            string customer8Id = Guid.NewGuid().ToString();
-            string customer9Id = Guid.NewGuid().ToString();
-            string customer10Id = Guid.NewGuid().ToString();
-            string customer11Id = Guid.NewGuid().ToString();
-            string customer12Id = Guid.NewGuid().ToString();
-            string customer13Id = Guid.NewGuid().ToString();
-            string customer14Id = Guid.NewGuid().ToString();
-            string customer15Id = Guid.NewGuid().ToString();
+
+            string warehouseKeeperManagerId1 = Guid.NewGuid().ToString();
+            string warehouseKeeperManagerId2 = Guid.NewGuid().ToString();
+
+            string warehouseKeeperId1 = Guid.NewGuid().ToString();
+            string warehouseKeeperId2 = Guid.NewGuid().ToString();
+            string warehouseKeeperId3 = Guid.NewGuid().ToString();
+
+            string saleId1 = Guid.NewGuid().ToString();
+            string saleId2 = Guid.NewGuid().ToString();
+            string saleId3 = Guid.NewGuid().ToString();
 
             modelBuilder.Entity<IdentityRole>()
                 .HasData(
@@ -91,9 +97,27 @@ namespace api.Extensions
                     },
                     new IdentityRole
                     {
+                        Id = saleRoleId,
+                        Name = "Sale",
+                        NormalizedName = "sale"
+                    },
+                    new IdentityRole
+                    {
                         Id = superAdminRoleId,
                         Name = "SuperAdmin",
                         NormalizedName = "superadmin"
+                    },
+                    new IdentityRole
+                    {
+                        Id = warehouseKeeperManagerRoleId,
+                        Name = "WarehouseKeeperManager",
+                        NormalizedName = "warehousekeepermanager"
+                    },
+                    new IdentityRole
+                    {
+                        Id = warehouseKeeperRoleId,
+                        Name = "WarehouseKeeper",
+                        NormalizedName = "warehousekeeper"
                     },
                     new IdentityRole
                     {
@@ -225,7 +249,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer8Id,
+                        Id = warehouseKeeperManagerId1,
                         FirstName = "Quát",
                         LastName = "Cao Bá",
                         UserName = "caobaquat@gmail.com",
@@ -238,7 +262,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer9Id,
+                        Id = warehouseKeeperManagerId2,
                         FirstName = "Thành",
                         LastName = "Huỳnh Trấn",
                         UserName = "huynhtranthanh@gmail.com",
@@ -251,7 +275,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer10Id,
+                        Id = warehouseKeeperId1,
                         FirstName = "Long",
                         LastName = "Nguyễn Thành",
                         UserName = "nguyenthanhlong@gmail.com",
@@ -264,7 +288,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer11Id,
+                        Id = warehouseKeeperId2,
                         FirstName = "Hương",
                         LastName = "Hồ Xuân",
                         UserName = "hoxuanhuong@gmail.com",
@@ -277,7 +301,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer12Id,
+                        Id = warehouseKeeperId3,
                         FirstName = "Huệ",
                         LastName = "Nguyễn",
                         UserName = "nguyenhue@gmail.com",
@@ -290,7 +314,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer13Id,
+                        Id = saleId1,
                         FirstName = "Độ",
                         LastName = "Phùng Thanh",
                         UserName = "phungthanhdo@gmail.com",
@@ -303,7 +327,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer14Id,
+                        Id = saleId2,
                         FirstName = "Trung",
                         LastName = "Phan Tấn",
                         UserName = "phantantrung@gmail.com",
@@ -316,7 +340,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer15Id,
+                        Id = saleId3,
                         FirstName = "Tú",
                         LastName = "Trương Tuấn",
                         UserName = "truongtuantu@gmail.com",
@@ -378,43 +402,43 @@ namespace api.Extensions
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer8Id
+                        RoleId = warehouseKeeperManagerRoleId,
+                        UserId = warehouseKeeperManagerId1
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer9Id
+                        RoleId = warehouseKeeperManagerRoleId,
+                        UserId = warehouseKeeperManagerId2
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer10Id
+                        RoleId = warehouseKeeperRoleId,
+                        UserId = warehouseKeeperId1
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer11Id
+                        RoleId = warehouseKeeperRoleId,
+                        UserId = warehouseKeeperId2
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer12Id
+                        RoleId = warehouseKeeperRoleId,
+                        UserId = warehouseKeeperId3
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer13Id
+                        RoleId = saleRoleId,
+                        UserId = saleId1
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer14Id
+                        RoleId = saleRoleId,
+                        UserId = saleId2
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer15Id
+                        RoleId = saleRoleId,
+                        UserId = saleId3
                     }
                 );
 

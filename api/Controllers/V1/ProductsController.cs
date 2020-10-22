@@ -42,6 +42,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Admin, Sale, WarehouseKeeper, WarehouseKeeperManager")]
         [HttpGet(ApiRoutes.Product.GetAll)]
         public async Task<IActionResult> GetAll([FromQuery] GetAllProductsQuery query)
         {
@@ -58,8 +59,9 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Admin, Sale, WarehouseKeeper, WarehouseKeeperManager")]
         [HttpGet(ApiRoutes.Product.GetBySku)]
-        public async Task<IActionResult> GetById([FromRoute] string sku)
+        public async Task<IActionResult> GetBySku([FromRoute] string sku)
         {
             var query = new GetProductBySkuQuery(sku);
             var result = await _mediator.Send(query);
