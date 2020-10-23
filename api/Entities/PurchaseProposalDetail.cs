@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Common.Enums
+namespace api.Entities
 {
     public class PurchaseProposalDetail: BaseEntity
     {
