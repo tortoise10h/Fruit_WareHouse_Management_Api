@@ -1,5 +1,6 @@
 ﻿using api.Common.Enums;
 using api.Contracts.V1.ResponseModels.ProductCategories;
+using api.Contracts.V1.ResponseModels.ProductUnits;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,6 @@ namespace api.Contracts.V1.ResponseModels.Products
         public DateTime? LastModifiedAt { get; set; }
 
         public ProductCategoryResponse ProductCategory { get; set; }
+        public IEnumerable<ProductUnitResponse> ProductUnits { get; set; }
     }
 }
