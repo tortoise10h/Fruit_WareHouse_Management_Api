@@ -3,6 +3,7 @@ using api.Contracts.V1.ResponseModels.User;
 using api.Entities;
 using api.Contracts.V1.ResponseModels.Products;
 using api.Contracts.V1.ResponseModels.ProductCategories;
+using api.Contracts.V1.ResponseModels.ProductUnits;
 
 namespace api.MapperProfiles
 {
@@ -15,6 +16,8 @@ namespace api.MapperProfiles
             CreateMap<ProductCategory, ProductCategoryResponse>();
 
             CreateMap<Product, ProductResponse>();
+
+            CreateMap<ProductUnit, ProductUnitResponse>();
         }
     }
 }

@@ -16,6 +16,7 @@ namespace api.Helpers
     {
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductUnit> ProductUnits { get; set; }
         public DbSet<PurchaseProposalForm> PurchaseProposalForms { get; set; }
         public DbSet<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
 

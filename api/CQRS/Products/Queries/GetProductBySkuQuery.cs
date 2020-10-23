@@ -39,6 +39,7 @@ namespace api.CQRS.Products.Queries
         {
             var product = await _context.Products
                 .Include(p => p.ProductCategory)
+                .Include(p => p.ProductUnits)
                 .SingleOrDefaultAsync(
                     p => p.SKU == request.SKU);
 

@@ -23,5 +23,12 @@ namespace api.Contracts.V1
             public const string Update = Base + "/products/{productId}";
             public const string Delete = Base + "/products/{productId}";
         }
+
+        public static class ProductUnit
+        {
+            public const string Create = Base + "/productUnits";
+            public const string Update = Base + "/productUnits/{productUnitId}";
+            public const string Delete = Base + "/productUnits/{productUnitId}";
+        }
     }
 }
