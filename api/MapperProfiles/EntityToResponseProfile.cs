@@ -4,6 +4,7 @@ using api.Entities;
 using api.Contracts.V1.ResponseModels.Products;
 using api.Contracts.V1.ResponseModels.ProductCategories;
 using api.Contracts.V1.ResponseModels.ProductUnits;
+using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 
 namespace api.MapperProfiles
 {
@@ -18,6 +19,10 @@ namespace api.MapperProfiles
             CreateMap<Product, ProductResponse>();
 
             CreateMap<ProductUnit, ProductUnitResponse>();
+
+            CreateMap<PurchaseProposalForm, PurchaseProposalFormResponse>();
+
+            CreateMap<PurchaseProposalDetail, PurchaseProposalDetailResponse>();
         }
     }
 }
