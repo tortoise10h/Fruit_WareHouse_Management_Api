@@ -67,7 +67,9 @@ namespace api.Extensions
             string warehouseKeeperManagerRoleId = Guid.NewGuid().ToString();
 
             string adminId = Guid.NewGuid().ToString();
+
             string superAdminId = Guid.NewGuid().ToString();
+
             string customer1Id = Guid.NewGuid().ToString();
             string customer2Id = Guid.NewGuid().ToString();
             string customer3Id = Guid.NewGuid().ToString();
