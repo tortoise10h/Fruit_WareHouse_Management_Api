@@ -157,21 +157,32 @@ namespace api.Helpers
                                     .Where($"{entry.Key} <= {entry.Value}");
                                 break;
                             }
-                        // NOT SUPPORT YET
-                        //case "in":
-                        //    {
-                        //        string inRegex = @"^[^\,]+(\,[^\,]+)*$";
-                        //        var match = Regex.Match(entry.Value, inRegex, RegexOptions.IgnoreCase);
-                        //        if (!match.Success)
-                        //        {
-                        //            throw new BadRequestException(new ApiError("The correct value when using in dynamic filter is 'value,value,value,value'"));
-                        //        }
+                        case "in":
+                            {
+                                string inRegex = @"^[^\,]+(\,[^\,]+)*$";
+                                var match = Regex.Match(entry.Value, inRegex, RegexOptions.IgnoreCase);
+                                if (!match.Success)
+                                {
+                                    throw new BadRequestException(new ApiError("The correct value when using in dynamic filter is 'value,value,value,value'"));
+                                }
 
-                        //        var values = entry.Value.ToString().Split(",");
-                        //        queryable = queryable
-                        //            .Where($"{values}.Contains({entry.Key})");
-                        //        break;
-                        //    }
+                                queryable = queryable
+                                    .Where($"{entry.Key} IN ({entry.Value})");
+                                break;
+                            }
+                        case "notin":
+                            {
+                                string inRegex = @"^[^\,]+(\,[^\,]+)*$";
+                                var match = Regex.Match(entry.Value, inRegex, RegexOptions.IgnoreCase);
+                                if (!match.Success)
+                                {
+                                    throw new BadRequestException(new ApiError("The correct value when using not in dynamic filter is 'value,value,value,value'"));
+                                }
+
+                                queryable = queryable
+                                    .Where($"!({entry.Key} IN ({entry.Value}))");
+                                break;
+                            }
                         case "between":
                             {
                                 string betweenRegex = @"^(\b[^\,]+\,[^\,]+\b)$";
