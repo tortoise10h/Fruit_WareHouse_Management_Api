@@ -2,10 +2,12 @@
 using api.Contracts.V1.Exceptions;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
+using api.Entities;
 using api.Helpers;
 using api.Services;
 using AutoMapper;
 using LanguageExt.Common;
+using LanguageExt.Pipes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,7 +23,6 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
     {
         public DateTime Deadline { get; set; }
         public string Description { get; set; }
-
         public List<CreatePurchaseProposalDetailCommand> PurchaseProposalDetails { get; set; }
     }
 
@@ -29,50 +30,43 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IPurchaseProposalService _purchaseProposalService;
 
-        public CreatePurchaseProposalFormHandler(DataContext context, IMapper mapper)
+        public CreatePurchaseProposalFormHandler(DataContext context, IMapper mapper, IPurchaseProposalService purchaseProposalService)
         {
             _context = context;
             _mapper = mapper;
+            _purchaseProposalService = purchaseProposalService;
         }
 
         public async Task<Result<PurchaseProposalFormResponse>> Handle(
             CreatePurchaseProposalFormCommand request,
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            ///** Make sure the category of product is existed */
-            //var productCategory = await _context.ProductCategories
-            //    .SingleOrDefaultAsync(
-            //        pc => pc.Id == request.ProductCategoryId);
-            //if (productCategory == null)
-            //{
-            //    return new Result<PurchaseProposalFormResponse>(
-            //        new NotFoundException()
-            //    );
-            //}
+            await _purchaseProposalService.MakeValidProductListWhenCreatePurchaseProposalForm(
+               request.PurchaseProposalDetails);
 
-            //var product = _mapper.Map<E.Product>(request);
-            //product.Status = ProductStatus.Available;
+            var purchaseProposalFormEntity = _mapper.Map<PurchaseProposalForm>(
+                request
+                );
 
-            //await _context.Products.AddAsync(product);
-            //var created = await _context.SaveChangesAsync();
-            //if (created > 0)
-            //{
-            //    /** Generate SKU for product */
-            //    product.SKU = _productsService.GenerateProductSKU(
-            //        productCategory.Name, product.Id);
-            //    _context.Products.Update(product);
-            //    await _context.SaveChangesAsync();
+            purchaseProposalFormEntity.Status = PurchaseProposalFormStatus.New;
+            purchaseProposalFormEntity.OnTimeOrNotStatus = PurchaseProposalFormOnTimeOrNotStatus.New;
 
-            //    return new Result<PurchaseProposalFormResponse>(
-            //        _mapper.Map<PurchaseProposalFormResponse>(product)
-            //    );
-            //}
+            await _context.AddAsync(purchaseProposalFormEntity);
+            var created = await _context.SaveChangesAsync();
 
-            //return new Result<PurchaseProposalFormResponse>(
-            //    new BadRequestException(new ApiError("Tạo sản phẩm thất bại, xin thử lại"))
-            //);
+            if (created > 0)
+            {
+                return new Result<PurchaseProposalFormResponse>(
+                    _mapper.Map<PurchaseProposalFormResponse>(purchaseProposalFormEntity)
+                );
+            }
+            return new Result<PurchaseProposalFormResponse>(
+                _mapper.Map<PurchaseProposalFormResponse>(
+                    new BadRequestException(new ApiError("Tạo đề nghị mua hàng xảy ra lỗi, xin thử lại"))
+                    )
+            );
         }
     }
 }

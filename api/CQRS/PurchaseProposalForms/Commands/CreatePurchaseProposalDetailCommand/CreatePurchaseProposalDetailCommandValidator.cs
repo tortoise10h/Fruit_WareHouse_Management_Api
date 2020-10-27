@@ -18,8 +18,10 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
 
             RuleFor(x => x.ProductId)
                 .NotNull()
+                    .WithMessage("Id của sản phẩm không được để trống")
                 .GreaterThan(0)
-                .WithMessage("Id của sản phẩm không hợp lệ");
+                    .WithMessage("Id của sản phẩm không hợp lệ");
+
         }
     }
 }
