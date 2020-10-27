@@ -18,6 +18,7 @@ namespace api.Installers
 
             /** Real business services */
             services.AddScoped<IProductsService, ProductsService>();
+            services.AddScoped<IPurchaseProposalService, PurchaseProposalService>();
         }
     }
 }
