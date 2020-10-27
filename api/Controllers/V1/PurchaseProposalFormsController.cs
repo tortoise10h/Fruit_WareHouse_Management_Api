@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using src.CQRS.Products.Queries;
+using src.CQRS.PurchaseProposalForms.Queries;
 
 namespace api.Controllers.V1
 {
@@ -32,6 +34,22 @@ namespace api.Controllers.V1
             return result.Match<IActionResult>(
                 purchaseProposalFormresponse => Created("", new Response<PurchaseProposalFormResponse>(
                     purchaseProposalFormresponse
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        [HttpGet(ApiRoutes.PurchaseProposalForm.GetAll)]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllPurchaseProposalFormQuery query)
+        {
+            var result = await _mediator.Send(query);
+
+            return result.Match<IActionResult>(
+                data => Ok(new Response<PagedResponse<PurchaseProposalFormResponse>>(
+                    data
                 )),
                 exp =>
                 {
