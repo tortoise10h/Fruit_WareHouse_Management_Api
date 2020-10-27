@@ -128,6 +128,12 @@ namespace api.Extensions
                         Id = customerRoleId,
                         Name = "Customer",
                         NormalizedName = "customer"
+                    },
+                    new IdentityRole
+                    {
+                        Id = bossRoleId,
+                        Name = "Boss",
+                        NormalizedName = "boss"
                     }
                 );
 
