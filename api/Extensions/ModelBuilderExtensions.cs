@@ -59,6 +59,7 @@ namespace api.Extensions
              |       SEED USERS AND ROLES        |
              |                                   |
              |-----------------------------------| */
+            string bossRoleId = Guid.NewGuid().ToString();
             string adminRoleId = Guid.NewGuid().ToString();
             string superAdminRoleId = Guid.NewGuid().ToString();
             string customerRoleId = Guid.NewGuid().ToString();
@@ -70,8 +71,9 @@ namespace api.Extensions
 
             string superAdminId = Guid.NewGuid().ToString();
 
-            string customer1Id = Guid.NewGuid().ToString();
-            string customer2Id = Guid.NewGuid().ToString();
+            string bossId1 = Guid.NewGuid().ToString();
+            string bossId2 = Guid.NewGuid().ToString();
+
             string customer3Id = Guid.NewGuid().ToString();
             string customer4Id = Guid.NewGuid().ToString();
             string customer5Id = Guid.NewGuid().ToString();
@@ -160,7 +162,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer1Id,
+                        Id = bossId1,
                         FirstName = "Loan",
                         LastName = "Trần Kiều",
                         UserName = "trankieuloan@gmail.com",
@@ -173,7 +175,7 @@ namespace api.Extensions
                     },
                     new ApplicationUser
                     {
-                        Id = customer2Id,
+                        Id = bossId2,
                         FirstName = "Sơn",
                         LastName = "Phạm Vĩnh",
                         UserName = "phamvinhson@gmail.com",
@@ -369,13 +371,13 @@ namespace api.Extensions
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer1Id
+                        RoleId = bossRoleId,
+                        UserId = bossId1
                     },
                     new IdentityUserRole<string>
                     {
-                        RoleId = customerRoleId,
-                        UserId = customer2Id
+                        RoleId = bossRoleId,
+                        UserId = bossId2
                     },
                     new IdentityUserRole<string>
                     {
