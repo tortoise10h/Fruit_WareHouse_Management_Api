@@ -2,6 +2,7 @@
 using api.Contracts.V1.Exceptions;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
+using api.Entities;
 using api.Helpers;
 using api.Services;
 using AutoMapper;
@@ -17,60 +18,77 @@ using E = api.Entities;
 
 namespace api.CQRS.PurchaseProposalForms.Commands.BulkCreatePurchaseProposalDetails
 { 
-    public class BulkCreatePurchaseProposalDetailCommand : IRequest<Result<PurchaseProposalDetailResponse>>
+    public class BulkCreatePurchaseProposalDetailCommand : IRequest<Result<List<PurchaseProposalDetailResponse>>>
     {
         public int PurchaseProposalFormId { get; set; }
         public List<CreatePurchaseProposalDetailCommand> PurchaseProposalDetails { get; set; }
     }
 
-    public class BulkCreatePurchaseProposalDetailHandler : IRequestHandler<BulkCreatePurchaseProposalDetailCommand, Result<PurchaseProposalDetailResponse>>
+    public class BulkCreatePurchaseProposalDetailHandler : IRequestHandler<BulkCreatePurchaseProposalDetailCommand, Result<List<PurchaseProposalDetailResponse>>>
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IPurchaseProposalService _purchaseProposalFormService;
 
-        public BulkCreatePurchaseProposalDetailHandler(DataContext context, IMapper mapper)
+        public BulkCreatePurchaseProposalDetailHandler(DataContext context, IMapper mapper, IPurchaseProposalService purchaseProposalFormService)
         {
             _context = context;
             _mapper = mapper;
+            _purchaseProposalFormService = purchaseProposalFormService;
         }
 
-        public async Task<Result<PurchaseProposalDetailResponse>> Handle(
+        public async Task<Result<List<PurchaseProposalDetailResponse>>> Handle(
             BulkCreatePurchaseProposalDetailCommand request,
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            ///** Make sure the category of product is existed */
-            //var productCategory = await _context.ProductCategories
-            //    .SingleOrDefaultAsync(
-            //        pc => pc.Id == request.ProductCategoryId);
-            //if (productCategory == null)
-            //{
-            //    return new Result<PurchaseProposalDetailResponse>(
-            //        new NotFoundException()
-            //    );
-            //}
+            var purchaseProposalForm = await _context.PurchaseProposalForms
+                .SingleOrDefaultAsync(x => x.Id == request.PurchaseProposalFormId);
+            /** Make sure create purchase proposal detail for valid
+             * purchase proposal form */
+            if (purchaseProposalForm == null)
+            {
+                return new Result<List<PurchaseProposalDetailResponse>>(
+                    new NotFoundException()
+                );
+            }
 
-            //var product = _mapper.Map<E.Product>(request);
-            //product.Status = ProductStatus.Available;
+            /** Only can add new products to purchase proposal form when it is
+             * New or Processing */
+            if (!(purchaseProposalForm.Status == PurchaseProposalFormStatus.Processing ||
+                purchaseProposalForm.Status == PurchaseProposalFormStatus.New))
+            {
+                return new Result<List<PurchaseProposalDetailResponse>>(
+                    new BadRequestException(
+                        new ApiError("Chỉ được phép thêm sản phẩm vào phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới' hoặc 'Đang xử lý'"))
+                    );
+            }
 
-            //await _context.Products.AddAsync(product);
-            //var created = await _context.SaveChangesAsync();
-            //if (created > 0)
-            //{
-            //    /** Generate SKU for product */
-            //    product.SKU = _productsService.GenerateProductSKU(
-            //        productCategory.Name, product.Id);
-            //    _context.Products.Update(product);
-            //    await _context.SaveChangesAsync();
+            request.PurchaseProposalDetails = await _purchaseProposalFormService.ValidateAdddedProducts(request.PurchaseProposalDetails);
 
-            //    return new Result<PurchaseProposalDetailResponse>(
-            //        _mapper.Map<PurchaseProposalDetailResponse>(product)
-            //    );
-            //}
+            await _purchaseProposalFormService.ValidateUniqueProductsInPurchaseProposalForm(request.PurchaseProposalDetails, purchaseProposalForm.Id);
 
-            //return new Result<PurchaseProposalDetailResponse>(
-            //    new BadRequestException(new ApiError("Tạo sản phẩm thất bại, xin thử lại"))
-            //);
+            /** Preapre new list purchase proposal detail entity */
+            var purchaseProposalDetailEntities = _mapper.Map<List<PurchaseProposalDetail>>(request.PurchaseProposalDetails);
+            foreach(var ppd in purchaseProposalDetailEntities)
+            {
+                ppd.PurchaseProposalFormId = request.PurchaseProposalFormId;
+            }
+
+            await _context.PurchaseProposalDetails.AddRangeAsync(purchaseProposalDetailEntities);
+
+            var created = await _context.SaveChangesAsync(); 
+
+            if (created > 0)
+            {
+                return new Result<List<PurchaseProposalDetailResponse>>(
+                    _mapper.Map<List<PurchaseProposalDetailResponse>>(purchaseProposalDetailEntities)
+                );
+            }
+
+            return new Result<List<PurchaseProposalDetailResponse>>(
+                new BadRequestException(
+                    new ApiError("Thêm sản phẩm vào phiếu đề nghị lỗi, xin thử lại"))
+                );
         }
     }
 }
