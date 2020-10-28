@@ -14,6 +14,10 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
                 .NotNull()
                     .WithMessage("Thời hạn mua hàng không được để trống");
 
+            RuleFor(x => x.PurchaseProposalDetails)
+                .Must(x => x.Count() > 0)
+                    .WithMessage("Phiếu đề nghị phải có ít nhất một sản phẩm");
+
             RuleForEach(x => x.PurchaseProposalDetails)
                 .SetValidator(new CreatePurchaseProposalDetailCommandValidator());
         }

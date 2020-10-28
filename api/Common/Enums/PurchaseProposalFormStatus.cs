@@ -10,7 +10,7 @@ namespace api.Common.Enums
         New = 1,
         Processing = 2,
         Done = 3,
-        Canceled = 4,
+        Cancelled = 4,
         ForceDone = 5
     }
 }
