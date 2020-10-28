@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
+using api.CQRS.Products.Queries;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.UpdateProducts;
 using MediatR;
@@ -67,6 +68,23 @@ namespace api.Controllers.V1
 
             return result.Match<IActionResult>(
                 purchaseProposalFormresponse => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        [HttpGet(ApiRoutes.PurchaseProposalForm.GetById)]
+        public async Task<IActionResult> GetById([FromRoute] int purchaseProposalFormId)
+        {
+            var query = new GetPurchaseProposalFormByIdQuery(purchaseProposalFormId);
+            var result = await _mediator.Send(query);
+
+            return result.Match<IActionResult>(
+                purchaseProposalFormResponse => Ok(new Response<PurchaseProposalFormResponse>(
+                    purchaseProposalFormResponse
+                )),
                 exp =>
                 {
                     throw exp;
