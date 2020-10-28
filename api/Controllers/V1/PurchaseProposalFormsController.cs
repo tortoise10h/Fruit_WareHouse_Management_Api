@@ -91,5 +91,21 @@ namespace api.Controllers.V1
                 }
             );
         }
+
+        //[HttpPost(ApiRoutes.PurchaseProposalForm.AddProductToPurchaseProposalForm)]
+        //public async Task<IActionResult> AddProductToPurchaseProposalForm([FromBody] BulkCreatePurchaseProposalDetailCommand command)
+        //{
+        //    var result = await _mediator.Send(command);
+
+        //    return result.Match<IActionResult>(
+        //        purchaseProposalFormresponse => Created("", new Response<PurchaseProposalFormResponse>(
+        //            purchaseProposalFormresponse
+        //        )),
+        //        exp =>
+        //        {
+        //            throw exp;
+        //        }
+        //    );
+        //}
     }
 }
