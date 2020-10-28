@@ -16,7 +16,8 @@ namespace api.Services
 {
     public interface IPurchaseProposalService
     {
-        Task MakeValidProductListWhenCreatePurchaseProposalForm(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails);
+        Task<List<CreatePurchaseProposalDetailCommand>> ValidateAdddedProducts(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails);
+        Task ValidateUniqueProductsInPurchaseProposalForm(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId);
     }
 
     public class PurchaseProposalService : IPurchaseProposalService
@@ -30,7 +31,7 @@ namespace api.Services
             _mapper = mapper;
         }
 
-        public async Task MakeValidProductListWhenCreatePurchaseProposalForm(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails)
+        public async Task<List<CreatePurchaseProposalDetailCommand>> ValidateAdddedProducts(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails)
         {
             /** Make sure all product id in list is uniqe */
             purchaseProposalDetails = purchaseProposalDetails
@@ -74,6 +75,31 @@ namespace api.Services
                 throw new BadRequestException(
                     new ApiError(maxQuantityErrorResponse)
                     );
+            }
+
+            return purchaseProposalDetails;
+        }
+
+        public async Task ValidateUniqueProductsInPurchaseProposalForm(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId)
+        {
+            var newProductIds = purchaseProposalDetails
+                .Select(x => x.ProductId);
+
+            var existedPurchaseProposalDetails = await _context.PurchaseProposalDetails
+                .Where(x => x.PurchaseProposalFormId == purchaseProposalFormId &&
+                    newProductIds.Contains(x.ProductId))
+                .ToListAsync();
+
+            if (existedPurchaseProposalDetails != null &&
+                existedPurchaseProposalDetails.Count() > 0)
+            {
+                string errResponse = "";
+                foreach(var eppd in existedPurchaseProposalDetails)
+                {
+                    errResponse += $"Sản phẩm với id {eppd.ProductId} đã tồn tại trong phiếu đề nghị<br/>";
+                }
+
+                throw new BadRequestException(new ApiError(errResponse));
             }
         }
     }
