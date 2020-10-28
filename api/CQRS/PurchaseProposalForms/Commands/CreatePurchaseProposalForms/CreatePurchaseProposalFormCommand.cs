@@ -43,7 +43,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
             CreatePurchaseProposalFormCommand request,
             CancellationToken cancellationToken)
         {
-            await _purchaseProposalService.MakeValidProductListWhenCreatePurchaseProposalForm(
+            request.PurchaseProposalDetails = await _purchaseProposalService.ValidateAdddedProducts(
                request.PurchaseProposalDetails);
 
             var purchaseProposalFormEntity = _mapper.Map<PurchaseProposalForm>(
