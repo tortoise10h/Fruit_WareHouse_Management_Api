@@ -6,6 +6,7 @@ using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
+using api.CQRS.PurchaseProposalForms.Commands.UpdateProducts;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -51,6 +52,21 @@ namespace api.Controllers.V1
                 data => Ok(new Response<PagedResponse<PurchaseProposalFormResponse>>(
                     data
                 )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        [HttpPut(ApiRoutes.PurchaseProposalForm.Update)]
+        public async Task<IActionResult> Update([FromRoute] int purchaseProposalFormId, [FromBody] UpdatePurchaseProposalFormCommand command) 
+        {
+            command.Id = purchaseProposalFormId;
+            var result = await _mediator.Send(command);
+
+            return result.Match<IActionResult>(
+                purchaseProposalFormresponse => NoContent(),
                 exp =>
                 {
                     throw exp;
