@@ -18,12 +18,18 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                     .WithMessage("Thời hạn hoàn tất mua hàng không được trước thời điểm hiện tại");
 
             RuleFor(x => x.Status)
-                .IsInEnum();
+                .Must(x => new List<PurchaseProposalFormStatus> {
+                    PurchaseProposalFormStatus.Processing,
+                    PurchaseProposalFormStatus.Cancelled,
+                    PurchaseProposalFormStatus.ForceDone
+                }.Contains(x))
+                    .WithMessage("Trạng thái không hợp lệ");
 
-            When(x => x.Status == PurchaseProposalFormStatus.Canceled || x.Status == PurchaseProposalFormStatus.Canceled, () =>
+            When(x => x.Status == PurchaseProposalFormStatus.Cancelled || x.Status == PurchaseProposalFormStatus.Cancelled, () =>
             {
                 RuleFor(x => x.Description)
-                    .NotEmpty();
+                    .NotEmpty()
+                        .WithMessage("Xin hãy nhập vào lý do");
             });
         }
     }
