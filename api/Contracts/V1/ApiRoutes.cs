@@ -39,7 +39,7 @@ namespace api.Contracts.V1
             public const string Update = Base + "/purchaseProposalForms/{purchaseProposalFormId}";
             public const string Delete = Base + "/purchaseProposalForms/{purchaseProposalFormId}";
             public const string AddProductToPurchaseProposalForm = Base + "/purchaseProposalForms/{purchaseProposalFormId}/purchaseProposalDetails";
-            public const string BulkUpdateProductInPurchaseProposalForm = Base + "/purchaseProposalForms/{purchaseProposalFormId}/purchaseProposalDetails";
+            public const string BulkUpdateProductInPurchaseProposalForm = Base + "/purchaseProposalForms/{purchaseProposalFormId}/purchaseProposalDetails/bulkUpdate";
             public const string DeleteProductInPurchaseProposalForm = Base + "/purchaseProposalForms/{purchaseProposalFormId}/purchaseProposalDetails/{purchaseProposalDetailId}";
         }
     }

@@ -119,6 +119,7 @@ namespace api.Services
                 .ToList();
 
             var existedPurchaseProposalDetails = await _context.PurchaseProposalDetails
+                .AsNoTracking()
                 .Where(ppd => ppd.PurchaseProposalFormId == purchaseProposalFormId &&
                     purchaseProposalDetailIds.Contains(ppd.Id))
                 .Include(ppd => ppd.Product)
@@ -156,7 +157,12 @@ namespace api.Services
             /** Preapre new list purchase proposal detail entity */
             _mapper.Map<List<UpdatePurchaseProposalDetailCommand>, List<PurchaseProposalDetail>>(purchaseProposalDetails, existedPurchaseProposalDetails);
 
-            return existedPurchaseProposalDetails;
+            /** Remove redundant products in purchase proposal detail list */
+            var validPurchaseProposalDetails = await _context.PurchaseProposalDetails
+                .Where(x => purchaseProposalDetailIds.Contains(x.Id))
+                .ToListAsync();
+
+            return validPurchaseProposalDetails;
         }
     }
 }
