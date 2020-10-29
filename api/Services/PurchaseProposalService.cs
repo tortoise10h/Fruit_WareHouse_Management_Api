@@ -1,5 +1,6 @@
 ﻿using api.Contracts.V1.Exceptions;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
+using api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails;
 using api.Entities;
 using api.Helpers;
 using AutoMapper;
@@ -18,6 +19,7 @@ namespace api.Services
     {
         Task<List<CreatePurchaseProposalDetailCommand>> ValidateAdddedProducts(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails);
         Task ValidateUniqueProductsInPurchaseProposalForm(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId);
+        Task<List<PurchaseProposalDetail>> PrepareListProductWhenUpdatePruchaseProposalDetail(List<UpdatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId);
     }
 
     public class PurchaseProposalService : IPurchaseProposalService
@@ -101,6 +103,60 @@ namespace api.Services
 
                 throw new BadRequestException(new ApiError(errResponse));
             }
+        }
+
+        public async Task<List<PurchaseProposalDetail>> PrepareListProductWhenUpdatePruchaseProposalDetail(List<UpdatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId)
+        {
+            /** Make sure all product id in list is uniqe */
+            purchaseProposalDetails = purchaseProposalDetails
+                .GroupBy(x => x.Id)
+                .Select(x => x.First())
+                .ToList();
+
+            /** Make sure all purchase proposal details exist in list are existed */
+            var purchaseProposalDetailIds = purchaseProposalDetails
+                .Select(x => x.Id)
+                .ToList();
+
+            var existedPurchaseProposalDetails = await _context.PurchaseProposalDetails
+                .Where(ppd => ppd.PurchaseProposalFormId == purchaseProposalFormId &&
+                    purchaseProposalDetailIds.Contains(ppd.Id))
+                .Include(ppd => ppd.Product)
+                .ToListAsync();
+
+            if (purchaseProposalDetailIds.Count() != existedPurchaseProposalDetails.Count())
+            {
+                throw new NotFoundException();
+            }
+
+            /** Validate max quantity of product */
+            string maxQuantityErrorResponse = "";
+            foreach (var ppd in purchaseProposalDetails)
+            {
+                var existedPurchaseProposalDetail = existedPurchaseProposalDetails
+                    .SingleOrDefault(eppd => eppd.Id == ppd.Id);
+
+                if (existedPurchaseProposalDetail.Product.MaxQuantity != null)
+                {
+                    int totalQuantityAfterUpdate = ppd.Quantity + existedPurchaseProposalDetail.Product.Quantity;
+                    if (totalQuantityAfterUpdate > existedPurchaseProposalDetail.Product.MaxQuantity)
+                    {
+                        maxQuantityErrorResponse += $"Số lượng sau khi chỉnh sửa của sản phẩm '{existedPurchaseProposalDetail.Product.Name}' [{totalQuantityAfterUpdate}] lớn số lượng tối đa cho phép của sản phẩm [{existedPurchaseProposalDetail.Product.MaxQuantity}]<br/>";
+                    }
+                }
+            }
+
+            if (maxQuantityErrorResponse.Equals("") == false)
+            {
+                throw new BadRequestException(
+                    new ApiError(maxQuantityErrorResponse)
+                    );
+            }
+
+            /** Preapre new list purchase proposal detail entity */
+            _mapper.Map<List<UpdatePurchaseProposalDetailCommand>, List<PurchaseProposalDetail>>(purchaseProposalDetails, existedPurchaseProposalDetails);
+
+            return existedPurchaseProposalDetails;
         }
     }
 }
