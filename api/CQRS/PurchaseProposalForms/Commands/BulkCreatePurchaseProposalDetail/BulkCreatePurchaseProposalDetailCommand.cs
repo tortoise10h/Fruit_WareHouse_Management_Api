@@ -54,12 +54,11 @@ namespace api.CQRS.PurchaseProposalForms.Commands.BulkCreatePurchaseProposalDeta
 
             /** Only can add new products to purchase proposal form when it is
              * New or Processing */
-            if (!(purchaseProposalForm.Status == PurchaseProposalFormStatus.Processing ||
-                purchaseProposalForm.Status == PurchaseProposalFormStatus.New))
+            if (purchaseProposalForm.Status != PurchaseProposalFormStatus.New)
             {
                 return new Result<List<PurchaseProposalDetailResponse>>(
                     new BadRequestException(
-                        new ApiError("Chỉ được phép thêm sản phẩm vào phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới' hoặc 'Đang xử lý'"))
+                        new ApiError("Chỉ được phép thêm sản phẩm vào phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới'"))
                     );
             }
 
