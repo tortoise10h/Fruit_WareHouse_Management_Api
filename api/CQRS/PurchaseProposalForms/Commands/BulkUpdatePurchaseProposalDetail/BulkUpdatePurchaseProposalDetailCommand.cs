@@ -44,8 +44,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.BulkUpdatePurchaseProposalDeta
         {
             var purchaseProposalForm = await _context.PurchaseProposalForms
                 .SingleOrDefaultAsync(x => x.Id == request.PurchaseProposalFormId);
-            /** Make sure create purchase proposal detail for valid
-             * purchase proposal form */
+
             if (purchaseProposalForm == null)
             {
                 return new Result<List<PurchaseProposalDetailResponse>>(
@@ -55,25 +54,39 @@ namespace api.CQRS.PurchaseProposalForms.Commands.BulkUpdatePurchaseProposalDeta
 
             /** Only can update products to purchase proposal form when it is
              * New or Processing */
-            if (!(purchaseProposalForm.Status == PurchaseProposalFormStatus.Processing ||
-                purchaseProposalForm.Status == PurchaseProposalFormStatus.New))
+            if (purchaseProposalForm.Status != PurchaseProposalFormStatus.New)
             {
                 return new Result<List<PurchaseProposalDetailResponse>>(
                     new BadRequestException(
-                        new ApiError("Chỉ được phép chỉnh sửa sản phẩm trong phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới' hoặc 'Đang xử lý'"))
+                        new ApiError("Chỉ được phép chỉnh sửa sản phẩm trong phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới'"))
                     );
             }
 
-            var updatedPurchaseProposalDetailEntities = await _purchaseProposalFormService.PrepareListProductWhenUpdatePruchaseProposalDetail(request.PurchaseProposalDetails, request.PurchaseProposalFormId);
+            /** Make the request purchase proposal detail list valid */
+            request.PurchaseProposalDetails = await _purchaseProposalFormService.MakeSureListPurchaseProposalDetailUpdateValid(request.PurchaseProposalDetails, request.PurchaseProposalFormId);
 
-            _context.PurchaseProposalDetails.UpdateRange(updatedPurchaseProposalDetailEntities);
+            /** Update new change to all updated purchase propposal details */
+            var validPurchaseProposalDetailIds = request.PurchaseProposalDetails
+                .Select(x => x.Id);
+            var purchaseProposalDetailEntities = await _context.PurchaseProposalDetails
+                .Where(x => validPurchaseProposalDetailIds.Contains(x.Id))
+                .ToListAsync();
 
+            foreach(var ppd in purchaseProposalDetailEntities)
+            {
+                var matchedPurchaseProposalDetail = request.PurchaseProposalDetails
+                    .SingleOrDefault(x => x.Id == ppd.Id);
+                _mapper.Map<UpdatePurchaseProposalDetailCommand, PurchaseProposalDetail>(
+                    matchedPurchaseProposalDetail, ppd);
+            }
+
+            _context.PurchaseProposalDetails.UpdateRange(purchaseProposalDetailEntities);
             var created = await _context.SaveChangesAsync(); 
 
             if (created > 0)
             {
                 return new Result<List<PurchaseProposalDetailResponse>>(
-                    _mapper.Map<List<PurchaseProposalDetailResponse>>(updatedPurchaseProposalDetailEntities)
+                    _mapper.Map<List<PurchaseProposalDetailResponse>>(purchaseProposalDetailEntities)
                 );
             }
 

@@ -19,7 +19,7 @@ namespace api.Services
     {
         Task<List<CreatePurchaseProposalDetailCommand>> ValidateAdddedProducts(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails);
         Task ValidateUniqueProductsInPurchaseProposalForm(List<CreatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId);
-        Task<List<PurchaseProposalDetail>> PrepareListProductWhenUpdatePruchaseProposalDetail(List<UpdatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId);
+        Task<List<UpdatePurchaseProposalDetailCommand>> MakeSureListPurchaseProposalDetailUpdateValid(List<UpdatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId);
     }
 
     public class PurchaseProposalService : IPurchaseProposalService
@@ -105,7 +105,7 @@ namespace api.Services
             }
         }
 
-        public async Task<List<PurchaseProposalDetail>> PrepareListProductWhenUpdatePruchaseProposalDetail(List<UpdatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId)
+        public async Task<List<UpdatePurchaseProposalDetailCommand>> MakeSureListPurchaseProposalDetailUpdateValid(List<UpdatePurchaseProposalDetailCommand> purchaseProposalDetails, int purchaseProposalFormId)
         {
             /** Make sure all product id in list is uniqe */
             purchaseProposalDetails = purchaseProposalDetails
@@ -154,15 +154,7 @@ namespace api.Services
                     );
             }
 
-            /** Preapre new list purchase proposal detail entity */
-            _mapper.Map<List<UpdatePurchaseProposalDetailCommand>, List<PurchaseProposalDetail>>(purchaseProposalDetails, existedPurchaseProposalDetails);
-
-            /** Remove redundant products in purchase proposal detail list */
-            var validPurchaseProposalDetails = await _context.PurchaseProposalDetails
-                .Where(x => purchaseProposalDetailIds.Contains(x.Id))
-                .ToListAsync();
-
-            return validPurchaseProposalDetails;
+            return purchaseProposalDetails;
         }
     }
 }
