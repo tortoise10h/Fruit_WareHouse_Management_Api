@@ -7,6 +7,7 @@ using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.CQRS.Products.Queries;
 using api.CQRS.PurchaseProposalForms.Commands.BulkCreatePurchaseProposalDetails;
+using api.CQRS.PurchaseProposalForms.Commands.BulkDeletePurchaseProposalDetails;
 using api.CQRS.PurchaseProposalForms.Commands.BulkUpdatePurchaseProposalDetails;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.UpdateProducts;
@@ -111,16 +112,29 @@ namespace api.Controllers.V1
             );
         }
 
-        [HttpPut(ApiRoutes.PurchaseProposalForm.BulkUpdateProductInPurchaseProposalForm)]
+        [HttpPut(ApiRoutes.PurchaseProposalForm.BulkUpdatePurchaseProposalDetail)]
         public async Task<IActionResult> BulkUpdatePurchaseProposalDetails([FromRoute] int purchaseProposalFormId, [FromBody] BulkUpdatePurchaseProposalDetailCommand command)
         {
             command.PurchaseProposalFormId = purchaseProposalFormId; 
             var result = await _mediator.Send(command);
 
             return result.Match<IActionResult>(
-                purchaseProposalFormresponses => Ok(new Response<List<PurchaseProposalDetailResponse>>(
-                    purchaseProposalFormresponses
-                )),
+                purchaseProposalFormresponses => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        [HttpDelete(ApiRoutes.PurchaseProposalForm.BulkDeletePurchaseProposalDetail)]
+        public async Task<IActionResult> BulkDeletePurchaseProposalDetaiils([FromRoute] int purchaseProposalFormId, [FromBody] BulkDeletePurchaseProposalDetailCommand command)
+        {
+            command.PurchaseProposalFormId = purchaseProposalFormId; 
+            var result = await _mediator.Send(command);
+
+            return result.Match<IActionResult>(
+                purchaseProposalFormresponses => NoContent(),
                 exp =>
                 {
                     throw exp;
