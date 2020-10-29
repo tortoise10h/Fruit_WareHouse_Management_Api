@@ -4,6 +4,7 @@ using api.CQRS.ProductUnits.Commands.CreateProductUnits;
 using api.CQRS.ProductUnits.Commands.UpdateProductUnits;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.UpdateProducts;
+using api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails;
 using api.Entities;
 using AutoMapper;
 
@@ -27,6 +28,7 @@ namespace api.MapperProfiles
 
             /** PurchaseProposalDetail */
             CreateMap<CreatePurchaseProposalDetailCommand, PurchaseProposalDetail>();
+            CreateMap<UpdatePurchaseProposalDetailCommand, PurchaseProposalDetail>();
         }
     }
 }
