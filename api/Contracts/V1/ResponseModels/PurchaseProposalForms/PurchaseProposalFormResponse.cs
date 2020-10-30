@@ -13,6 +13,7 @@ namespace api.Contracts.V1.ResponseModels.PurchaseProposalForms
         public PurchaseProposalFormStatus Status { get; set; }
         public PurchaseProposalFormOnTimeOrNotStatus OnTimeOrNotStatus { get; set; }
         public string Description { get; set; }
+        public string ExceptionReason { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastModifiedAt { get; set; }
 

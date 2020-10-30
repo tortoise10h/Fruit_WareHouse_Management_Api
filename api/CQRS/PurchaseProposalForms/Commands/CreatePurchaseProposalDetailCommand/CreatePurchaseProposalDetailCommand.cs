@@ -34,7 +34,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
             _mapper = mapper;
         }
 
-        public async Task<Result<PurchaseProposalDetailResponse>> Handle(
+        public Task<Result<PurchaseProposalDetailResponse>> Handle(
             CreatePurchaseProposalDetailCommand request,
             CancellationToken cancellationToken)
         {

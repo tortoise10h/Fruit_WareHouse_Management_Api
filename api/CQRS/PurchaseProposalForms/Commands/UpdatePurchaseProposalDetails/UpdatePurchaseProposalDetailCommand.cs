@@ -33,7 +33,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails
             _mapper = mapper;
         }
 
-        public async Task<Result<PurchaseProposalFormResponse>> Handle(UpdatePurchaseProposalDetailCommand request, CancellationToken cancellationToken)
+        public Task<Result<PurchaseProposalFormResponse>> Handle(UpdatePurchaseProposalDetailCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
             //var purchaseProposalForm = await _context.PurchaseProposalForms
