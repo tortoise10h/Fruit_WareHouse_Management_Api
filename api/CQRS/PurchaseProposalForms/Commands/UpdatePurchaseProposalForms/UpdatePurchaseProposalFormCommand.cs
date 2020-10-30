@@ -19,6 +19,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
     {
         public int Id { get; set; }
         public string Description { get; set; }
+        public string ExceptionReason { get; set; }
         public DateTime Deadline { get; set; }
         public PurchaseProposalFormStatus Status { get; set; }
     }
