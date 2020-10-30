@@ -31,6 +31,7 @@ namespace api.Controllers.V1
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Sale,Boss")]
         [HttpPost(ApiRoutes.PurchaseProposalForm.Create)]
         public async Task<IActionResult> Create([FromBody] CreatePurchaseProposalFormCommand command)
         {
@@ -63,6 +64,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Sale,Boss")]
         [HttpPut(ApiRoutes.PurchaseProposalForm.Update)]
         public async Task<IActionResult> Update([FromRoute] int purchaseProposalFormId, [FromBody] UpdatePurchaseProposalFormCommand command) 
         {
@@ -95,6 +97,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Sale,Boss")]
         [HttpPost(ApiRoutes.PurchaseProposalForm.AddProductToPurchaseProposalForm)]
         public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int purchaseProposalFormId, [FromBody] BulkCreatePurchaseProposalDetailCommand command)
         {
@@ -112,6 +115,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Sale,Boss")]
         [HttpPut(ApiRoutes.PurchaseProposalForm.BulkUpdatePurchaseProposalDetail)]
         public async Task<IActionResult> BulkUpdatePurchaseProposalDetails([FromRoute] int purchaseProposalFormId, [FromBody] BulkUpdatePurchaseProposalDetailCommand command)
         {
@@ -127,6 +131,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Sale,Boss")]
         [HttpDelete(ApiRoutes.PurchaseProposalForm.BulkDeletePurchaseProposalDetail)]
         public async Task<IActionResult> BulkDeletePurchaseProposalDetaiils([FromRoute] int purchaseProposalFormId, [FromBody] BulkDeletePurchaseProposalDetailCommand command)
         {
