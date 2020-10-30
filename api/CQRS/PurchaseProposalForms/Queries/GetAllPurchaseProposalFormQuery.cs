@@ -31,6 +31,7 @@ namespace src.CQRS.PurchaseProposalForms.Queries
         public async Task<Result<PagedResponse<PurchaseProposalFormResponse>>> Handle(GetAllPurchaseProposalFormQuery query, CancellationToken cancellationToken)
         {
             var queryable = _context.PurchaseProposalForms.AsQueryable();
+            queryable = queryable.AsNoTracking();
             /** TODO: Include import bill */
             var result = await _paginationHelper.Paginate<E.PurchaseProposalForm, PurchaseProposalFormResponse>(
                 queryable, query
