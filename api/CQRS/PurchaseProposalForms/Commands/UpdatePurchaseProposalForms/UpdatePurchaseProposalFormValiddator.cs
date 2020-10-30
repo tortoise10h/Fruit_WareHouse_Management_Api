@@ -23,10 +23,20 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
 
             When(x => x.Status == PurchaseProposalFormStatus.Cancelled || x.Status == PurchaseProposalFormStatus.Cancelled, () =>
             {
-                RuleFor(x => x.Description)
+                RuleFor(x => x.ExceptionReason)
                     .NotEmpty()
                         .WithMessage("Xin hãy nhập vào lý do");
             });
+
+            When(x => x.Status == PurchaseProposalFormStatus.Processing ||
+                x.Status == PurchaseProposalFormStatus.Done || 
+                x.Status == PurchaseProposalFormStatus.New,
+                () =>
+                {
+                    RuleFor(x => x.ExceptionReason)
+                        .Must(x => x == null || x == "")
+                            .WithMessage("Không được phép cập nhật lý do");
+                });
         }
     }
 }

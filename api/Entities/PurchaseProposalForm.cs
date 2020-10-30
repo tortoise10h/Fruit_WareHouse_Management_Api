@@ -13,6 +13,7 @@ namespace api.Entities
         public PurchaseProposalFormStatus Status { get; set; }
         public PurchaseProposalFormOnTimeOrNotStatus OnTimeOrNotStatus { get; set; }
         public string Description { get; set; }
+        public string ExceptionReason { get; set; }
 
         public ICollection<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
     }
