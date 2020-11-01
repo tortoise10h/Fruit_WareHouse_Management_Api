@@ -21,7 +21,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                 .IsInEnum()
                     .WithMessage("Trạng thái không hợp lệ");
 
-            When(x => x.Status == PurchaseProposalFormStatus.Cancelled || x.Status == PurchaseProposalFormStatus.Cancelled, () =>
+            When(x => x.Status == PurchaseProposalFormStatus.Cancelled || x.Status == PurchaseProposalFormStatus.ForceDone, () =>
             {
                 RuleFor(x => x.ExceptionReason)
                     .NotEmpty()

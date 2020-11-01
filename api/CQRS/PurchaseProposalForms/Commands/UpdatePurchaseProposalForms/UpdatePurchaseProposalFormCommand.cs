@@ -98,6 +98,14 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                         new ApiError("Chỉ cho phép 'Buộc hoàn tất' phiếu đề nghị mua hàng khi nó đang ở trạng thái 'Đang xử lý'"));
                 }
                 // TODO: Make sure there is at least 1 import bill for it
+            } else if (newStatus == PurchaseProposalFormStatus.New)
+            {
+                /** Do not allow to switch back from Processing to New */
+                if (purchaseProposalForm.Status != PurchaseProposalFormStatus.New)
+                {
+                    throw new BadRequestException(
+                        new ApiError("Không được phép chuyển về trạng thái 'Mới' khi đề nghị mua hàng đã được xử lý"));
+                }
             }
         }
     }
