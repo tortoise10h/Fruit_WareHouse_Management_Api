@@ -42,5 +42,14 @@ namespace api.Contracts.V1
             public const string BulkUpdatePurchaseProposalDetail = Base + "/purchaseProposalForms/{purchaseProposalFormId}/purchaseProposalDetails/bulkUpdate";
             public const string BulkDeletePurchaseProposalDetail = Base + "/purchaseProposalForms/{purchaseProposalFormId}/purchaseProposalDetails/bulkDelete";
         }
+
+        public static class ProductCategories
+        {
+            public const string GetAll = Base + "/productCategories";
+            public const string GetById = Base + "/productCategories/{productCategoryId}";
+            public const string Create = Base + "/productCategories";
+            public const string Update = Base + "/productCategories/{productCategoryId}";
+            public const string Delete = Base + "/productCategories/{productCategoryId}";
+        }
     }
 }
