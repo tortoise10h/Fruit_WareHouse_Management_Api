@@ -4,7 +4,6 @@ namespace api.Contracts.V1.ResponseModels
     {
         public Response()
         {
-
         }
 
         public Response(T response)

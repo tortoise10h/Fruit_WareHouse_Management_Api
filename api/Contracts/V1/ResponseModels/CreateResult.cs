@@ -6,7 +6,6 @@ namespace api.Contracts.V1.ResponseModels
     {
         public CreateResult()
         {
-
         }
 
         public CreateResult(

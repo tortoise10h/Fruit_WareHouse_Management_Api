@@ -1,3 +1,5 @@
+using api.CQRS.ProductCategories.Commands.CreateProductCategory;
+using api.CQRS.ProductCategories.Commands.UpdateProductCategory;
 using api.CQRS.Products.Commands.CreateProducts;
 using api.CQRS.Products.Commands.UpdateProducts;
 using api.CQRS.ProductUnits.Commands.CreateProductUnits;
@@ -14,6 +16,10 @@ namespace api.MapperProfiles
     {
         public CommandModelToEntityProfile()
         {
+            /** Product Category*/
+            CreateMap<CreateProductCategoryCommand, ProductCategory>();
+            CreateMap<UpdateProductCategoryCommand, ProductCategory>();
+
             /** Product */
             CreateMap<CreateProductCommand, Product>();
             CreateMap<UpdateProductCommand, Product>();

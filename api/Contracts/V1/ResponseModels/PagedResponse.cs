@@ -7,7 +7,6 @@ namespace api.Contracts.V1.ResponseModels
     {
         public PagedResponse()
         {
-
         }
 
         public PagedResponse(IEnumerable<T> data)
