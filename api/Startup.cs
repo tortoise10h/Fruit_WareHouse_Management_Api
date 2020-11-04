@@ -54,10 +54,7 @@ namespace api
                 c.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
             });
 
-
             app.UseRouting();
-
-            app.UseStaticFiles();
 
             app.UseStaticFiles(new StaticFileOptions()
             {
