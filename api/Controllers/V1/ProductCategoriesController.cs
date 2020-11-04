@@ -3,6 +3,7 @@ using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.ProductCategories;
 using api.CQRS.ProductCategories.Commands.CreateProductCategory;
+using api.CQRS.ProductCategories.Commands.DeleteProductCategory;
 using api.CQRS.ProductCategories.Commands.UpdateProductCategory;
 using api.CQRS.Products.Queries;
 using MediatR;
@@ -12,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager")]
     public class ProductCategoriesController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -30,6 +30,7 @@ namespace api.Controllers.V1
             return Created("", result);
         }
 
+        [Authorize]
         [HttpGet(ApiRoutes.ProductCategories.GetAll)]
         public async Task<IActionResult> GetAll([FromQuery] GetAllProductCategoriesQuery query)
         {
@@ -46,6 +47,17 @@ namespace api.Controllers.V1
         {
             command.Id = productCategoryId;
             await _mediator.Send(command);
+            return NoContent();
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete(ApiRoutes.ProductCategories.Delete)]
+        public async Task<IActionResult> Delete([FromRoute] int productCategoryId)
+        {
+            var deleteCommand = new DeleteProductCategoryCommand(productCategoryId);
+            deleteCommand.Id = productCategoryId;
+            await _mediator.Send(deleteCommand);
             return NoContent();
         }
     }
