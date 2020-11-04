@@ -32,7 +32,8 @@ namespace api.Installers
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddDbContext<DataContext>();
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentityCore<ApplicationUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<DataContext>();
             services.Configure<IdentityOptions>(options =>
             {
