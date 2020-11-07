@@ -17,11 +17,14 @@ namespace api.Entities
         public double PurchasePrice { get; set; }
         public double Price { get; set; }
         public ProductStatus Status { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
         public int ProductCategoryId { get; set; }
-        public int? MinQuantity { get; set; }
-        public int? MaxQuantity { get; set; }
+        public double? MinQuantity { get; set; }
+        public double? MaxQuantity { get; set; }
         public DateTime? LastSaledDate { get; set; }
+        public double QuantityOrdered { get; set; }
+        public double QuantityForSale { get; set; }
+        public double QuantityReturned { get; set; }
 
         public ProductCategory ProductCategory { get; set; }
         public ICollection<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }

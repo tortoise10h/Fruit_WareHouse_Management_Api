@@ -11,7 +11,8 @@ namespace api.Entities
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int PurchaseProposalFormId { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
+        public double QuantityPurchased { get; set; }
         public string Description { get; set; }
 
         public Product Product { get; set; }

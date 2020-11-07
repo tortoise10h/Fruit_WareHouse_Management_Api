@@ -13,7 +13,8 @@ namespace api.Contracts.V1.ResponseModels.PurchaseProposalForms
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int PurchaseProposalFormId { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
+        public double QuantityPurchased { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastModifiedAt { get; set; }
