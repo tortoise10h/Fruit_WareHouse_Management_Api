@@ -64,7 +64,7 @@ namespace api.Services
 
                 if (p.MaxQuantity != null)
                 {
-                    int totalQuantityAfterImport = requestProduct.Quantity + p.Quantity;
+                    double totalQuantityAfterImport = requestProduct.Quantity + p.Quantity;
                     if (totalQuantityAfterImport > p.MaxQuantity)
                     {
                         maxQuantityErrorResponse += $"Số lượng sau khi nhập vào của sản phẩm '{p.Name}' [{totalQuantityAfterImport}] lớn số lượng tối đa cho phép của sản phẩm [{p.MaxQuantity}]<br/>";
@@ -139,7 +139,7 @@ namespace api.Services
 
                 if (existedPurchaseProposalDetail.Product.MaxQuantity != null)
                 {
-                    int totalQuantityAfterUpdate = ppd.Quantity + existedPurchaseProposalDetail.Product.Quantity;
+                    double totalQuantityAfterUpdate = ppd.Quantity + existedPurchaseProposalDetail.Product.Quantity;
                     if (totalQuantityAfterUpdate > existedPurchaseProposalDetail.Product.MaxQuantity)
                     {
                         maxQuantityErrorResponse += $"Số lượng sau khi chỉnh sửa của sản phẩm '{existedPurchaseProposalDetail.Product.Name}' [{totalQuantityAfterUpdate}] lớn số lượng tối đa cho phép của sản phẩm [{existedPurchaseProposalDetail.Product.MaxQuantity}]<br/>";
