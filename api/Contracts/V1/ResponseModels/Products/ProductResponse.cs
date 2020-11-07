@@ -25,6 +25,9 @@ namespace api.Contracts.V1.ResponseModels.Products
         public DateTime LastSaledDate { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastModifiedAt { get; set; }
+        public double QuantityOrdered { get; set; }
+        public double QuantityForSale { get; set; }
+        public double QuantityReturned { get; set; }
 
         public ProductCategoryResponse ProductCategory { get; set; }
         public IEnumerable<ProductUnitResponse> ProductUnits { get; set; }

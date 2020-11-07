@@ -19,7 +19,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
     public class CreatePurchaseProposalDetailCommand : IRequest<Result<PurchaseProposalDetailResponse>>
     {
         public int ProductId { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
         public string Description { get; set; }
     }
 
