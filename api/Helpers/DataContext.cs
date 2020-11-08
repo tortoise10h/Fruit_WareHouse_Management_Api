@@ -19,6 +19,8 @@ namespace api.Helpers
         public DbSet<ProductUnit> ProductUnits { get; set; }
         public DbSet<PurchaseProposalForm> PurchaseProposalForms { get; set; }
         public DbSet<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
+        public DbSet<GoodsReceivingNote> GoodsReceivingNotes { get; set; }
+        public DbSet<GoodsReceivingDetail> GoodsReceivingDetails { get; set; }
 
         protected readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;

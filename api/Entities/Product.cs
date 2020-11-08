@@ -28,6 +28,7 @@ namespace api.Entities
 
         public ProductCategory ProductCategory { get; set; }
         public ICollection<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
+        public ICollection<GoodsReceivingDetail> GoodsReceivingDetails { get; set; }
         public ICollection<ProductUnit> ProductUnits { get; set; }
     }
 }
