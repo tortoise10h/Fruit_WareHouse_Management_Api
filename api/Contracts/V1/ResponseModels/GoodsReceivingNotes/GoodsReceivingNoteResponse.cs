@@ -15,6 +15,7 @@ namespace api.Contracts.V1.ResponseModels.GoodsReceivingNotes
         public int SupplierId { get; set; }
         public string Decription { get; set; }
         public string ExceptionReason { get; set; }
+        public double TotalPrice { get; set; }
 
         public List<GoodsReceivingDetailResponse> GoodsReceivingDetails { get; set; }
         public UserResponse User { get; set; }

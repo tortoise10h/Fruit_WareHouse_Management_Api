@@ -15,6 +15,7 @@ namespace api.Entities
         public string Description { get; set; }
         public string ExceptionReason { get; set; }
         public int PurchaseProposalFormId { get; set; }
+        public double TotalPrice { get; set; }
 
         public ApplicationUser User { get; set; }
         public ICollection<GoodsReceivingDetail> GoodsReceivingDetails { get; set; }

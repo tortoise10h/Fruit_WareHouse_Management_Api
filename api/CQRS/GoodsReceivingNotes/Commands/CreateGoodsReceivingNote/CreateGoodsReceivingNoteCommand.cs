@@ -5,8 +5,7 @@ using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.Entities;
 using api.Helpers;
-using api.IServices;
-using api.Services;
+using api.IServices; 
 using AutoMapper;
 using LanguageExt.Common;
 using LanguageExt.Pipes;
@@ -15,8 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using E = api.Entities;
@@ -76,16 +73,23 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote
             productsInGoodsReceivingNote = _goodsReceivingNoteServices.ValidateProductsOfNewGoodsReceivingNote(
                 productsInGoodsReceivingNote, purchaseProposalDetails);
 
-            // After get the valid result then map it back to command to parse to entity
+            /** Prepare entity to save to DB */
+            // Map list valid product back to command to map to entity
             _mapper.Map<List<ProductInGoodsReceivingNote>, List<CreateGoodsReceivingDetailCommand>>(
                 productsInGoodsReceivingNote, request.GoodsReceivingDetails);
 
             var goodsReceivingNoteEntity = _mapper.Map<GoodsReceivingNote>(
                 request);
             goodsReceivingNoteEntity.Status = GoodsReceivingNoteStatus.New;
+            // Calculate total price of each goods receiving detail item
+            goodsReceivingNoteEntity.GoodsReceivingDetails = _goodsReceivingNoteServices.CalculatePriceOfProducsInGoodsReceivingNote(
+                goodsReceivingNoteEntity.GoodsReceivingDetails.ToList());
+            // After has total price of each goods receiving item then
+            // calculate total price of this goods receiving note
+            goodsReceivingNoteEntity.TotalPrice = goodsReceivingNoteEntity.GoodsReceivingDetails
+                .Sum(x => x.TotalPrice); 
 
             await _context.GoodsReceivingNotes.AddAsync(goodsReceivingNoteEntity);
-
             var created = await _context.SaveChangesAsync();
             if (created > 0)
             {

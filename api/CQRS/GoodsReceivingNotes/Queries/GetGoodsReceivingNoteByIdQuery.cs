@@ -62,6 +62,7 @@ namespace api.CQRS.GoodsReceivingNotes.Queries
                         SupplierId = grn.SupplierId,
                         ExceptionReason = grn.ExceptionReason,
                         Description = grn.Description,
+                        TotalPrice = grn.TotalPrice,
                         CreatedAt = grn.CreatedAt,
                         LastModifiedAt = grn.LastModifiedAt,
                         User = u,

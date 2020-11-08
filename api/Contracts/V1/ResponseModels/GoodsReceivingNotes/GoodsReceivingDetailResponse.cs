@@ -12,6 +12,8 @@ namespace api.Contracts.V1.ResponseModels.GoodsReceivingNotes
         public int ProductId { get; set; }
         public int GoodsReceivingNoteId { get; set; }
         public double Quantity { get; set; }
+        public double SinglePurchasePrice { get; set; }
+        public double TotalPrice { get; set; }
         public string Description { get; set; }
 
         public ProductResponse Product { get; set; }
