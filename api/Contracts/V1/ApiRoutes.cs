@@ -51,5 +51,17 @@ namespace api.Contracts.V1
             public const string Update = Base + "/productCategories/{productCategoryId}";
             public const string Delete = Base + "/productCategories/{productCategoryId}";
         }
+
+        public static class GoodsReceivingNotes
+        {
+            public const string Create = Base + "/goodsReceivingNotes";
+            public const string GetAll = Base + "/goodsReceivingNotes";
+            public const string GetById = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}";
+            public const string Update = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}";
+            public const string Delete = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}";
+            public const string AddProductToGoodReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails";
+            public const string BulkUpdateProductInGoodsReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails/bulkUpdate";
+            public const string BulDeleteProductInGoodsReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails/bulkDelete";
+        }
     }
 }

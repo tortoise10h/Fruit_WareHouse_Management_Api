@@ -12,6 +12,9 @@ using E = api.Entities;
 using api.Contracts.V1.ResponseModels.Products;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.Entities;
+using System.Linq.Dynamic.Core;
+using System.Security.Cryptography.X509Certificates;
+using System.Linq;
 
 namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
 {
@@ -54,13 +57,20 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                     new ApiError("Chỉ pho phép chỉnh sửa phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới' hoặc 'Đang xử lý'"));
             }
 
+            _mapper.Map<UpdatePurchaseProposalFormCommand, E.PurchaseProposalForm>(request, purchaseProposalForm);
+
             /** If status is changed then make sure it's valid */
             if (purchaseProposalForm.Status != request.Status)
             {
                 ValidateWhenUpdateStatus(purchaseProposalForm, request.Status);
             }
 
-            _mapper.Map<UpdatePurchaseProposalFormCommand, E.PurchaseProposalForm>(request, purchaseProposalForm);
+            /** If purchase proposal form is processing then increase 
+             * the quantity ordered of product in storage */
+            if (request.Status == PurchaseProposalFormStatus.Processing)
+            {
+                await IncreaseProductQuantityOrderedWhenProcessing(purchaseProposalForm.Id);
+            }
 
             _context.PurchaseProposalForms.Update(purchaseProposalForm);
             var updated = await _context.SaveChangesAsync();
@@ -87,6 +97,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                     throw new BadRequestException(
                         new ApiError("Chỉ cho phép thay đổi trạng thái thành 'Đang xử lý' khi phiếu đang ở trạng thái 'Mới'"));
                 }
+
             } else if (newStatus == PurchaseProposalFormStatus.Cancelled)
             {
                 // TODO: Handle validate must be no import bill exist
@@ -107,6 +118,32 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                         new ApiError("Không được phép chuyển về trạng thái 'Mới' khi đề nghị mua hàng đã được xử lý"));
                 }
             }
+        }
+
+        public async Task IncreaseProductQuantityOrderedWhenProcessing(
+            int purchaseProposalFormId)
+        {
+            var purchaseProposalDetails = await _context.PurchaseProposalDetails
+                .Where(x => x.PurchaseProposalFormId == purchaseProposalFormId)
+                .ToListAsync();
+
+            var productIds = purchaseProposalDetails
+                .Select(x => x.ProductId)
+                .ToList();
+
+            var products = await _context.Products
+                .Where(x => productIds.Contains(x.Id))
+                .ToListAsync();
+
+            foreach (var p in products)
+            {
+                var matchedPurchaseProposalDetail = purchaseProposalDetails
+                    .SingleOrDefault(x => x.ProductId == p.Id);
+
+                p.QuantityOrdered += matchedPurchaseProposalDetail.Quantity;
+            }
+
+            _context.Products.UpdateRange(products);
         }
     }
 }

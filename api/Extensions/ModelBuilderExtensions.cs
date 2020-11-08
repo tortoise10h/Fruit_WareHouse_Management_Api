@@ -50,6 +50,26 @@ namespace api.Extensions
             modelBuilder
                 .Entity<Product>()
                 .HasQueryFilter(p => EF.Property<bool>(p, "IsDeleted") == false);
+
+            /** PurchaeProposalForm */
+            modelBuilder
+                .Entity<PurchaseProposalForm>()
+                .HasQueryFilter(ppf => EF.Property<bool>(ppf, "IsDeleted") == false);
+
+            /** PurchaseProposalDetail */
+            modelBuilder
+                .Entity<PurchaseProposalDetail>()
+                .HasQueryFilter(ppd => EF.Property<bool>(ppd, "IsDeleted") == false);
+
+            /** GoodsReceivingNote */
+            modelBuilder
+                .Entity<GoodsReceivingNote>()
+                .HasQueryFilter(ppd => EF.Property<bool>(ppd, "IsDeleted") == false);
+
+            /** GoodsReceivingDetail */
+            modelBuilder
+                .Entity<GoodsReceivingDetail>()
+                .HasQueryFilter(ppd => EF.Property<bool>(ppd, "IsDeleted") == false);
         }
 
         public static void Seed(this ModelBuilder modelBuilder)

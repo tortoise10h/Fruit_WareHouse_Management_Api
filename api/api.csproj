@@ -28,4 +28,8 @@
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.2.0" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CQRS\GoodsReceivingNotes\Queries\" />
+  </ItemGroup>
 </Project>

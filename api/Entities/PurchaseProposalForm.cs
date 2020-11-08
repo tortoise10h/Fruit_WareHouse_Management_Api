@@ -17,5 +17,6 @@ namespace api.Entities
 
         public ApplicationUser User { get; set; }
         public ICollection<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
+        public ICollection<GoodsReceivingNote> GoodsReceivingNotes { get; set; }
     }
 }

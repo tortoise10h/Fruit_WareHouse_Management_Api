@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using api.Helpers;
 using api.Services;
+using api.IServices;
 
 namespace api.Installers
 {
@@ -19,6 +20,7 @@ namespace api.Installers
             /** Real business services */
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<IPurchaseProposalService, PurchaseProposalService>();
+            services.AddScoped<IGoodsReceivingNoteServices, GoodsReceivingNoteServices>();
         }
     }
 }
