@@ -6,6 +6,7 @@ using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote;
+using api.CQRS.GoodsReceivingNotes.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -73,22 +74,22 @@ namespace api.Controllers.V1
         //    );
         //}
 
-        //[HttpGet(ApiRoutes.PurchaseProposalForm.GetById)]
-        //public async Task<IActionResult> GetById([FromRoute] int purchaseProposalFormId)
-        //{
-        //    var query = new GetPurchaseProposalFormByIdQuery(purchaseProposalFormId);
-        //    var result = await _mediator.Send(query);
+        [HttpGet(ApiRoutes.GoodsReceivingNotes.GetById)]
+        public async Task<IActionResult> GetById([FromRoute] int goodsReceivingNoteId)
+        {
+            var query = new GetGoodsReceivingNoteByIdQuery(goodsReceivingNoteId);
+            var result = await _mediator.Send(query);
 
-        //    return result.Match<IActionResult>(
-        //        purchaseProposalFormResponse => Ok(new Response<PurchaseProposalFormResponse>(
-        //            purchaseProposalFormResponse
-        //        )),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                goodsReceivingNoteResponse => Ok(new Response<GoodsReceivingNoteResponse>(
+                    goodsReceivingNoteResponse
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         //[Authorize(Roles = "Sale,Boss")]
         //[HttpPost(ApiRoutes.PurchaseProposalForm.AddProductToPurchaseProposalForm)]
