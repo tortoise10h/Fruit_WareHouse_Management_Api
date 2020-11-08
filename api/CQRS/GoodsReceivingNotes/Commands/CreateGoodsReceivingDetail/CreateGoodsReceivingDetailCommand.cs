@@ -22,6 +22,7 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail
         public int ProductId { get; set; }
         public double Quantity { get; set; }
         public string Description { get; set; }
+        public double SinglePurchasePrice { get; set; }
     }
 
     public class CreateGoodsReceivingDetailHandler : IRequestHandler<CreateGoodsReceivingDetailCommand, Result<GoodsReceivingDetailResponse>>

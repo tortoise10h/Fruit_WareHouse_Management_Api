@@ -22,6 +22,12 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail
                 .GreaterThan(0)
                     .WithMessage("Id của sản phẩm không hợp lệ");
 
+            RuleFor(x => x.SinglePurchasePrice)
+                .NotNull()
+                    .WithMessage("Giá mua của sản phẩm không được để trống")
+                .GreaterThanOrEqualTo(0)
+                    .WithMessage("Giá mua của sản phẩm phải lớn hơn hoặch bằng 0");
+
         }
     }
 }

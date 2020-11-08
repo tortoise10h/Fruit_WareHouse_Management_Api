@@ -93,5 +93,16 @@ namespace api.Services
                     new ApiError(errorResponse));
             }
         }
+
+        public List<GoodsReceivingDetail> CalculatePriceOfProducsInGoodsReceivingNote(
+            List<GoodsReceivingDetail> goodsReceivingDetails)
+        {
+            foreach(var p in goodsReceivingDetails)
+            {
+                p.TotalPrice = p.Quantity * p.SinglePurchasePrice;
+            }
+
+            return goodsReceivingDetails;
+        }
     }
 }

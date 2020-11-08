@@ -10,5 +10,7 @@ namespace api.Contracts.V1.Dtos
     {
         public int ProductId { get; set; }
         public double Quantity { get; set; }
+        public double SinglePurchasePrice { get; set; }
+        public double TotalPrice { get; set; }
     }
 }
