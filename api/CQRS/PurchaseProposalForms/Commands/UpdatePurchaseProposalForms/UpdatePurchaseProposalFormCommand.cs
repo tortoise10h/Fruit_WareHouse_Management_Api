@@ -57,8 +57,6 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                     new ApiError("Chỉ pho phép chỉnh sửa phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới' hoặc 'Đang xử lý'"));
             }
 
-            _mapper.Map<UpdatePurchaseProposalFormCommand, E.PurchaseProposalForm>(request, purchaseProposalForm);
-
             /** If status is changed then make sure it's valid */
             if (purchaseProposalForm.Status != request.Status)
             {
@@ -71,6 +69,8 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
             {
                 await IncreaseProductQuantityOrderedWhenProcessing(purchaseProposalForm.Id);
             }
+
+            _mapper.Map<UpdatePurchaseProposalFormCommand, E.PurchaseProposalForm>(request, purchaseProposalForm);
 
             _context.PurchaseProposalForms.Update(purchaseProposalForm);
             var updated = await _context.SaveChangesAsync();
@@ -100,7 +100,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
 
             } else if (newStatus == PurchaseProposalFormStatus.Cancelled)
             {
-                // TODO: Handle validate must be no import bill exist
+                // TODO: Handle validate must be no import bill exist and handle quantity
             } else if (newStatus == PurchaseProposalFormStatus.ForceDone)
             {
                 if (purchaseProposalForm.Status != PurchaseProposalFormStatus.Processing)
@@ -108,7 +108,7 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                     throw new BadRequestException(
                         new ApiError("Chỉ cho phép 'Buộc hoàn tất' phiếu đề nghị mua hàng khi nó đang ở trạng thái 'Đang xử lý'"));
                 }
-                // TODO: Make sure there is at least 1 import bill for it
+                // TODO: Make sure there is at least 1 import bill for it and handle quantity
             } else if (newStatus == PurchaseProposalFormStatus.New)
             {
                 /** Do not allow to switch back from Processing to New */
@@ -117,7 +117,12 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
                     throw new BadRequestException(
                         new ApiError("Không được phép chuyển về trạng thái 'Mới' khi đề nghị mua hàng đã được xử lý"));
                 }
+            } else if (newStatus == PurchaseProposalFormStatus.Done)
+            {
+                throw new BadRequestException(
+                    new ApiError("Không được phép chuyển sang trạng thái này"));
             }
+
         }
 
         public async Task IncreaseProductQuantityOrderedWhenProcessing(
