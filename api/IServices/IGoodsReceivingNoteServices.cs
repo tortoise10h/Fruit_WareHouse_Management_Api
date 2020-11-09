@@ -23,5 +23,11 @@ namespace api.IServices
             int purchaseProposalFormId,
             List<GoodsReceivingDetail> goodsReceivingDetails,
             DataContext ctx);
+
+        Task<List<ProductInGoodsReceivingNote>> ValidateWhenAddNewProductToExistedGoodsReceivingNote(
+            int goodsReceivingNoteId,
+            List<PurchaseProposalDetail> purchaseProposalDetails,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
+          );
     }
 }

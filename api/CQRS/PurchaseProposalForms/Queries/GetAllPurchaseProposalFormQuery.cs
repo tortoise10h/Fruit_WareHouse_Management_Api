@@ -33,6 +33,7 @@ namespace src.CQRS.PurchaseProposalForms.Queries
             var queryable = _context.PurchaseProposalForms.AsQueryable();
             /** TODO: Include import bill */
             queryable = queryable.AsNoTracking();
+            queryable = queryable.Include(x => x.GoodsReceivingNotes);
             queryable = queryable
                 .Join(_context.Users,
                     ppf => ppf.CreatedBy,
