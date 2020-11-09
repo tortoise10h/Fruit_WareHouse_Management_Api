@@ -91,6 +91,15 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.BulkCreateGoodsReceivingDetails
                 grd.GoodsReceivingNoteId = request.GoodsReceivingNoteId;
             }
 
+            // Calculate total price of each goods receiving detail item
+            goodsReceivingDetailEntities = _goodsReceivingNoteServices.CalculatePriceOfProducsInGoodsReceivingNote(
+                goodsReceivingDetailEntities);
+
+            // After has total price of each goods receiving item then
+            // calculate total price of this goods receiving note
+            goodsReceivingNote.TotalPrice = goodsReceivingNote.TotalPrice + goodsReceivingDetailEntities
+                .Sum(x => x.TotalPrice); 
+
             await _context.GoodsReceivingDetails.AddRangeAsync(goodsReceivingDetailEntities);
             var created = await _context.SaveChangesAsync(); 
 
