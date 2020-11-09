@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
+using api.CQRS.GoodsReceivingNotes.Commands.BulkCreateGoodsReceivingDetails;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote;
 using api.CQRS.GoodsReceivingNotes.Queries;
@@ -92,23 +93,23 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "Sale,Boss")]
-        //[HttpPost(ApiRoutes.PurchaseProposalForm.AddProductToPurchaseProposalForm)]
-        //public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int purchaseProposalFormId, [FromBody] BulkCreatePurchaseProposalDetailCommand command)
-        //{
-        //    command.PurchaseProposalFormId = purchaseProposalFormId; 
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpPost(ApiRoutes.GoodsReceivingNotes.AddProductToGoodReceivingNote)]
+        public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int goodsReceivingNoteId, [FromBody] BulkCreateGoodsReceivingDetailCommand command)
+        {
+            command.GoodsReceivingNoteId = goodsReceivingNoteId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        purchaseProposalFormresponses => Created("", new Response<List<PurchaseProposalDetailResponse>>(
-        //            purchaseProposalFormresponses
-        //        )),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => Created("", new Response<List<GoodsReceivingDetailResponse>>(
+                    response
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         //[Authorize(Roles = "Sale,Boss")]
         //[HttpPut(ApiRoutes.PurchaseProposalForm.BulkUpdatePurchaseProposalDetail)]

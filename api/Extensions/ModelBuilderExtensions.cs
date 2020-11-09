@@ -79,37 +79,37 @@ namespace api.Extensions
              |       SEED USERS AND ROLES        |
              |                                   |
              |-----------------------------------| */
-            string bossRoleId = Guid.NewGuid().ToString();
-            string adminRoleId = Guid.NewGuid().ToString();
-            string superAdminRoleId = Guid.NewGuid().ToString();
-            string customerRoleId = Guid.NewGuid().ToString();
-            string saleRoleId = Guid.NewGuid().ToString();
-            string warehouseKeeperRoleId = Guid.NewGuid().ToString();
-            string warehouseKeeperManagerRoleId = Guid.NewGuid().ToString();
+            string bossRoleId = "c2d4b743-d9da-443c-9f5a-c2682750c805";
+            string adminRoleId = "b979036b-d165-4bea-b6b6-16b22a3f54dd";
+            string superAdminRoleId = "cc2a0eb3-8736-441d-9130-5b421db3ac0e";
+            string customerRoleId = "423e498c-fc67-4853-ac4f-f3cd91d32e87";
+            string saleRoleId = "78c5228f-f600-4545-abcd-f4cc21d18e4c";
+            string warehouseKeeperRoleId = "6665ddaa-72f9-4f90-a6b1-43eb68dea610";
+            string warehouseKeeperManagerRoleId = "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1";
 
-            string adminId = Guid.NewGuid().ToString();
+            string adminId = "308da0db-e863-4814-8930-de3540e5406d";
 
-            string superAdminId = Guid.NewGuid().ToString();
+            string superAdminId = "927e4f6a-62ed-4e13-b002-7e133eb47bbc";
 
-            string bossId1 = Guid.NewGuid().ToString();
-            string bossId2 = Guid.NewGuid().ToString();
+            string bossId1 = "e7610feb-110c-47d0-9a88-1bfdc12742a4";
+            string bossId2 = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98";
 
-            string customer3Id = Guid.NewGuid().ToString();
-            string customer4Id = Guid.NewGuid().ToString();
-            string customer5Id = Guid.NewGuid().ToString();
-            string customer6Id = Guid.NewGuid().ToString();
-            string customer7Id = Guid.NewGuid().ToString();
+            string customer3Id = "08b84a20-7e7d-4353-bb53-74c79732beed";
+            string customer4Id = "b6256340-7bd0-4373-8549-c6a08053396b";
+            string customer5Id = "6f8ce951-2f66-4a9e-a4fa-7a14f85b54c6";
+            string customer6Id = "a0c9e67b-d593-4a56-93cd-063ec5d5d035";
+            string customer7Id = "fd4fd02a-238d-4efc-a187-14d205a841f0";
 
-            string warehouseKeeperManagerId1 = Guid.NewGuid().ToString();
-            string warehouseKeeperManagerId2 = Guid.NewGuid().ToString();
+            string warehouseKeeperManagerId1 = "3b488e0f-eb92-4994-a555-cbe4ecdf3672";
+            string warehouseKeeperManagerId2 = "52999f6b-a605-45b0-b98f-b8880fc46027";
 
-            string warehouseKeeperId1 = Guid.NewGuid().ToString();
-            string warehouseKeeperId2 = Guid.NewGuid().ToString();
-            string warehouseKeeperId3 = Guid.NewGuid().ToString();
+            string warehouseKeeperId1 = "39b465e2-c398-494f-bb62-d1eb02aa5471";
+            string warehouseKeeperId2 = "ce4b2f5c-1fb9-4fe1-945c-20eca474ce16";
+            string warehouseKeeperId3 = "fd9a7449-e604-48c1-a638-c564e17c1bc0";
 
-            string saleId1 = Guid.NewGuid().ToString();
-            string saleId2 = Guid.NewGuid().ToString();
-            string saleId3 = Guid.NewGuid().ToString();
+            string saleId1 = "57b2db13-1d08-48a4-adca-41d837bb8937";
+            string saleId2 = "3a6a1f70-8f67-4f8a-b1f9-267e5d621edb";
+            string saleId3 = "5ce20f05-c625-43fc-ae25-a7514e9520db";
 
             modelBuilder.Entity<IdentityRole>()
                 .HasData(

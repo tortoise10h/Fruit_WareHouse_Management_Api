@@ -1,7 +1,6 @@
 ﻿using api.Common.Enums;
 using api.Contracts.V1.Dtos;
 using api.Contracts.V1.Exceptions;
-using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.Entities;
 using api.Helpers;
 using api.IServices;
@@ -59,19 +58,18 @@ namespace api.Services
             }
         }
 
-        public void ValidateProductValidInPurchaseProposalForm(List<PurchaseProposalDetail> purchaseProposalDetails, List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
+        public void ValidateProductValidInPurchaseProposalForm(
+            List<PurchaseProposalDetail> purchaseProposalDetails,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
         {
-            var productIdsInPurchaseProposalDetails = purchaseProposalDetails
-                .Select(x => x.ProductId)
-                .ToList();
-
             string errorResponse = "";
 
             foreach (var product in productsInGoodsReceivingNote)
             {
-                // Get equivalent of current product purchase proposal detail list */
+                /** To check does new goods receiving detail valid in purchase proposal form */
                 var matchedPurchaseProposalDetail = purchaseProposalDetails
                     .SingleOrDefault(x => x.ProductId == product.ProductId);
+                
                 if (matchedPurchaseProposalDetail == null)
                 {
                     errorResponse += $"Sản phẩm với id [{product.ProductId}] không được yêu cầu trong phiếu đề nghị mua hàng này<br/>";
@@ -221,6 +219,49 @@ namespace api.Services
 
                 updateInfo.Status = PurchaseProposalFormStatus.Done;
             }
+        }
+
+        public async Task<List<ProductInGoodsReceivingNote>> ValidateWhenAddNewProductToExistedGoodsReceivingNote(
+            int goodsReceivingNoteId,
+            List<PurchaseProposalDetail> purchaseProposalDetails,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
+            )
+        {
+            productsInGoodsReceivingNote = UniqueListByProductId(productsInGoodsReceivingNote);
+            
+            var productIdsInGoodReceivingNote = productsInGoodsReceivingNote
+                .Select(x => x.ProductId)
+                .ToList();
+            await ValidateProductAlreadyExistInGoodsReceivingNote(
+                productIdsInGoodReceivingNote,
+                goodsReceivingNoteId);
+
+            ValidateProductValidInPurchaseProposalForm(purchaseProposalDetails, productsInGoodsReceivingNote);
+
+            return productsInGoodsReceivingNote;
+        }
+
+        public async Task ValidateProductAlreadyExistInGoodsReceivingNote(
+            List<int> productIdsInGoodReceivingNote,
+            int goodsReceivingNoteId)
+        {
+            var goodsReceivingDetails = await _context.GoodsReceivingDetails
+                .Where(x => productIdsInGoodReceivingNote.Contains(x.ProductId) && 
+                    x.GoodsReceivingNoteId == goodsReceivingNoteId)
+                .ToListAsync();
+
+            if (goodsReceivingDetails.Count > 0)
+            {
+                string errResponse = "";
+                foreach (var grd in goodsReceivingDetails)
+                {
+                    errResponse += $"Sản phẩm với id [{grd.ProductId}] đã tồn tại trong phiếu nhập kho<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
+
         }
     }
 }

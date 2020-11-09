@@ -1,4 +1,5 @@
 ﻿using api.Common.Enums;
+using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
 using api.Contracts.V1.ResponseModels.User;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace api.Contracts.V1.ResponseModels.PurchaseProposalForms
         public DateTime LastModifiedAt { get; set; }
 
         public IEnumerable<PurchaseProposalDetailResponse> PurchaseProposalDetails { get; set; }
+        public IEnumerable<GoodsReceivingNoteResponse> GoodsReceivingNotes { get; set; }
         public UserResponse User { get; set; }
     }
 }

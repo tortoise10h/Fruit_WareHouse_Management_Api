@@ -81,9 +81,11 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote
             var goodsReceivingNoteEntity = _mapper.Map<GoodsReceivingNote>(
                 request);
             goodsReceivingNoteEntity.Status = GoodsReceivingNoteStatus.New;
+
             // Calculate total price of each goods receiving detail item
             goodsReceivingNoteEntity.GoodsReceivingDetails = _goodsReceivingNoteServices.CalculatePriceOfProducsInGoodsReceivingNote(
                 goodsReceivingNoteEntity.GoodsReceivingDetails.ToList());
+
             // After has total price of each goods receiving item then
             // calculate total price of this goods receiving note
             goodsReceivingNoteEntity.TotalPrice = goodsReceivingNoteEntity.GoodsReceivingDetails
