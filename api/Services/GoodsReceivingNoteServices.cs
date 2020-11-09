@@ -46,6 +46,18 @@ namespace api.Services
             return productsInGoodsReceivingNote;
         }
 
+        public List<ProductInGoodsReceivingNote> UniqueListById(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
+        {
+
+            /** Make sure all product id in list is uniqe */
+            productsInGoodsReceivingNote = productsInGoodsReceivingNote
+                .GroupBy(x => x.Id)
+                .Select(x => x.First())
+                .ToList();
+
+            return productsInGoodsReceivingNote;
+        }
+
         public async Task ValidateAllProductInGoodsReceivingDetailListExist(List<int> productIds)
         {
             var products = await _context.Products
@@ -103,6 +115,17 @@ namespace api.Services
             }
 
             return goodsReceivingDetails;
+        }
+
+        public List<ProductInGoodsReceivingNote> CalculatePriceOfProducsInGoodsReceivingNote(
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
+        {
+            foreach(var p in productsInGoodsReceivingNote)
+            {
+                p.TotalPrice = p.Quantity * p.SinglePurchasePrice;
+            }
+
+            return productsInGoodsReceivingNote;
         }
 
         public void ValidateValidNewStatus(GoodsReceivingNoteStatus oldSatus, GoodsReceivingNoteStatus newStatus)
@@ -227,21 +250,38 @@ namespace api.Services
             List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
             )
         {
+            /** Unique list by product Id */
             productsInGoodsReceivingNote = UniqueListByProductId(productsInGoodsReceivingNote);
             
+            /** Make sure new products don't exist in goods receiving note */
             var productIdsInGoodReceivingNote = productsInGoodsReceivingNote
                 .Select(x => x.ProductId)
                 .ToList();
-            await ValidateProductAlreadyExistInGoodsReceivingNote(
+
+            var existedGoodsReceivingDetails = await ValidateProductAlreadyExistInGoodsReceivingNote(
                 productIdsInGoodReceivingNote,
                 goodsReceivingNoteId);
 
+            if (existedGoodsReceivingDetails != null)
+            {
+
+                string errResponse = "";
+                foreach (var grd in existedGoodsReceivingDetails)
+                {
+                    errResponse += $"Sản phẩm với id [{grd.ProductId}] đã tồn tại trong phiếu nhập kho<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
+
+            /** Make suree new product valid in purchase proposal */
             ValidateProductValidInPurchaseProposalForm(purchaseProposalDetails, productsInGoodsReceivingNote);
 
             return productsInGoodsReceivingNote;
         }
 
-        public async Task ValidateProductAlreadyExistInGoodsReceivingNote(
+        public async Task<List<GoodsReceivingDetail>> ValidateProductAlreadyExistInGoodsReceivingNote(
             List<int> productIdsInGoodReceivingNote,
             int goodsReceivingNoteId)
         {
@@ -252,16 +292,32 @@ namespace api.Services
 
             if (goodsReceivingDetails.Count > 0)
             {
-                string errResponse = "";
-                foreach (var grd in goodsReceivingDetails)
-                {
-                    errResponse += $"Sản phẩm với id [{grd.ProductId}] đã tồn tại trong phiếu nhập kho<br/>";
-                }
-
-                throw new BadRequestException(
-                    new ApiError(errResponse));
+                return goodsReceivingDetails;
             }
 
+            return null;
+
+        }
+        
+        public List<ProductInGoodsReceivingNote> ValidateWhenUpdateProductsInGoodsReceivingNote(
+            List<GoodsReceivingDetail> goodsReceivingDetails,
+            List<PurchaseProposalDetail> purchaseProposalDetails,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
+            )
+        {
+            /** Unique list by product Id */
+            productsInGoodsReceivingNote = UniqueListById(productsInGoodsReceivingNote);
+            
+            /** Make sure updated products must be existed in goods receiving note */
+            if (goodsReceivingDetails.Count != productsInGoodsReceivingNote.Count)
+            {
+                throw new NotFoundException();
+            }
+
+            /** Make suree new product valid in purchase proposal */
+            ValidateProductValidInPurchaseProposalForm(purchaseProposalDetails, productsInGoodsReceivingNote);
+
+            return productsInGoodsReceivingNote;
         }
     }
 }
