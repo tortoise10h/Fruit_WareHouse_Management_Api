@@ -65,6 +65,7 @@ namespace api.CQRS.GoodsReceivingNotes.Queries
                         TotalPrice = grn.TotalPrice,
                         CreatedAt = grn.CreatedAt,
                         LastModifiedAt = grn.LastModifiedAt,
+                        PurchaseProposalFormId = grn.PurchaseProposalFormId,
                         User = u,
                         GoodsReceivingDetails = grn.GoodsReceivingDetails
                     }
