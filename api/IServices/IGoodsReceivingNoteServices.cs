@@ -17,6 +17,9 @@ namespace api.IServices
         List<GoodsReceivingDetail> CalculatePriceOfProducsInGoodsReceivingNote(
             List<GoodsReceivingDetail> goodsReceivingDetails);
 
+        List<ProductInGoodsReceivingNote> CalculatePriceOfProducsInGoodsReceivingNote(
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote);
+
         void ValidateValidNewStatus(GoodsReceivingNoteStatus oldSatus, GoodsReceivingNoteStatus newStatus);
 
         Task UpdateQuantityOfProductWhenGoodsReceivingNoteIsDone(
@@ -29,5 +32,11 @@ namespace api.IServices
             List<PurchaseProposalDetail> purchaseProposalDetails,
             List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
           );
+
+        List<ProductInGoodsReceivingNote> ValidateWhenUpdateProductsInGoodsReceivingNote(
+            List<GoodsReceivingDetail> goodsReceivingDetails,
+            List<PurchaseProposalDetail> purchaseProposalDetails,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
+            );
     }
 }
