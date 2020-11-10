@@ -31,7 +31,6 @@ namespace src.CQRS.PurchaseProposalForms.Queries
         public async Task<Result<PagedResponse<PurchaseProposalFormResponse>>> Handle(GetAllPurchaseProposalFormQuery query, CancellationToken cancellationToken)
         {
             var queryable = _context.PurchaseProposalForms.AsQueryable();
-            /** TODO: Include import bill */
             queryable = queryable.AsNoTracking();
             queryable = queryable.Include(x => x.GoodsReceivingNotes);
             queryable = queryable
@@ -49,6 +48,7 @@ namespace src.CQRS.PurchaseProposalForms.Queries
                         ExceptionReason = ppf.ExceptionReason,
                         CreatedAt = ppf.CreatedAt,
                         LastModifiedAt = ppf.LastModifiedAt,
+                        GoodsReceivingNotes = ppf.GoodsReceivingNotes,
                         User = u
                     }
                 );
