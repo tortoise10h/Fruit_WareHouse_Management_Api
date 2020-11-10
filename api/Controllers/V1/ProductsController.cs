@@ -16,7 +16,7 @@ using src.CQRS.Products.Queries;
 
 namespace api.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager,Boss")]
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -26,7 +26,7 @@ namespace api.Controllers.V1
             _mediator = mediator;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Boss")]
         [HttpPost(ApiRoutes.Product.Create)]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
         {
@@ -76,7 +76,7 @@ namespace api.Controllers.V1
             );
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Boss")]
         [HttpPut(ApiRoutes.Product.Update)]
         public async Task<IActionResult> Update(
             [FromRoute] int productId,

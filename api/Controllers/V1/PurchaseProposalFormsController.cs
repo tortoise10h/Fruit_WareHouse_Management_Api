@@ -21,7 +21,7 @@ using src.CQRS.PurchaseProposalForms.Queries;
 
 namespace api.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager,Boss")]
     public class PurchaseProposalFormsController : ControllerBase
     {
         private readonly IMediator _mediator;
