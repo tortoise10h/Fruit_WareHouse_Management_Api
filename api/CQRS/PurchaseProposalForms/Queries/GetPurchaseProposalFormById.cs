@@ -38,11 +38,11 @@ namespace api.CQRS.Products.Queries
             GetPurchaseProposalFormByIdQuery request,
             CancellationToken cancellationToken)
         {
-            // TODO: include import bill
             var purchaseProposalForm = await _context.PurchaseProposalForms
                 .Include(ppf => ppf.PurchaseProposalDetails)
                     .ThenInclude(ppd => ppd.Product)
                         .ThenInclude(p => p.ProductUnits)
+                .Include(ppf => ppf.GoodsReceivingNotes)
                 .SingleOrDefaultAsync(
                     ppf => ppf.Id == request.Id);
 
