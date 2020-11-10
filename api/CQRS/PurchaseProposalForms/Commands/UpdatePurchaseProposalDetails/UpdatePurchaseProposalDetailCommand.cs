@@ -36,68 +36,6 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails
         public Task<Result<PurchaseProposalFormResponse>> Handle(UpdatePurchaseProposalDetailCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
-            //var purchaseProposalForm = await _context.PurchaseProposalForms
-            //    .SingleOrDefaultAsync(x => x.Id == request.Id);
-            //if (purchaseProposalForm == null)
-            //{
-            //    return new Result<PurchaseProposalFormResponse>(
-            //        new NotFoundException()
-            //    );
-            //}
-
-            ///** Only  allow update purchase proposal form when it is new */
-            //if (!(purchaseProposalForm.Status == PurchaseProposalFormStatus.Processing ||
-            //    purchaseProposalForm.Status == PurchaseProposalFormStatus.New))
-            //{
-            //    throw new BadRequestException(
-            //        new ApiError("Chỉ pho phép chỉnh sửa phiếu đề nghị mua hàng khi đang ở trạng thái 'Mới' hoặc 'Đang xử lý'"));
-            //}
-
-            ///** If status is changed then make sure it's valid */
-            //if (purchaseProposalForm.Status != request.Status)
-            //{
-            //    ValidateWhenUpdateStatus(purchaseProposalForm, request.Status);
-            //}
-
-            //_mapper.Map<UpdatePurchaseProposalDetailCommand, E.PurchaseProposalForm>(request, purchaseProposalForm);
-
-            //_context.PurchaseProposalForms.Update(purchaseProposalForm);
-            //var updated = await _context.SaveChangesAsync();
-
-            //if (updated > 0)
-            //{
-            //    return new Result<PurchaseProposalFormResponse>(
-            //        _mapper.Map<PurchaseProposalFormResponse>(purchaseProposalForm)
-            //    );
-            //}
-
-            //return new Result<PurchaseProposalFormResponse>(
-            //    new BadRequestException(
-            //        new ApiError("Chỉnh sửa thông tin phiếu đề nghị mua hàng thất bại, xin thử lại"))
-            //);
-        }
-
-        public void ValidateWhenUpdateStatus(PurchaseProposalForm purchaseProposalForm, PurchaseProposalFormStatus newStatus)
-        {
-            if (newStatus == PurchaseProposalFormStatus.Processing)
-            {
-                if (purchaseProposalForm.Status != PurchaseProposalFormStatus.New)
-                {
-                    throw new BadRequestException(
-                        new ApiError("Chỉ cho phép thay đổi trạng thái thành 'Đang xử lý' khi phiếu đang ở trạng thái 'Mới'"));
-                }
-            } else if (newStatus == PurchaseProposalFormStatus.Cancelled)
-            {
-                // TODO: Handle validate must be no import bill exist
-            } else if (newStatus == PurchaseProposalFormStatus.ForceDone)
-            {
-                if (purchaseProposalForm.Status != PurchaseProposalFormStatus.Processing)
-                {
-                    throw new BadRequestException(
-                        new ApiError("Chỉ cho phép 'Buộc hoàn tất' phiếu đề nghị mua hàng khi nó đang ở trạng thái 'Đang xử lý'"));
-                }
-                // TODO: Make sure there is at least 1 import bill for it
-            }
         }
     }
 }

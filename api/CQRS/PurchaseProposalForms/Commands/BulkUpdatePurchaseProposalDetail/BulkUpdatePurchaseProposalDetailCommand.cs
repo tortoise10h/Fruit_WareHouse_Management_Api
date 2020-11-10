@@ -5,6 +5,7 @@ using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails;
 using api.Entities;
 using api.Helpers;
+using api.IServices;
 using api.Services;
 using AutoMapper;
 using LanguageExt.Common;
@@ -29,9 +30,9 @@ namespace api.CQRS.PurchaseProposalForms.Commands.BulkUpdatePurchaseProposalDeta
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly IPurchaseProposalService _purchaseProposalFormService;
+        private readonly IPurchaseProposalServices _purchaseProposalFormService;
 
-        public BulkUpdatePurchaseProposalDetailHandler(DataContext context, IMapper mapper, IPurchaseProposalService purchaseProposalFormService)
+        public BulkUpdatePurchaseProposalDetailHandler(DataContext context, IMapper mapper, IPurchaseProposalServices purchaseProposalFormService)
         {
             _context = context;
             _mapper = mapper;

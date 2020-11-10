@@ -4,6 +4,7 @@ using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
 using api.Entities;
 using api.Helpers;
+using api.IServices;
 using api.Services;
 using AutoMapper;
 using LanguageExt.Common;
@@ -30,9 +31,9 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        private readonly IPurchaseProposalService _purchaseProposalService;
+        private readonly IPurchaseProposalServices _purchaseProposalService;
 
-        public CreatePurchaseProposalFormHandler(DataContext context, IMapper mapper, IPurchaseProposalService purchaseProposalService)
+        public CreatePurchaseProposalFormHandler(DataContext context, IMapper mapper, IPurchaseProposalServices purchaseProposalService)
         {
             _context = context;
             _mapper = mapper;
