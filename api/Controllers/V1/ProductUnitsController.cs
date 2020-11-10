@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager,Boss")]
     public class ProductUnitsController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -25,6 +25,7 @@ namespace api.Controllers.V1
             _mediator = mediator;
         }
 
+        [Authorize(Roles = "Admin,Boss")]
         [HttpPost(ApiRoutes.ProductUnit.Create)]
         public async Task<IActionResult> Create([FromBody] CreateProductUnitCommand command)
         {
@@ -41,6 +42,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Admin,Boss")]
         [HttpPut(ApiRoutes.ProductUnit.Update)]
         public async Task<IActionResult> Update(
             [FromRoute] int productUnitId,
@@ -58,6 +60,7 @@ namespace api.Controllers.V1
             );
         }
 
+        [Authorize(Roles = "Admin,Boss")]
         [HttpDelete(ApiRoutes.ProductUnit.Delete)]
         public async Task<IActionResult> Delete(
             [FromRoute] int productUnitId

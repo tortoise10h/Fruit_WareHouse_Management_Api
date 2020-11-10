@@ -22,7 +22,7 @@ namespace api.Controllers.V1
             _mediator = mediator;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Boss")]
         [HttpPost(ApiRoutes.ProductCategories.Create)]
         public async Task<IActionResult> Create([FromBody] CreateProductCategoryCommand command)
         {
@@ -39,7 +39,7 @@ namespace api.Controllers.V1
             return Ok(res);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Boss")]
         [HttpPut(ApiRoutes.ProductCategories.Update)]
         public async Task<IActionResult> Update(
             [FromRoute] int productCategoryId,
@@ -51,7 +51,7 @@ namespace api.Controllers.V1
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Boss")]
         [HttpDelete(ApiRoutes.ProductCategories.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int productCategoryId)
         {
