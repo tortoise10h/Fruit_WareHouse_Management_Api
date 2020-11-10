@@ -96,11 +96,6 @@ namespace api.CQRS.PurchaseProposalForms.Commands.BulkDeletePurchaseProposalDeta
                 new BadRequestException(
                     new ApiError("Xoá sản phẩm trong phiếu đề nghị xảy ra lỗi, xin thử lại"))
                 );
-
-            throw new NotImplementedException();
-            //_context.PurchaseProposalDetails.UpdateRange(purchaseProposalDetailEntities);
-            //var created = await _context.SaveChangesAsync(); 
-
         }
     }
 }
