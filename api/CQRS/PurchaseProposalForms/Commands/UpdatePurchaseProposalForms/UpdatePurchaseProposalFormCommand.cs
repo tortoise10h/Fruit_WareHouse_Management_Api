@@ -65,7 +65,8 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
 
             /** If purchase proposal form is processing then increase 
              * the quantity ordered of product in storage */
-            if (request.Status == PurchaseProposalFormStatus.Processing)
+            if (request.Status == PurchaseProposalFormStatus.Processing &&
+                purchaseProposalForm.Status != PurchaseProposalFormStatus.Processing)
             {
                 await IncreaseProductQuantityOrderedWhenProcessing(purchaseProposalForm.Id);
             }
