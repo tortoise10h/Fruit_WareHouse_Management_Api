@@ -19,7 +19,7 @@ using src.CQRS.GoodsReceivingNotes.Queries;
 
 namespace api.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager,Boss")]
     public class GoodsReceivingNotesController : ControllerBase
     {
         private readonly IMediator _mediator;
