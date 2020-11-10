@@ -11,12 +11,6 @@ namespace api.CQRS.PurchaseProposalForms.Commands.UpdateProducts
     {
         public PurchaseProposalFormsCommandValidator()
         {
-            RuleFor(x => x.Deadline)
-                .NotNull()
-                    .WithMessage("Thời hạn hoàn tất mua hàng không được để trống")
-                .GreaterThanOrEqualTo(DateTime.Now)
-                    .WithMessage("Thời hạn hoàn tất mua hàng không được trước thời điểm hiện tại");
-
             RuleFor(x => x.Status)
                 .IsInEnum()
                     .WithMessage("Trạng thái không hợp lệ");
