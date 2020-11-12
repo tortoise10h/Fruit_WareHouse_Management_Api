@@ -6,6 +6,7 @@ using api.Contracts.V1.ResponseModels.ProductCategories;
 using api.Contracts.V1.ResponseModels.ProductUnits;
 using api.Contracts.V1.ResponseModels.PurchaseProposalForms;
 using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
+using api.Contracts.V1.ResponseModels.Orders;
 using api.Contracts.V1.ResponseModels.Suppliers;
 
 namespace api.MapperProfiles
@@ -29,6 +30,10 @@ namespace api.MapperProfiles
             CreateMap<GoodsReceivingNote, GoodsReceivingNoteResponse>();
 
             CreateMap<GoodsReceivingDetail, GoodsReceivingDetailResponse>();
+
+            CreateMap<Order, OrderResponse>();
+
+            CreateMap<OrderDetail, OrderDetailResponse>();
 
             CreateMap<Supplier, SupplierResponse>();
             CreateMap<SupplierProduct, SupplierProductResponse>();

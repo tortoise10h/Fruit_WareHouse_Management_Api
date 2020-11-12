@@ -16,11 +16,13 @@ namespace api.Installers
             services.AddScoped<IPaginationHelpers, PaginationHelpers>();
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IPriceCalculateHelpers, PriceCalculateHelpers>();
 
             /** Real business services */
             services.AddScoped<IProductsService, ProductsService>();
             services.AddScoped<IPurchaseProposalServices, PurchaseProposalServices>();
             services.AddScoped<IGoodsReceivingNoteServices, GoodsReceivingNoteServices>();
+            services.AddScoped<IOrderServices, OrderServices>();
         }
     }
 }
