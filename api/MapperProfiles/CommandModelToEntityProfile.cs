@@ -2,6 +2,8 @@ using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote;
+using api.CQRS.Orders.Commands.CreateOrderDetails;
+using api.CQRS.Orders.Commands.CreateOrders;
 using api.CQRS.ProductCategories.Commands.CreateProductCategory;
 using api.CQRS.ProductCategories.Commands.UpdateProductCategory;
 using api.CQRS.Products.Commands.CreateProducts;
@@ -49,6 +51,12 @@ namespace api.MapperProfiles
             /** GoodsReceivingDetail */
             CreateMap<CreateGoodsReceivingDetailCommand, GoodsReceivingDetail>();
             CreateMap<UpdateGoodsReceivingDetailCommand, GoodsReceivingDetail>();
+
+            /** Order */
+            CreateMap<CreateOrdersCommand, Order>();
+
+            /** OrderDetail */
+            CreateMap<CreateOrderDetailsCommand, OrderDetail>();
 
             /** Supplier */
             CreateMap<CreateSupplierCommand, Supplier>();
