@@ -9,8 +9,13 @@ namespace api.MapperProfiles
     {
         public DtoAndEntitiesProfile()
         {
+            /** ProductInGoodsReceivingNote - GoodsReceivingDetail */
             CreateMap<ProductInGoodsReceivingNote, GoodsReceivingDetail>();
             CreateMap<GoodsReceivingDetail, ProductInGoodsReceivingNote>();
+
+            /** ProductInOrder - OrderDetail */
+            CreateMap<ProductInOrder, OrderDetail>();
+            CreateMap<OrderDetail, ProductInOrder>();
             CreateMap<AddProductToSupplierDTO, SupplierProduct>();
         }
     }

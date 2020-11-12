@@ -21,6 +21,8 @@ namespace api.Helpers
         public DbSet<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
         public DbSet<GoodsReceivingNote> GoodsReceivingNotes { get; set; }
         public DbSet<GoodsReceivingDetail> GoodsReceivingDetails { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<SupplierProduct> SupplierProducts { get; set; }
 

@@ -1,6 +1,7 @@
 using api.Contracts.V1.Dtos;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingDetail;
+using api.CQRS.Orders.Commands.CreateOrderDetails;
 using AutoMapper;
 
 namespace api.MapperProfiles
@@ -14,6 +15,9 @@ namespace api.MapperProfiles
 
             CreateMap<UpdateGoodsReceivingDetailCommand, ProductInGoodsReceivingNote>();
             CreateMap<ProductInGoodsReceivingNote, UpdateGoodsReceivingDetailCommand>();
+
+            CreateMap<CreateOrderDetailsCommand, ProductInOrder>();
+            CreateMap<ProductInOrder, CreateOrderDetailsCommand>();
         }
     }
 }
