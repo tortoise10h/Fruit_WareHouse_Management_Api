@@ -7,9 +7,9 @@ namespace api.Common.Enums
 {
     public enum ProductStatus
     {
-        Available = 1,
-        Unavailable = 2,
-        Hided = 3,
-        Locked = 4
+        Available = 1, // TODO: Can do everything with a product
+        Unavailable = 2, // TODO: No edit
+        Hided = 3, // TODO: Can't appear on front page
+        Locked = 4 //TODO: Lock buy and sell
     }
 }
