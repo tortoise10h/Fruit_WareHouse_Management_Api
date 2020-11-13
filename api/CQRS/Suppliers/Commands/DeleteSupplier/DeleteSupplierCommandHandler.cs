@@ -29,7 +29,7 @@ namespace api.CQRS.Suppliers.Commands.DeleteSupplier
                 throw new NotFoundException();
             }
 
-            var productOfSupplier = await _context.SupplierProducts.SingleOrDefaultAsync(sp => sp.SupplierId == request.Id);
+            var productOfSupplier = await _context.SupplierProducts.FirstOrDefaultAsync(sp => sp.SupplierId == request.Id);
             if (productOfSupplier != null)
             {
                 throw new BadRequestException(new ApiError("Chỉ có thể xóa nhà cung cấp không có sản phẩm"));
