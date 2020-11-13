@@ -5,9 +5,8 @@ using api.Contracts.V1.ResponseModels.ProductCategories;
 using api.CQRS.ProductCategories.Commands.CreateProductCategory;
 using api.CQRS.ProductCategories.Commands.DeleteProductCategory;
 using api.CQRS.ProductCategories.Commands.UpdateProductCategory;
-using api.CQRS.Products.Queries;
+using api.CQRS.ProductCategories.Queries.GetAllProductCategories;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,7 +55,6 @@ namespace api.Controllers.V1
         public async Task<IActionResult> Delete([FromRoute] int productCategoryId)
         {
             var deleteCommand = new DeleteProductCategoryCommand(productCategoryId);
-            deleteCommand.Id = productCategoryId;
             await _mediator.Send(deleteCommand);
             return NoContent();
         }

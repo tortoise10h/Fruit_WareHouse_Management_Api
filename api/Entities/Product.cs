@@ -1,4 +1,4 @@
-﻿using api.Common.Enums;
+using api.Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace api.Entities
 {
-    public class Product: BaseEntity
+    public class Product : BaseEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -30,5 +30,6 @@ namespace api.Entities
         public ICollection<PurchaseProposalDetail> PurchaseProposalDetails { get; set; }
         public ICollection<GoodsReceivingDetail> GoodsReceivingDetails { get; set; }
         public ICollection<ProductUnit> ProductUnits { get; set; }
+        public ICollection<SupplierProduct> SupplierProducts { get; set; }
     }
 }
