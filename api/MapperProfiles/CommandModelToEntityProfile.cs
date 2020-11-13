@@ -11,6 +11,8 @@ using api.CQRS.ProductUnits.Commands.UpdateProductUnits;
 using api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms;
 using api.CQRS.PurchaseProposalForms.Commands.UpdateProducts;
 using api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails;
+using api.CQRS.Suppliers.Commands.CreateSupplier;
+using api.CQRS.Suppliers.Commands.UpdateSupplier;
 using api.Entities;
 using AutoMapper;
 
@@ -47,6 +49,10 @@ namespace api.MapperProfiles
             /** GoodsReceivingDetail */
             CreateMap<CreateGoodsReceivingDetailCommand, GoodsReceivingDetail>();
             CreateMap<UpdateGoodsReceivingDetailCommand, GoodsReceivingDetail>();
+
+            /** Supplier */
+            CreateMap<CreateSupplierCommand, Supplier>();
+            CreateMap<UpdateSupplierCommand, Supplier>();
         }
     }
 }

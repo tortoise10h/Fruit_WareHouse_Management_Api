@@ -46,7 +46,6 @@ namespace api.Contracts.V1
         public static class ProductCategories
         {
             public const string GetAll = Base + "/productCategories";
-            public const string GetById = Base + "/productCategories/{productCategoryId}";
             public const string Create = Base + "/productCategories";
             public const string Update = Base + "/productCategories/{productCategoryId}";
             public const string Delete = Base + "/productCategories/{productCategoryId}";
@@ -62,6 +61,18 @@ namespace api.Contracts.V1
             public const string AddProductToGoodReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails";
             public const string BulkUpdateProductInGoodsReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails/bulkUpdate";
             public const string BulkDeleteProductInGoodsReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails/bulkDelete";
+        }
+
+        public static class Suppliers
+        {
+            public const string GetAll = Base + "/suppliers";
+            public const string GetById = Base + "/suppliers/{supplierId}";
+            public const string Create = Base + "/suppliers";
+            public const string Update = Base + "/suppliers/{supplierId}";
+            public const string Delete = Base + "/suppliers/{supplierId}";
+            public const string GetAllSupplierProducts = Base + "/suppliers/{supplierId}/products";
+            public const string AddProductsToSupplier = Base + "/suppliers/{supplierId}/products";
+            public const string RemoveProductsFromSupplier = Base + "/suppliers/{supplierId}";
         }
     }
 }
