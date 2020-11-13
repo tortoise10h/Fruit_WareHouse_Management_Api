@@ -3,7 +3,7 @@ using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.ProductCategories;
 using MediatR;
 
-namespace api.CQRS.Products.Queries
+namespace api.CQRS.ProductCategories.Queries.GetAllProductCategories
 {
     public class GetAllProductCategoriesQuery : PaginationQuery, IRequest<PagedResponse<ProductCategoryResponse>>
     {

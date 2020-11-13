@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace api.Contracts.V1.ResponseModels.Products
 {
-    public class ProductResponse
+    public class ProductOfSupplierResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -32,5 +32,6 @@ namespace api.Contracts.V1.ResponseModels.Products
 
         public ProductCategoryResponse ProductCategory { get; set; }
         public IEnumerable<ProductUnitResponse> ProductUnits { get; set; }
+        public double SupplierPrice { get; set; }
     }
 }

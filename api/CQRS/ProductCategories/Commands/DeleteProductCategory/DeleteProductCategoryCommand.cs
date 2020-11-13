@@ -10,6 +10,6 @@ namespace api.CQRS.ProductCategories.Commands.DeleteProductCategory
             Id = id;
         }
 
-        public int Id { get; set; }
+        public int Id { get; }
     }
 }

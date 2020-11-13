@@ -11,6 +11,7 @@ namespace api.MapperProfiles
         {
             CreateMap<ProductInGoodsReceivingNote, GoodsReceivingDetail>();
             CreateMap<GoodsReceivingDetail, ProductInGoodsReceivingNote>();
+            CreateMap<AddProductToSupplierDTO, SupplierProduct>();
         }
     }
 }
