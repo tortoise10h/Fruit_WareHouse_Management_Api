@@ -37,6 +37,7 @@ namespace api.MapperProfiles
 
             CreateMap<Supplier, SupplierResponse>();
 
+            CreateMap<Supplier, SupplierResponse>();
             CreateMap<SupplierProduct, SupplierProductResponse>();
         }
     }

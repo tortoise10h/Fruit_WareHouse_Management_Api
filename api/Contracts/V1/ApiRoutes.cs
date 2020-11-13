@@ -84,7 +84,7 @@ namespace api.Contracts.V1
             public const string Delete = Base + "/suppliers/{supplierId}";
             public const string GetAllSupplierProducts = Base + "/suppliers/{supplierId}/products";
             public const string AddProductsToSupplier = Base + "/suppliers/{supplierId}/products";
-            public const string RemoveProductsFromSupplier = Base + "/suppliers/{supplierId}";
+            public const string RemoveProductsFromSupplier = Base + "/suppliers/{supplierId}/products";
         }
     }
 }

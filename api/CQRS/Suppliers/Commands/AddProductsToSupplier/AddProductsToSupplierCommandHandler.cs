@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -50,7 +51,18 @@ namespace api.CQRS.Suppliers.Commands.AddProductsToSupplier
                 throw new NotFoundException();
             }
 
-            // TODO: Handle add existed product
+            // Handle add existed supplier product
+            var existedSupplierProduct = await _context.SupplierProducts
+                .Where(sp => sp.SupplierId == request.SupplierId)
+                .Select(sp => sp.ProductId)
+                .ToListAsync();
+
+            List<int> duplicates = existedSupplierProduct.Intersect(productIds).ToList();
+            if (duplicates != null && duplicates.Count > 0)
+            {
+                string err = string.Format("Sản phẩm id {0} đã được thêm vào nhà cung cấp từ trước", string.Join(",", duplicates));
+                throw new BadRequestException(new ApiError(err));
+            }
 
             var supplierProducts = _mapper.Map<List<SupplierProduct>>(request.Products);
             foreach (var supplierProduct in supplierProducts)
