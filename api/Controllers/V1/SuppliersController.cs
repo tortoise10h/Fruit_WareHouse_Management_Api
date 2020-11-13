@@ -1,17 +1,16 @@
 using System.Threading.Tasks;
 using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
-using api.Contracts.V1.ResponseModels.Products;
 using api.Contracts.V1.ResponseModels.Suppliers;
 using api.CQRS.Suppliers.Commands.AddProductsToSupplier;
 using api.CQRS.Suppliers.Commands.CreateSupplier;
 using api.CQRS.Suppliers.Commands.DeleteSupplier;
+using api.CQRS.Suppliers.Commands.RemoveProductsFromSupplier;
 using api.CQRS.Suppliers.Commands.UpdateSupplier;
 using api.CQRS.Suppliers.Queries.GetAllSupplierProducts;
 using api.CQRS.Suppliers.Queries.GetAllSuppliers;
 using api.CQRS.Suppliers.Queries.GetById;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +45,7 @@ namespace api.Controllers.V1
         }
 
 
+        [Authorize(Roles = "Admin,Boss")]
         [HttpGet(ApiRoutes.Suppliers.GetAll)]
         public async Task<IActionResult> GetAll([FromQuery] GetAllSuppliersQuery query)
         {
@@ -82,14 +82,23 @@ namespace api.Controllers.V1
             return Created("", result);
         }
 
+        [Authorize(Roles = "Admin,Boss")]
         [HttpGet(ApiRoutes.Suppliers.GetAllSupplierProducts)]
         public async Task<IActionResult> GetAllSupplierProducts([FromRoute] int supplierId, [FromQuery] GetAllSupplierProductsQuery query)
         {
             query.SupplierId = supplierId;
             var result = await _mediator.Send(query);
-            var res = new Response<PagedResponse<ProductResponse>>(result);
+            var res = new Response<PagedResponse<SupplierProductResponse>>(result);
             return Ok(res);
         }
 
+        [Authorize(Roles = "Admin,Boss")]
+        [HttpDelete(ApiRoutes.Suppliers.RemoveProductsFromSupplier)]
+        public async Task<IActionResult> RemoveProductsFromSupplier([FromRoute] int supplierId, [FromBody] RemoveProductsFromSupplierCommand command)
+        {
+            command.SupplierId = supplierId;
+            await _mediator.Send(command);
+            return NoContent();
+        }
     }
 }

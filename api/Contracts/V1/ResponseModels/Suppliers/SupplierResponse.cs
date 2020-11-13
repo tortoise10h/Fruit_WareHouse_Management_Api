@@ -14,6 +14,5 @@ namespace api.Contracts.V1.ResponseModels.Suppliers
 
         public SupplierStatus Status { get; set; }
         public List<SupplierProductResponse> SupplierProducts { get; set; }
-
     }
 }
