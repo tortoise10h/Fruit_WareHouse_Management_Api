@@ -4,6 +4,7 @@ using api.Contracts.V1.Exceptions;
 using api.Entities;
 using api.Helpers;
 using api.IServices;
+using AutoMapper;
 using AutoMapper.Configuration.Conventions;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,10 +17,12 @@ namespace api.Services
     public class OrderServices: IOrderServices
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public OrderServices(DataContext context)
+        public OrderServices(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<ProductInOrder>> MakeValidProductsOfNewOrder(
@@ -86,6 +89,107 @@ namespace api.Services
                 throw new BadRequestException(
                     new ApiError(errResponse));
             }
+        }
+
+        public async Task ValidateWhenUpdateStatus(Order order, OrderStatus newStatus)
+        {
+            if (newStatus == OrderStatus.Processing)
+            {
+                if (order.Status != OrderStatus.New)
+                {
+                    throw new BadRequestException(
+                        new ApiError("Chỉ cho phép thay đổi trạng thái thành 'Đang xử lý' khi đơn hàng đang ở trạng thái 'Mới'"));
+                }
+
+            } else if (newStatus == OrderStatus.Cancelled)
+            {
+                if (order.Status == OrderStatus.Processing)
+                {
+                    // TODO: if order is processing => need to check goods delivery note valid
+                }
+
+                /** Make sure all product in order enough quantity */
+                var orderDetails = await _context.OrderDetails
+                    .Where(x => x.OrderId == order.Id)
+                    .Include(x => x.Product)
+                    .ToListAsync();
+                var products = orderDetails.Select(x => x.Product).ToList();
+                ValidateProductsInOrderEnoughQuantity(
+                    _mapper.Map<List<ProductInOrder>>(orderDetails),
+                    products
+                    );
+            } else if (newStatus == OrderStatus.Exported)
+            {
+                throw new BadRequestException(
+                    new ApiError("Không được phép chuyển sang trạng thái này"));
+            } else if (newStatus == OrderStatus.New)
+            {
+                /** Do not allow to switch back from Processing to New */
+                if (order.Status != OrderStatus.New)
+                {
+                    throw new BadRequestException(
+                        new ApiError("Không được phép chuyển về trạng thái 'Mới' khi đơn hàng đã được xử lý"));
+                }
+            } else if (newStatus == OrderStatus.Done)
+            {
+                if (order.Status != OrderStatus.Exported)
+                {
+                    throw new BadRequestException(
+                        new ApiError("Chỉ được phép đơn hàng khi đã xuất kho hoàn tất"));
+                }
+            }
+
+        }
+
+        public async Task HandleBusinessWhenStatusIsChanged(
+            DataContext ctx,
+            Order order,
+            OrderStatus newStatus)
+        {
+            /** We don't have a busines with the New status */
+            if (newStatus != OrderStatus.New)
+            {
+                var orderDetails = await ctx.OrderDetails
+                    .Where(x => x.OrderId == order.Id)
+                    .Include(x => x.Product)
+                    .ToListAsync();
+
+                var productIdsShouldBeHandled = orderDetails
+                    .Select(x => x.ProductId);
+
+                var productsShouldBeHandled = orderDetails.Select(x => x.Product)
+                    .ToList();
+
+                if (newStatus == OrderStatus.Processing &&
+                    order.Status != OrderStatus.Processing)
+                {
+                    /** If purchase proposal form is processing then increase 
+                     * the quantity for sale of product in storage */
+                    productsShouldBeHandled = IncreaseProductQuantityForSaleWhenProcessing(
+                        productsShouldBeHandled,
+                        orderDetails);
+                } else if (newStatus == OrderStatus.Cancelled)
+                {
+                    // TODO: Handle product quantity for sale when cancel order
+                }
+                ctx.Products.UpdateRange(productsShouldBeHandled);
+            }
+
+        }
+
+        public List<Product> IncreaseProductQuantityForSaleWhenProcessing(
+            List<Product> productsShouldBeHandled,
+            List<OrderDetail> orderDetails)
+        {
+            foreach (var p in productsShouldBeHandled)
+            {
+                var matchedOrderDetail = orderDetails
+                    .SingleOrDefault(x => x.ProductId == p.Id);
+
+                p.QuantityForSale += matchedOrderDetail.Quantity;
+            }
+
+            return productsShouldBeHandled;
         }
     }
 }

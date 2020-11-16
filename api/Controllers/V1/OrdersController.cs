@@ -3,6 +3,7 @@ using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.Orders;
 using api.CQRS.Orders.Commands.CreateOrders;
+using api.CQRS.Orders.Commands.UpdateOrders;
 using api.CQRS.Orders.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,21 +56,21 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "Sale,Boss")]
-        //[HttpPut(ApiRoutes.PurchaseProposalForm.Update)]
-        //public async Task<IActionResult> Update([FromRoute] int purchaseProposalFormId, [FromBody] UpdatePurchaseProposalFormCommand command) 
-        //{
-        //    command.Id = purchaseProposalFormId;
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "Sale,Boss")]
+        [HttpPut(ApiRoutes.Orders.Update)]
+        public async Task<IActionResult> Update([FromRoute] int orderId, [FromBody] UpdateOrdersCommand command)
+        {
+            command.Id = orderId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        purchaseProposalFormresponse => NoContent(),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         [HttpGet(ApiRoutes.Orders.GetById)]
         public async Task<IActionResult> GetById([FromRoute] int orderId)
