@@ -67,6 +67,29 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    LastModifiedAt = table.Column<DateTime>(nullable: false),
+                    LastModifiedBy = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    Representative = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -399,6 +422,29 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SupplierProducts",
+                columns: table => new
+                {
+                    SupplierId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false),
+                    Price = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SupplierProducts", x => new { x.SupplierId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_SupplierProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SupplierProducts_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GoodsReceivingDetails",
                 columns: table => new
                 {
@@ -438,13 +484,13 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "b979036b-d165-4bea-b6b6-16b22a3f54dd", "3c0cd719-24a7-4030-a038-43f836e4dddc", "Admin", "admin" },
-                    { "78c5228f-f600-4545-abcd-f4cc21d18e4c", "e0413958-7e90-4441-8ae1-98da56134490", "Sale", "sale" },
-                    { "cc2a0eb3-8736-441d-9130-5b421db3ac0e", "e3c6e1cb-e92d-4d19-a8d1-fe507079ec3d", "SuperAdmin", "superadmin" },
-                    { "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1", "568d56e1-f894-43e1-93e5-e73bbac809ac", "WarehouseKeeperManager", "warehousekeepermanager" },
-                    { "6665ddaa-72f9-4f90-a6b1-43eb68dea610", "c4d008be-bb26-4033-b255-7cc854c1e8d1", "WarehouseKeeper", "warehousekeeper" },
-                    { "423e498c-fc67-4853-ac4f-f3cd91d32e87", "6ec1ad72-5713-4bc7-86f1-5f1ce9910498", "Customer", "customer" },
-                    { "c2d4b743-d9da-443c-9f5a-c2682750c805", "6b630456-1cb9-4b9e-af2e-e5bf6d842699", "Boss", "boss" }
+                    { "b979036b-d165-4bea-b6b6-16b22a3f54dd", "13c34189-5eec-45f0-a0df-b4778274f273", "Admin", "admin" },
+                    { "78c5228f-f600-4545-abcd-f4cc21d18e4c", "55ae6458-d265-4897-b732-d78794ccfa07", "Sale", "sale" },
+                    { "cc2a0eb3-8736-441d-9130-5b421db3ac0e", "28d7957c-9404-426e-81c9-0447e8b2e26f", "SuperAdmin", "superadmin" },
+                    { "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1", "2e6789f2-8d53-4045-9361-1454b9e8e723", "WarehouseKeeperManager", "warehousekeepermanager" },
+                    { "6665ddaa-72f9-4f90-a6b1-43eb68dea610", "b3d2bccd-be02-4975-af8a-adfbb245c311", "WarehouseKeeper", "warehousekeeper" },
+                    { "423e498c-fc67-4853-ac4f-f3cd91d32e87", "be9cd960-8e24-4af9-be0f-31f8ccbd2849", "Customer", "customer" },
+                    { "c2d4b743-d9da-443c-9f5a-c2682750c805", "904c533e-a442-42f9-a75f-b10699599894", "Boss", "boss" }
                 });
 
             migrationBuilder.InsertData(
@@ -452,23 +498,23 @@ namespace api.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "5ce20f05-c625-43fc-ae25-a7514e9520db", 0, "865a35d3-f15b-4998-a72b-0b663aa712ee", "truongtuantu@gmail.com", true, "Tú", "Trương Tuấn", false, null, "TRUONGTUANTU@GMAIL.COM", "TRUONGTUANTU@GMAIL.COM", "AQAAAAEAACcQAAAAEKoVcLLVRSNA9grXOW5yQv9fCoC9z2jh+7pFuHl07rKYdIHHRNGwYrGqlC2cpHdNOQ==", null, false, "", false, "truongtuantu@gmail.com" },
-                    { "3a6a1f70-8f67-4f8a-b1f9-267e5d621edb", 0, "d0adb85e-6e37-46c7-8340-db1111f22e54", "phantantrung@gmail.com", true, "Trung", "Phan Tấn", false, null, "PHANTANTRUNG@GMAIL.COM", "PHANTANTRUNG@GMAIL.COM", "AQAAAAEAACcQAAAAEB9cP3cweCFuFxObDgI6vJ3xRC03RUmmv6+VhRUbREEV+fRxXVKuzjd8Ydd9hYj2oQ==", null, false, "", false, "phantantrung@gmail.com" },
-                    { "57b2db13-1d08-48a4-adca-41d837bb8937", 0, "e8f2c783-a654-4e31-b47c-6c1165a9041a", "phungthanhdo@gmail.com", true, "Độ", "Phùng Thanh", false, null, "PHUNGTHANHDO@GMAIL.COM", "PHUNGTHANHDO@GMAIL.COM", "AQAAAAEAACcQAAAAEGYFEgV6nmm4zaWHG6cdczFqyiWcQZEqhYxGVYHfP9SVkQWut8rZs6mNQsMgIFcmzw==", null, false, "", false, "phungthanhdo@gmail.com" },
-                    { "fd9a7449-e604-48c1-a638-c564e17c1bc0", 0, "f21f3f78-06eb-4ef9-a7d3-a5578b66beb9", "nguyenhue@gmail.com", true, "Huệ", "Nguyễn", false, null, "NGUYENHUE@GMAIL.COM", "NGUYENHUE@GMAIL.COM", "AQAAAAEAACcQAAAAEKZh79xCHcxYSP0N+a3yDXGtcqL5JabCCuIqnnd4aRMey7SmmGh5acXGtt4R3D0BqQ==", null, false, "", false, "nguyenhue@gmail.com" },
-                    { "ce4b2f5c-1fb9-4fe1-945c-20eca474ce16", 0, "da9467b0-6a84-4c3f-9ea4-46324feb28f4", "hoxuanhuong@gmail.com", true, "Hương", "Hồ Xuân", false, null, "HOXUANHUONG@GMAIL.COM", "HOXUANHUONG@GMAIL.COM", "AQAAAAEAACcQAAAAEOzS+bYXwtmcff9lVtWnU/m9IMGlfiCGesPvpZrFBD2WsIWFT6ZEfoQUM1jXVMJt9g==", null, false, "", false, "hoxuanhuong@gmail.com" },
-                    { "39b465e2-c398-494f-bb62-d1eb02aa5471", 0, "b2e462f4-9168-40fd-958c-a6484cea212c", "nguyenthanhlong@gmail.com", true, "Long", "Nguyễn Thành", false, null, "NGUYENTHANHLONG@GMAIL.COM", "NGUYENTHANHLONG@GMAIL.COM", "AQAAAAEAACcQAAAAENlVIrLiz+KGpqGo4W3yfYyXUisO3ek83AV4/UxtSDYTK+0v21c0eNhonIf3vIdmfg==", null, false, "", false, "nguyenthanhlong@gmail.com" },
-                    { "52999f6b-a605-45b0-b98f-b8880fc46027", 0, "3b979b9e-e720-46be-8cf4-6fe4bfb89a9d", "huynhtranthanh@gmail.com", true, "Thành", "Huỳnh Trấn", false, null, "HUYNHTRANTHANH@GMAIL.COM", "HUYNHTRANTHANH@GMAIL.COM", "AQAAAAEAACcQAAAAEMISnrV6JFSkovShu5YE6TJN76LFwk6UTyl9rIrpzi1TxL5I3EvzXJxuo4/IFnlREg==", null, false, "", false, "huynhtranthanh@gmail.com" },
-                    { "3b488e0f-eb92-4994-a555-cbe4ecdf3672", 0, "a3b18a14-ba74-46a4-959d-ed288b98c8c6", "caobaquat@gmail.com", true, "Quát", "Cao Bá", false, null, "CAOBAQUAT@GMAIL.COM", "CAOBAQUAT@GMAIL.COM", "AQAAAAEAACcQAAAAEJonol2uOuE1zRmpxh1NybbS02Z14s0+uGTmNGBYX3sIjNeh4mIbrpt0mUal7GyCiA==", null, false, "", false, "caobaquat@gmail.com" },
-                    { "b6256340-7bd0-4373-8549-c6a08053396b", 0, "46462f61-7124-4632-8eda-3aee9915e387", "nguyennhuloc@gmail.com", true, "Lộc", "Nguyễn Như", false, null, "NGUYENNHULOC@GMAIL.COM", "NGUYENNHULOC@GMAIL.COM", "AQAAAAEAACcQAAAAEFkW2Apqj47Aec1HB2Usx0RuSMTV7XZJfd7TgseS9frG1vftS8n3Y+QXGrphCB3BJQ==", null, false, "", false, "nguyennhuloc@gmail.com" },
-                    { "a0c9e67b-d593-4a56-93cd-063ec5d5d035", 0, "c866cafe-a828-43c8-a447-15585f0cd19c", "tranthaonguyen@gmail.com", true, "Nguyên", "Trần Thảo", false, null, "TRANTHAONGUYEN@GMAIL.COM", "TRANTHAONGUYEN@GMAIL.COM", "AQAAAAEAACcQAAAAEBT52Qwd0t73jjVpSrk6vfheCGEV8WO0D2hGWjcx2ASw/58a/dMmnmCIb9XGUZ4XEA==", null, false, "", false, "tranthaonguyen@gmail.com" },
-                    { "6f8ce951-2f66-4a9e-a4fa-7a14f85b54c6", 0, "34a605af-d5ad-47d8-a431-91a5f7e5da21", "caothivananh@gmail.com", true, "Anh", "Cao Thị Vân", false, null, "CAOTHIVANANH@GMAIL.COM", "CAOTHIVANANH@GMAIL.COM", "AQAAAAEAACcQAAAAED0MNJYE5OqdC6fXGSsSspjk7EW2xLA7bOaSmb/V06V478xceikayYBTnCnos1Ks+g==", null, false, "", false, "caothivananh@gmail.com" },
-                    { "08b84a20-7e7d-4353-bb53-74c79732beed", 0, "e89ad751-27b0-4295-a0f6-bd58515b4a0f", "nguyentrunghieu@gmail.com", true, "Hiếu", "Nguyễn Trung", false, null, "NGUYENTRUNGHIEU@GMAIL.COM", "NGUYENTRUNGHIEU@GMAIL.COM", "AQAAAAEAACcQAAAAEK6HZTINslLXQ2u1cuKayjFCrR5wzLLF++MrYex9A2E021psxYuyJIjmq4kBSzmfBw==", null, false, "", false, "nguyentrunghieu@gmail.com" },
-                    { "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98", 0, "6ae30e72-a15f-4c27-912b-6bf623936310", "phamvinhson@gmail.com", true, "Sơn", "Phạm Vĩnh", false, null, "PHAMVINHSON@GMAIL.COM", "PHAMVINHSON@GMAIL.COM", "AQAAAAEAACcQAAAAEALJEIO021a0pFlzUy82x0wiEdzSdqEm8BOm5gOpwhxDtn6qEwgnhgVIHj+bZqBIRA==", null, false, "", false, "phamvinhson@gmail.com" },
-                    { "e7610feb-110c-47d0-9a88-1bfdc12742a4", 0, "ed9bf1f3-ea3b-4156-b639-2c975a81fe68", "trankieuloan@gmail.com", true, "Loan", "Trần Kiều", false, null, "TRANKIEULOAN@GMAIL.COM", "TRANKIEULOAN@GMAIL.COM", "AQAAAAEAACcQAAAAEL3GCEI+BOC39vxKZrNKOtFPnCn5/xNFXOnsu3YlQHGq41MWW3jvZ53iHwZS7HiO9w==", null, false, "", false, "trankieuloan@gmail.com" },
-                    { "308da0db-e863-4814-8930-de3540e5406d", 0, "2d47b954-6e88-4f3f-b967-82a7229012cc", "yungadmin@gmail.com", true, "Admin", "Yung", false, null, "YUNGADMIN@GMAIL.COM", "YUNGADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEHUQKRNvJ9BfiCBJrKV9FSbpxmMaHIEh3mC9jWQ2JgEvlZvpqAl/XqdIwqul2gZ1Aw==", null, false, "", false, "yungadmin@gmail.com" },
-                    { "927e4f6a-62ed-4e13-b002-7e133eb47bbc", 0, "53a192d0-63ab-4fd1-b6bd-f119e378e869", "lilsuperadmin@gmail.com", true, "Super Admin", "Lil", false, null, "LILSUPERADMIN@GMAIL.COM", "LILSUPERADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAELbpjVYM0YSjUBuNTLxLPQayxd3WHB5X2M/+dmI7w6nNy68zAVOymOZk/cf2+cOsxA==", null, false, "", false, "lilsuperadmin@gmail.com" },
-                    { "fd4fd02a-238d-4efc-a187-14d205a841f0", 0, "ddeb0a58-3a0a-4ed6-8b19-8be9fb294423", "truongthitramanh@gmail.com", true, "Anh", "Trương Thị Trâm", false, null, "TRUONGTHITRAMANH@GMAIL.COM", "TRUONGTHITRAMANH@GMAIL.COM", "AQAAAAEAACcQAAAAEKANKLZWKkYI9M1bEgNIHfH1AJ71WPaz3XqyzEMrkWwFDTgYk6b75yY62gS4ZGdgfA==", null, false, "", false, "truongthitramanh@gmail.com" }
+                    { "5ce20f05-c625-43fc-ae25-a7514e9520db", 0, "3a9b1d48-7d19-40f0-bb4a-a988a1a0937d", "truongtuantu@gmail.com", true, "Tú", "Trương Tuấn", false, null, "TRUONGTUANTU@GMAIL.COM", "TRUONGTUANTU@GMAIL.COM", "AQAAAAEAACcQAAAAEBnfypzIDAhKfo8n9O1CP70lf2Nm3tDlgsKtIqr7CWuyRVqh9o8K8PdSV5OPi5YrUQ==", null, false, "", false, "truongtuantu@gmail.com" },
+                    { "3a6a1f70-8f67-4f8a-b1f9-267e5d621edb", 0, "4c16662a-ea58-4b1d-803b-f81b2e097824", "phantantrung@gmail.com", true, "Trung", "Phan Tấn", false, null, "PHANTANTRUNG@GMAIL.COM", "PHANTANTRUNG@GMAIL.COM", "AQAAAAEAACcQAAAAEHTgTsaUyjyXcAHcuSsN2ykg958QRWnjr2I+b5pWoVtLorXR2L1zXboXr1zIkEvDUg==", null, false, "", false, "phantantrung@gmail.com" },
+                    { "57b2db13-1d08-48a4-adca-41d837bb8937", 0, "ad70dbba-4a70-487d-826d-9ebf4c2690b6", "phungthanhdo@gmail.com", true, "Độ", "Phùng Thanh", false, null, "PHUNGTHANHDO@GMAIL.COM", "PHUNGTHANHDO@GMAIL.COM", "AQAAAAEAACcQAAAAEB74GAbfbNnJeeZ6IlquomQZql3b2FQvoVeJYRhG9rLwBG5PwzFs/qpG752Rbmp22A==", null, false, "", false, "phungthanhdo@gmail.com" },
+                    { "fd9a7449-e604-48c1-a638-c564e17c1bc0", 0, "0eae5ebc-552a-4f05-aa74-4822045d4372", "nguyenhue@gmail.com", true, "Huệ", "Nguyễn", false, null, "NGUYENHUE@GMAIL.COM", "NGUYENHUE@GMAIL.COM", "AQAAAAEAACcQAAAAELMhVKuj++RTKq/PIPxrH/UrPh/HEx6UE7GO5Ps8KbNW7fSaz1laeO77f48znkuCXg==", null, false, "", false, "nguyenhue@gmail.com" },
+                    { "ce4b2f5c-1fb9-4fe1-945c-20eca474ce16", 0, "9f8599b6-282d-412e-93a1-84d0b87b304a", "hoxuanhuong@gmail.com", true, "Hương", "Hồ Xuân", false, null, "HOXUANHUONG@GMAIL.COM", "HOXUANHUONG@GMAIL.COM", "AQAAAAEAACcQAAAAEAQW4IXBinarLIAfzyI8X+hrwP55TPsOkjL3JuPfEzmG9nwuApVFsSqChfZzhsE+1w==", null, false, "", false, "hoxuanhuong@gmail.com" },
+                    { "39b465e2-c398-494f-bb62-d1eb02aa5471", 0, "b147e10d-6081-4a1a-af28-de0ac5d21491", "nguyenthanhlong@gmail.com", true, "Long", "Nguyễn Thành", false, null, "NGUYENTHANHLONG@GMAIL.COM", "NGUYENTHANHLONG@GMAIL.COM", "AQAAAAEAACcQAAAAEB5MALUDXmnVlK28FIiZYBlBGLCGTc7u5Gt8R2uRjZGKYThQk+7NYKuPEr1AzJy6Gw==", null, false, "", false, "nguyenthanhlong@gmail.com" },
+                    { "52999f6b-a605-45b0-b98f-b8880fc46027", 0, "ed9153d4-d806-4404-9336-dbdeab8605f4", "huynhtranthanh@gmail.com", true, "Thành", "Huỳnh Trấn", false, null, "HUYNHTRANTHANH@GMAIL.COM", "HUYNHTRANTHANH@GMAIL.COM", "AQAAAAEAACcQAAAAEH21AKjAjoO1nVitdCFlLzDhrzBUH45J5JRFMwt0Jb2clXNlIPqLLpyCU+augunsOQ==", null, false, "", false, "huynhtranthanh@gmail.com" },
+                    { "3b488e0f-eb92-4994-a555-cbe4ecdf3672", 0, "a7e13e99-186f-4446-beb3-c07f0d2250c7", "caobaquat@gmail.com", true, "Quát", "Cao Bá", false, null, "CAOBAQUAT@GMAIL.COM", "CAOBAQUAT@GMAIL.COM", "AQAAAAEAACcQAAAAEK0iVbt8BM5A6CtTPDPme5HqHRak4Os1r2vKg8sx2msTsRT8TiGgif4JAzpZ1bap6g==", null, false, "", false, "caobaquat@gmail.com" },
+                    { "b6256340-7bd0-4373-8549-c6a08053396b", 0, "3474d7f7-82bd-4979-acd3-274305136a3b", "nguyennhuloc@gmail.com", true, "Lộc", "Nguyễn Như", false, null, "NGUYENNHULOC@GMAIL.COM", "NGUYENNHULOC@GMAIL.COM", "AQAAAAEAACcQAAAAEDETWmcT5uSJ6GAoOPq5LnDdLvh2eC2f+eY2ugVdGwVI5JUw8EvE8g1E4MQoORZiAg==", null, false, "", false, "nguyennhuloc@gmail.com" },
+                    { "a0c9e67b-d593-4a56-93cd-063ec5d5d035", 0, "7e0290bf-650c-489c-87ed-8b9a3399d140", "tranthaonguyen@gmail.com", true, "Nguyên", "Trần Thảo", false, null, "TRANTHAONGUYEN@GMAIL.COM", "TRANTHAONGUYEN@GMAIL.COM", "AQAAAAEAACcQAAAAEAfY1Q+8DE4ApfbviOHOS2GD6c13/g+snLbDNYyxb1r++Ag3fvCfVruDNGIwq9cCLg==", null, false, "", false, "tranthaonguyen@gmail.com" },
+                    { "6f8ce951-2f66-4a9e-a4fa-7a14f85b54c6", 0, "c4b2e3b7-d906-45a5-b4f9-480bedbccaf7", "caothivananh@gmail.com", true, "Anh", "Cao Thị Vân", false, null, "CAOTHIVANANH@GMAIL.COM", "CAOTHIVANANH@GMAIL.COM", "AQAAAAEAACcQAAAAEFU8SM24e2SQ+Ne+7rDLwxr7NDMOSZYRX6ndE8+D/uRMmOMDaq5+R6vQksknTsrjCA==", null, false, "", false, "caothivananh@gmail.com" },
+                    { "08b84a20-7e7d-4353-bb53-74c79732beed", 0, "e3edc087-e2a7-4717-8897-6166a13ffaf0", "nguyentrunghieu@gmail.com", true, "Hiếu", "Nguyễn Trung", false, null, "NGUYENTRUNGHIEU@GMAIL.COM", "NGUYENTRUNGHIEU@GMAIL.COM", "AQAAAAEAACcQAAAAEPI8dKfMgUEZeOXMYYjqZd+k2INDNOWLTg0W3TR19PdL+o/wzOVSJkwKaleDKFZoxQ==", null, false, "", false, "nguyentrunghieu@gmail.com" },
+                    { "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98", 0, "dd39af78-9e17-4931-af09-9476d1a5617a", "phamvinhson@gmail.com", true, "Sơn", "Phạm Vĩnh", false, null, "PHAMVINHSON@GMAIL.COM", "PHAMVINHSON@GMAIL.COM", "AQAAAAEAACcQAAAAEBFTRjapHYleq0sVLeYaAMKPTjKlAnJfg0UaQ3qAUs+ol6Bl8x2ff2fJm3kuVBPRYA==", null, false, "", false, "phamvinhson@gmail.com" },
+                    { "e7610feb-110c-47d0-9a88-1bfdc12742a4", 0, "21c84d05-3644-4a7a-816d-ff96b1381f53", "trankieuloan@gmail.com", true, "Loan", "Trần Kiều", false, null, "TRANKIEULOAN@GMAIL.COM", "TRANKIEULOAN@GMAIL.COM", "AQAAAAEAACcQAAAAEJ3WZTIeTxH3IWjwgj7E9gDlXOtd+QPaddilzwfiBtadDgzWiBTdgFmWflr0QyaDqg==", null, false, "", false, "trankieuloan@gmail.com" },
+                    { "308da0db-e863-4814-8930-de3540e5406d", 0, "5a8a38cc-da40-423a-9028-8faa6885399c", "yungadmin@gmail.com", true, "Admin", "Yung", false, null, "YUNGADMIN@GMAIL.COM", "YUNGADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEGBhM76+OYrUK/BOQgtyMzOlW8URD3Yy3+q6ZdDhIR6WCqw7VPMW594xOlN43R6zWw==", null, false, "", false, "yungadmin@gmail.com" },
+                    { "927e4f6a-62ed-4e13-b002-7e133eb47bbc", 0, "5c0c07fe-f461-43e1-8a1b-9a512f2c5e2d", "lilsuperadmin@gmail.com", true, "Super Admin", "Lil", false, null, "LILSUPERADMIN@GMAIL.COM", "LILSUPERADMIN@GMAIL.COM", "AQAAAAEAACcQAAAAEAN9Un9DKxbGxNYLX4pJVfI9KRbZpYQKsFzezxUZeJ3DSOcnxiV6+MNYznvMZCBlFQ==", null, false, "", false, "lilsuperadmin@gmail.com" },
+                    { "fd4fd02a-238d-4efc-a187-14d205a841f0", 0, "b4dce1ae-8c9f-4846-9b6d-4d4dc0dfda80", "truongthitramanh@gmail.com", true, "Anh", "Trương Thị Trâm", false, null, "TRUONGTHITRAMANH@GMAIL.COM", "TRUONGTHITRAMANH@GMAIL.COM", "AQAAAAEAACcQAAAAEPzksovUL+hZAA6k06WKJHjIa4ckMw1pojWVR38Jhq0v0CEhMXUrqeR+ZasiQIk6iQ==", null, false, "", false, "truongthitramanh@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -656,6 +702,11 @@ namespace api.Migrations
                 name: "IX_PurchaseProposalForms_UserId",
                 table: "PurchaseProposalForms",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SupplierProducts_ProductId",
+                table: "SupplierProducts",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -688,6 +739,9 @@ namespace api.Migrations
                 name: "PurchaseProposalDetails");
 
             migrationBuilder.DropTable(
+                name: "SupplierProducts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -698,6 +752,9 @@ namespace api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
 
             migrationBuilder.DropTable(
                 name: "PurchaseProposalForms");
