@@ -86,6 +86,16 @@ namespace api.Extensions
             modelBuilder
                 .Entity<GoodsReceivingDetail>()
                 .HasQueryFilter(ppd => EF.Property<bool>(ppd, "IsDeleted") == false);
+
+            /** Order */
+            modelBuilder
+                .Entity<Order>()
+                .HasQueryFilter(o => EF.Property<bool>(o, "IsDeleted") == false);
+
+            /** OrderDetail */
+            modelBuilder
+                .Entity<OrderDetail>()
+                .HasQueryFilter(od => EF.Property<bool>(od, "IsDeleted") == false);
         }
 
         public static void Seed(this ModelBuilder modelBuilder)
