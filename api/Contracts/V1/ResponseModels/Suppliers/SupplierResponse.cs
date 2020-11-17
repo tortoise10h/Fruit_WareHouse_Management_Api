@@ -1,4 +1,5 @@
 using api.Common.Enums;
+using System.Collections.Generic;
 
 namespace api.Contracts.V1.ResponseModels.Suppliers
 {
@@ -12,6 +13,7 @@ namespace api.Contracts.V1.ResponseModels.Suppliers
         public string Representative { get; set; }
 
         public SupplierStatus Status { get; set; }
+        public List<SupplierProductResponse> SupplierProducts { get; set; }
 
     }
 }
