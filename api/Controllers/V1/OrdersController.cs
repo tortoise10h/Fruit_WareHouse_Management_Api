@@ -4,6 +4,7 @@ using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.Orders;
 using api.CQRS.Orders.Commands.BulkCreateOrderDetails;
+using api.CQRS.Orders.Commands.BulkDeleteOrderDetails;
 using api.CQRS.Orders.Commands.BulkUpdateOrderDetails;
 using api.CQRS.Orders.Commands.CreateOrders;
 using api.CQRS.Orders.Commands.UpdateOrders;
@@ -126,20 +127,20 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "Sale,Boss")]
-        //[HttpDelete(ApiRoutes.PurchaseProposalForm.BulkDeletePurchaseProposalDetail)]
-        //public async Task<IActionResult> BulkDeletePurchaseProposalDetaiils([FromRoute] int purchaseProposalFormId, [FromBody] BulkDeletePurchaseProposalDetailCommand command)
-        //{
-        //    command.PurchaseProposalFormId = purchaseProposalFormId; 
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "Sale,Boss")]
+        [HttpDelete(ApiRoutes.Orders.BulkDeleteProductsInOrder)]
+        public async Task<IActionResult> BulkDeletePurchaseProposalDetaiils([FromRoute] int orderId, [FromBody] BulkDeleteOrderDetailsCommand command)
+        {
+            command.OrderId = orderId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        purchaseProposalFormresponses => NoContent(),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                purchaseProposalFormresponses => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
     }
 }
