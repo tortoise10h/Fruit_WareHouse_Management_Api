@@ -25,7 +25,7 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote
         public int Id { get; set; }
         public GoodsReceivingNoteStatus Status { get; set; }
         public string SupplierName { get; set; }
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
         public string Description { get; set; }
         public string ExceptionReason { get; set; }
     }
