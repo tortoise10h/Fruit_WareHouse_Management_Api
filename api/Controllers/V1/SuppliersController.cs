@@ -11,6 +11,7 @@ using api.CQRS.Suppliers.Queries.GetAllSupplierProducts;
 using api.CQRS.Suppliers.Queries.GetAllSuppliers;
 using api.CQRS.Suppliers.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,7 +46,6 @@ namespace api.Controllers.V1
         }
 
 
-        [Authorize(Roles = "Admin,Boss")]
         [HttpGet(ApiRoutes.Suppliers.GetAll)]
         public async Task<IActionResult> GetAll([FromQuery] GetAllSuppliersQuery query)
         {
