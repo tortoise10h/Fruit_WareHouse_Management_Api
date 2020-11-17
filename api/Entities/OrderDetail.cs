@@ -13,7 +13,7 @@ namespace api.Entities
         public int ProductId { get; set; }
         public double Quantity { get; set; }
         public double QuantityNeed { get; set; }
-        public double QuantitySaled { get; set; }
+        public double QuantitySold { get; set; }
         public double QuantityReturned { get; set; }
         public string Description { get; set; }
         public double SinglePrice { get; set; }
