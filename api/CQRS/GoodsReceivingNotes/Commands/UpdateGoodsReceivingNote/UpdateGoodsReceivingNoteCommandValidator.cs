@@ -15,12 +15,6 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote
                 .IsInEnum()
                     .WithMessage("Trạng thái không hợp lệ");
 
-            //RuleFor(x => x.PurchaseProposalFormId)
-            //    .NotNull()
-            //        .WithMessage("Id của đề nghị mua hàng không được để trống")
-            //    .GreaterThan(0)
-            //        .WithMessage("Id của đề nghị mua hàng không hợp lệ");
-
             When(x => x.Status == GoodsReceivingNoteStatus.Cancelled, () =>
             {
                 RuleFor(x => x.ExceptionReason)

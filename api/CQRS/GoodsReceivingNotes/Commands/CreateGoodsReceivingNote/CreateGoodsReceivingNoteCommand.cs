@@ -60,18 +60,35 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote
                 throw new BadRequestException(new ApiError("Chỉ được nhập kho cho đề nghị mua hàng đang 'được xử lý'"));
             }
 
-            // TODO: Check supplier exist or not and validate product of supplier
-
-            /** Make sure all product in goods receiving note valid */
             var purchaseProposalDetails = purchaseProposalForm.PurchaseProposalDetails
                 .ToList();
             var productsInGoodsReceivingNote = new List<ProductInGoodsReceivingNote>();
 
+
+            /** Make sure all product in goods receiving note valid */
             _mapper.Map<List<CreateGoodsReceivingDetailCommand>, List<ProductInGoodsReceivingNote>>(
                 request.GoodsReceivingDetails, productsInGoodsReceivingNote);
 
-            productsInGoodsReceivingNote = _goodsReceivingNoteServices.ValidateProductsOfNewGoodsReceivingNote(
+            productsInGoodsReceivingNote = _goodsReceivingNoteServices.MakeSureProductsOfNewGoodsReceivingNoteSastifyProposal(
                 productsInGoodsReceivingNote, purchaseProposalDetails);
+
+            if (request.SupplierId != null)
+            {
+                // This mean we do import from a specific supplier 
+                var supplier = await _context.Suppliers
+                    .SingleOrDefaultAsync(x => x.Id == request.SupplierId);
+                if (supplier == null)
+                {
+                    throw new NotFoundException();
+                }
+
+                await _goodsReceivingNoteServices.MakeSureNewProductMustBelongToSupplier(
+                    supplier.Id,
+                    productsInGoodsReceivingNote);
+
+                request.SupplierName = supplier.Name;
+            }
+
 
             /** Prepare entity to save to DB */
             // Map list valid product back to command to map to entity
