@@ -12,7 +12,9 @@ namespace api.CQRS.PurchaseProposalForms.Commands.CreatePurchaseProposalForms
         {
             RuleFor(x => x.Deadline)
                 .NotNull()
-                    .WithMessage("Thời hạn mua hàng không được để trống");
+                    .WithMessage("Thời hạn mua hàng không được để trống")
+                .Must(x => DateTime.Compare(x, DateTime.Now) > 0)
+                    .WithMessage("Thời hạn mua hàng không được sớm hơn thời điểm hiện tại");
 
             RuleFor(x => x.PurchaseProposalDetails)
                 .Must(x => x.Count() > 0)

@@ -207,7 +207,7 @@ namespace api.Services
                     .SingleOrDefault(x => x.ProductId == grd.ProductId);
                 matchedPurchaseProposalDetail.QuantityPurchased += grd.Quantity;
             }
-            ChangePurchaseProposalToDoneWhenQuantityEnough(
+            await ChangePurchaseProposalToDoneWhenQuantityEnough(
                 ctx,
                 purchaseProposalFormId,
                 purchaseProposalDetails);
@@ -216,7 +216,7 @@ namespace api.Services
             ctx.PurchaseProposalDetails.UpdateRange(purchaseProposalDetails);
         }
 
-        public void ChangePurchaseProposalToDoneWhenQuantityEnough(
+        public async Task ChangePurchaseProposalToDoneWhenQuantityEnough(
             DataContext ctx,
             int purchaseProposalFormId,
             List<PurchaseProposalDetail> purchaseProposalDetails)
@@ -234,13 +234,23 @@ namespace api.Services
             if (doneCount == purchaseProposalDetails.Count())
             {
                 /** This is mean all product in purchase proposal form are purchased enough */
-                var updateInfo = new PurchaseProposalForm {
-                    Id = purchaseProposalFormId,
-                };
+                var purchaseProposalForm = await ctx.PurchaseProposalForms
+                    .SingleOrDefaultAsync(x => x.Id == purchaseProposalFormId);
 
-                ctx.PurchaseProposalForms.Attach(updateInfo);
+                /** Check to see the purchase process on time or not */
+                if (DateTime.Compare(DateTime.Now, purchaseProposalForm.Deadline) > 0)
+                {
+                    // That's mean we being late 
+                    purchaseProposalForm.OnTimeOrNotStatus = PurchaseProposalFormOnTimeOrNotStatus.NotOnTime;
+                } else
+                {
+                    // Yes, you're on time
+                    purchaseProposalForm.OnTimeOrNotStatus = PurchaseProposalFormOnTimeOrNotStatus.OnTime;
+                }
 
-                updateInfo.Status = PurchaseProposalFormStatus.Done;
+                purchaseProposalForm.Status = PurchaseProposalFormStatus.Done;
+
+                ctx.PurchaseProposalForms.Update(purchaseProposalForm);
             }
         }
 
