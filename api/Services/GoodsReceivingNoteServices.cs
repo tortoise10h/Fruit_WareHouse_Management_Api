@@ -25,7 +25,7 @@ namespace api.Services
             _context = context;
         }
 
-        public List<ProductInGoodsReceivingNote> ValidateProductsOfNewGoodsReceivingNote(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote, List<PurchaseProposalDetail> purchaseProposalDetails)
+        public List<ProductInGoodsReceivingNote> MakeSureProductsOfNewGoodsReceivingNoteSastifyProposal(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote, List<PurchaseProposalDetail> purchaseProposalDetails)
         {
             productsInGoodsReceivingNote = UniqueListByProductId(productsInGoodsReceivingNote);
 
@@ -37,7 +37,7 @@ namespace api.Services
         public List<ProductInGoodsReceivingNote> UniqueListByProductId(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
         {
 
-            /** Make sure all product id in list is uniqe */
+            /** Make sure all product id in list is unique */
             productsInGoodsReceivingNote = productsInGoodsReceivingNote
                 .GroupBy(x => x.ProductId)
                 .Select(x => x.First())
@@ -49,7 +49,7 @@ namespace api.Services
         public List<ProductInGoodsReceivingNote> UniqueListById(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
         {
 
-            /** Make sure all product id in list is uniqe */
+            /** Make sure all product id in list is unique */
             productsInGoodsReceivingNote = productsInGoodsReceivingNote
                 .GroupBy(x => x.Id)
                 .Select(x => x.First())
@@ -275,7 +275,7 @@ namespace api.Services
                     new ApiError(errResponse));
             }
 
-            /** Make suree new product valid in purchase proposal */
+            /** Make sure new product valid in purchase proposal */
             ValidateProductValidInPurchaseProposalForm(purchaseProposalDetails, productsInGoodsReceivingNote);
 
             return productsInGoodsReceivingNote;
@@ -314,10 +314,75 @@ namespace api.Services
                 throw new NotFoundException();
             }
 
-            /** Make suree new product valid in purchase proposal */
+            /** Make sure new product valid in purchase proposal */
             ValidateProductValidInPurchaseProposalForm(purchaseProposalDetails, productsInGoodsReceivingNote);
 
             return productsInGoodsReceivingNote;
+        }
+
+        public async Task MakeSureNewProductMustBelongToSupplier(
+            int supplierId,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
+        {
+            var productIds = productsInGoodsReceivingNote
+                .Select(x => x.ProductId)
+                .ToList();
+
+            var productsOfSupplier = await _context.SupplierProducts
+                .Where(x => productIds.Contains(x.ProductId) && x.SupplierId == supplierId)
+                .ToListAsync(); 
+
+            if (productIds.Count != productsOfSupplier.Count)
+            {
+                /** Handle response */
+                var productIdsOfSupplier = productsOfSupplier
+                    .Select(x => x.ProductId)
+                    .ToList();
+
+                var inValidProductIds = productIds.Except(productIdsOfSupplier);
+
+                string errResponse = "";
+                foreach (var p in inValidProductIds)
+                {
+                    errResponse += $"Sản phẩm với id [{p}] không thuộc nhà cung cấp của phiếu nhập hàng này<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
+        }
+
+        public async Task ValidateProductsInGoodsRecevingNoteWhenChangeSupplierId(
+            int goodsReceivingNoteId,
+            int newSupplierId)
+        {
+            var productsOfNewSupplier = await _context.SupplierProducts
+                .Where(x => x.SupplierId == newSupplierId)
+                .ToListAsync();
+            var productIdsOfNewSupplier = productsOfNewSupplier
+                .Select(x => x.ProductId);
+
+            var currentProductsInGoodsReceivingNote = await _context.GoodsReceivingDetails
+                .Where(x => x.GoodsReceivingNoteId == goodsReceivingNoteId)
+                .ToListAsync();
+            var currentProductIdsInGoodsReceivingNote = currentProductsInGoodsReceivingNote
+                .Select(x => x.ProductId);
+
+            var invalidProductIds = currentProductIdsInGoodsReceivingNote
+                .Except(productIdsOfNewSupplier)
+                .ToList();
+
+            if (invalidProductIds.Count > 0)
+            {
+                string errResponse = "";
+                foreach (var pId in invalidProductIds)
+                {
+                    errResponse += $"Sản phẩm với id [{pId}] không có trong nhà cung cấp mới<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
         }
     }
 }

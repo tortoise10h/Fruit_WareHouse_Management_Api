@@ -48,7 +48,7 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.BulkCreateGoodsReceivingDetails
             var goodsReceivingNote = await _context.GoodsReceivingNotes
                 .SingleOrDefaultAsync(x => x.Id == request.GoodsReceivingNoteId);
 
-            /** Make sure add produc to valid goods receiving note */
+            /** Make sure add product to valid goods receiving note */
             if (goodsReceivingNote == null)
             {
                 return new Result<List<GoodsReceivingDetailResponse>>(
@@ -78,10 +78,20 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.BulkCreateGoodsReceivingDetails
                     purchaseProposalDetails,
                     productsInGoodsReceivingNote);
 
+            if (goodsReceivingNote.SupplierId != null)
+            {
+                // if goods receiving note belong to supplier => all new products
+                // must be belonged to that supplier too
+                await _goodsReceivingNoteServices.MakeSureNewProductMustBelongToSupplier(
+                    goodsReceivingNote.SupplierId.GetValueOrDefault(),
+                    productsInGoodsReceivingNote);
+            }
+
             _mapper.Map<List<ProductInGoodsReceivingNote>, List<CreateGoodsReceivingDetailCommand>>(
                 productsInGoodsReceivingNote,
                 request.GoodsReceivingDetails);
 
+            /** Prepare info for entities to save */
             List<GoodsReceivingDetail> goodsReceivingDetailEntities = _mapper.Map<List<GoodsReceivingDetail>>(
                 request.GoodsReceivingDetails
                 );
