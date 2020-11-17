@@ -23,6 +23,8 @@ namespace api.CQRS.Suppliers.Queries.GetById
         public async Task<SupplierResponse> Handle(GetSupplierByIdQuery query, CancellationToken cancellationToken)
         {
             var supplier = await _context.Suppliers
+               .Include(s => s.SupplierProducts)
+                .ThenInclude(sp => sp.Product)
                .SingleOrDefaultAsync(s => s.Id == query.Id);
 
             if (supplier == null)
