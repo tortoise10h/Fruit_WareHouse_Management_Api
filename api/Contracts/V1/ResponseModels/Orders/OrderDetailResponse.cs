@@ -14,7 +14,7 @@ namespace api.Contracts.V1.ResponseModels.Orders
         public int ProductId { get; set; }
         public double Quantity { get; set; }
         public double QuantityNeed { get; set; }
-        public double QuantitySaled { get; set; }
+        public double QuantitySold { get; set; }
         public double QuantityReturned { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
