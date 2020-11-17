@@ -23,5 +23,9 @@ namespace api.IServices
 
         Task<List<ProductInOrder>> MakeSureProductsValidWhenAddToOrder(
             List<ProductInOrder> productsInOrder);
+
+        Task<List<ProductInOrder>> MakeSureUpdateProductsInOrderValid(
+            int orderId,
+            List<ProductInOrder> productsInOrder);
     }
 }
