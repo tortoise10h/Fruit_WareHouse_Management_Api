@@ -191,5 +191,52 @@ namespace api.Services
 
             return productsShouldBeHandled;
         }
+
+        public async Task<List<ProductInOrder>> MakeSureProductsValidWhenAddToOrder(
+            List<ProductInOrder> productsInOrder)
+        {
+            /** Make sure all product id in list is uniqe */
+            productsInOrder = UniqueListByProductId(productsInOrder);
+
+            var productIds = productsInOrder
+                .Select(x => x.ProductId)
+                .ToList();
+            await MakeSureListProductIdsExist(productIds);
+
+            await MakeSureListProductIdDoesNotExistInOrder(productIds);
+
+            return productsInOrder;
+        }
+
+        public async Task MakeSureListProductIdsExist(List<int> productIds)
+        {
+            var products = await _context.Products
+                .Where(p => productIds.Contains(p.Id))
+                .ToListAsync();
+            if (productIds.Count() != products.Count())
+            {
+                throw new NotFoundException();
+            }
+        }
+
+        public async Task MakeSureListProductIdDoesNotExistInOrder(List<int> productIds)
+        {
+            var orderDetails = await _context.OrderDetails
+                .AsNoTracking()
+                .Where(x => productIds.Contains(x.ProductId))
+                .ToListAsync();
+            if (orderDetails.Count > 0)
+            {
+                string errResponse = "";
+
+                foreach (var orderDetail in orderDetails)
+                {
+                    errResponse += $"Sản phẩm với id [{orderDetail.ProductId}] đã tồn tại trong đơn hàng<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
+        }
     }
 }

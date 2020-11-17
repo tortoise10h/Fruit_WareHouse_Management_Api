@@ -15,9 +15,13 @@ namespace api.IServices
             List<ProductInOrder> productsInNewOrder);
 
         Task ValidateWhenUpdateStatus(Order order, OrderStatus newStatus);
+
         Task HandleBusinessWhenStatusIsChanged(
             DataContext ctx,
             Order order,
             OrderStatus newStatus);
+
+        Task<List<ProductInOrder>> MakeSureProductsValidWhenAddToOrder(
+            List<ProductInOrder> productsInOrder);
     }
 }
