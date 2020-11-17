@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.Orders;
+using api.CQRS.Orders.Commands.BulkCreateOrderDetails;
 using api.CQRS.Orders.Commands.CreateOrders;
 using api.CQRS.Orders.Commands.UpdateOrders;
 using api.CQRS.Orders.Queries;
@@ -89,23 +91,23 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "Sale,Boss")]
-        //[HttpPost(ApiRoutes.PurchaseProposalForm.AddProductToPurchaseProposalForm)]
-        //public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int purchaseProposalFormId, [FromBody] BulkCreatePurchaseProposalDetailCommand command)
-        //{
-        //    command.PurchaseProposalFormId = purchaseProposalFormId; 
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "Sale,Boss")]
+        [HttpPost(ApiRoutes.Orders.AddProductsToOrder)]
+        public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int orderId, [FromBody] BulkCreateOrderDetailsCommand command)
+        {
+            command.OrderId = orderId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        purchaseProposalFormresponses => Created("", new Response<List<PurchaseProposalDetailResponse>>(
-        //            purchaseProposalFormresponses
-        //        )),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => Created("", new Response<List<OrderDetailResponse>>(
+                    response
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         //[Authorize(Roles = "Sale,Boss")]
         //[HttpPut(ApiRoutes.PurchaseProposalForm.BulkUpdatePurchaseProposalDetail)]

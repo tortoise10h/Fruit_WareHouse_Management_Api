@@ -16,6 +16,8 @@ namespace api.MapperProfiles
             /** ProductInOrder - OrderDetail */
             CreateMap<ProductInOrder, OrderDetail>();
             CreateMap<OrderDetail, ProductInOrder>();
+
+            /** Supplier */
             CreateMap<AddProductToSupplierDTO, SupplierProduct>();
         }
     }
