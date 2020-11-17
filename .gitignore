@@ -31,9 +31,11 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+debug.log
 
 # Visual Studio 2015
 .vs/
+
 
 # Personal Setting For Development
 appsettings.Development.json
