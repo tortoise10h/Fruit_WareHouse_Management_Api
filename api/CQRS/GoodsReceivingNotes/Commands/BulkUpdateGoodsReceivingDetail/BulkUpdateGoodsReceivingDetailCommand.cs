@@ -63,39 +63,40 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.BulkUpdateGoodsReceivingDetail
                     );
             }
 
+
             var purchaseProposalDetails = await _context.PurchaseProposalDetails
                 .Where(x => x.PurchaseProposalFormId == goodsReceivingNote.PurchaseProposalFormId)
                 .ToListAsync();
             var goodsReceivingDetailIds = request.GoodsReceivingDetails
                 .Select(x => x.Id)
                 .ToList();
-            var goodsReceivingDetails = await _context.GoodsReceivingDetails
+            var existedGoodsReceivingDetails = await _context.GoodsReceivingDetails
                 .Where(x => x.GoodsReceivingNoteId == request.GoodsReceivingNoteId &&
                     goodsReceivingDetailIds.Contains(x.Id))
                 .ToListAsync();
             var productsInGoodsReceivingNote = new List<ProductInGoodsReceivingNote>();
-
             _mapper.Map<List<UpdateGoodsReceivingDetailCommand>, List<ProductInGoodsReceivingNote>>(
                 request.GoodsReceivingDetails, productsInGoodsReceivingNote);
-            
-            if (goodsReceivingDetails == null || goodsReceivingDetails.Count == 0)
+
+            if (existedGoodsReceivingDetails == null || existedGoodsReceivingDetails.Count == 0)
             {
                 return new Result<List<GoodsReceivingDetailResponse>>(
                     new NotFoundException()
                 );
             }
 
-            foreach (var grd in goodsReceivingDetails)
+            foreach (var grd in existedGoodsReceivingDetails)
             {
                 var matchedProductInGoodsReceivingNote = productsInGoodsReceivingNote
                     .SingleOrDefault(x => x.Id == grd.Id);
                 matchedProductInGoodsReceivingNote.ProductId = grd.ProductId;
             }
 
-            /** Validate new product comparing to purchase proposal form */
+
+            /** Validate valid updated products */ 
             productsInGoodsReceivingNote = _goodsReceivingNoteServices
                 .ValidateWhenUpdateProductsInGoodsReceivingNote(
-                    goodsReceivingDetails,
+                    existedGoodsReceivingDetails,
                     purchaseProposalDetails,
                     productsInGoodsReceivingNote);
 
@@ -103,28 +104,28 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.BulkUpdateGoodsReceivingDetail
             productsInGoodsReceivingNote = _goodsReceivingNoteServices.CalculatePriceOfProducsInGoodsReceivingNote(
                 productsInGoodsReceivingNote);
 
-            // Replace old total price with new price aftere update goods receiving details
-            goodsReceivingNote.TotalPrice = goodsReceivingNote.TotalPrice - goodsReceivingDetails
+            // Replace old total price with new price after update goods receiving details
+            goodsReceivingNote.TotalPrice = goodsReceivingNote.TotalPrice - existedGoodsReceivingDetails
                 .Sum(x => x.TotalPrice);
             goodsReceivingNote.TotalPrice = goodsReceivingNote.TotalPrice + productsInGoodsReceivingNote
                 .Sum(x => x.TotalPrice);
 
             foreach (var p in productsInGoodsReceivingNote)
             {
-                var matchedGoodsReceivingDetail = goodsReceivingDetails
+                var matchedGoodsReceivingDetail = existedGoodsReceivingDetails
                     .SingleOrDefault(x => x.ProductId == p.ProductId);
                 _mapper.Map<ProductInGoodsReceivingNote, GoodsReceivingDetail>(
                     p, matchedGoodsReceivingDetail);
             }
 
-            _context.GoodsReceivingDetails.UpdateRange(goodsReceivingDetails);
+            _context.GoodsReceivingDetails.UpdateRange(existedGoodsReceivingDetails);
             _context.Update(goodsReceivingNote);
             var updated = await _context.SaveChangesAsync();
 
             if (updated > 0)
             {
                 return new Result<List<GoodsReceivingDetailResponse>>(
-                    _mapper.Map<List<GoodsReceivingDetailResponse>>(goodsReceivingDetails)
+                    _mapper.Map<List<GoodsReceivingDetailResponse>>(existedGoodsReceivingDetails)
                 );
             }
 

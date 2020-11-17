@@ -12,7 +12,7 @@ namespace api.IServices
 {
     public interface IGoodsReceivingNoteServices
     {
-        List<ProductInGoodsReceivingNote> ValidateProductsOfNewGoodsReceivingNote(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote, List<PurchaseProposalDetail> purchaseProposalDetails);
+        List<ProductInGoodsReceivingNote> MakeSureProductsOfNewGoodsReceivingNoteSastifyProposal(List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote, List<PurchaseProposalDetail> purchaseProposalDetails);
 
         List<GoodsReceivingDetail> CalculatePriceOfProducsInGoodsReceivingNote(
             List<GoodsReceivingDetail> goodsReceivingDetails);
@@ -38,5 +38,13 @@ namespace api.IServices
             List<PurchaseProposalDetail> purchaseProposalDetails,
             List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
             );
+
+        Task MakeSureNewProductMustBelongToSupplier(
+            int supplierId,
+            List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote);
+
+        Task ValidateProductsInGoodsRecevingNoteWhenChangeSupplierId(
+            int goodsReceivingNoteId,
+            int newSupplierId);
     }
 }

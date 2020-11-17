@@ -25,6 +25,7 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote
         public int Id { get; set; }
         public GoodsReceivingNoteStatus Status { get; set; }
         public string SupplierName { get; set; }
+        public int SupplierId { get; set; }
         public string Description { get; set; }
         public string ExceptionReason { get; set; }
     }
@@ -57,7 +58,7 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote
                 );
             }
 
-            /** Only  allow update goods receiving note when it is not Done or Cancelled */
+            /** Only  allow update goods receiving note when it is not Done or canceled */
             if (goodsReceivingNote.Status == GoodsReceivingNoteStatus.Done ||
                 goodsReceivingNote.Status == GoodsReceivingNoteStatus.Cancelled)
             {
@@ -95,7 +96,7 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote
             }
 
             /** If goods receiving note is done => update quantity of product
-             * in purchase propossal form and in storage */
+             * in purchase proposal form and in storage */
             if (request.Status == GoodsReceivingNoteStatus.Done)
             {
                 var goodsReceivingDetails = await _context.GoodsReceivingDetails
@@ -107,6 +108,26 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote
                         goodsReceivingNote.PurchaseProposalFormId,
                         goodsReceivingDetails,
                         _context);
+            }
+            
+            if (request.SupplierId != goodsReceivingNote.SupplierId)
+            {
+                /** That's mean the supplier of this goods receiving note is changed
+                 * need to check all current products in this goods receiving note 
+                 * are belong to the new supplier or not, if not => stop the update process */
+                var newSupplier = await _context.Suppliers
+                    .SingleOrDefaultAsync(x => x.Id == request.SupplierId);
+                if (newSupplier == null)
+                {
+                    throw new NotFoundException();
+                }
+
+                await _goodsReceivingNoteServices
+                    .ValidateProductsInGoodsRecevingNoteWhenChangeSupplierId(
+                        goodsReceivingNote.Id,
+                        newSupplier.Id);
+
+                goodsReceivingNote.SupplierName = newSupplier.Name;
             }
 
             _mapper.Map<UpdateGoodsReceivingNoteCommand, E.GoodsReceivingNote>(request, goodsReceivingNote);
