@@ -4,6 +4,7 @@ using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.Orders;
 using api.CQRS.Orders.Commands.BulkCreateOrderDetails;
+using api.CQRS.Orders.Commands.BulkUpdateOrderDetails;
 using api.CQRS.Orders.Commands.CreateOrders;
 using api.CQRS.Orders.Commands.UpdateOrders;
 using api.CQRS.Orders.Queries;
@@ -93,7 +94,7 @@ namespace api.Controllers.V1
 
         [Authorize(Roles = "Sale,Boss")]
         [HttpPost(ApiRoutes.Orders.AddProductsToOrder)]
-        public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int orderId, [FromBody] BulkCreateOrderDetailsCommand command)
+        public async Task<IActionResult> AddProductsToOrder([FromRoute] int orderId, [FromBody] BulkCreateOrderDetailsCommand command)
         {
             command.OrderId = orderId;
             var result = await _mediator.Send(command);
@@ -109,21 +110,21 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "Sale,Boss")]
-        //[HttpPut(ApiRoutes.PurchaseProposalForm.BulkUpdatePurchaseProposalDetail)]
-        //public async Task<IActionResult> BulkUpdatePurchaseProposalDetails([FromRoute] int purchaseProposalFormId, [FromBody] BulkUpdatePurchaseProposalDetailCommand command)
-        //{
-        //    command.PurchaseProposalFormId = purchaseProposalFormId; 
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "Sale,Boss")]
+        [HttpPut(ApiRoutes.Orders.BulkUpdateProductsInOrder)]
+        public async Task<IActionResult> BulkUpdateProductsInOrder([FromRoute] int orderId, [FromBody] BulkUpdateOrderDetailsCommand command)
+        {
+            command.OrderId = orderId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        purchaseProposalFormresponses => NoContent(),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         //[Authorize(Roles = "Sale,Boss")]
         //[HttpDelete(ApiRoutes.PurchaseProposalForm.BulkDeletePurchaseProposalDetail)]
