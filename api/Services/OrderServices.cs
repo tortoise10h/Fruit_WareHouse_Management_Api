@@ -201,17 +201,18 @@ namespace api.Services
             var productIds = productsInOrder
                 .Select(x => x.ProductId)
                 .ToList();
-            await MakeSureListProductIdsExist(productIds);
+            await MakeSureListProductIdValid(productIds);
 
             await MakeSureListProductIdDoesNotExistInOrder(productIds);
 
             return productsInOrder;
         }
 
-        public async Task MakeSureListProductIdsExist(List<int> productIds)
+        public async Task MakeSureListProductIdValid(List<int> productIds)
         {
             var products = await _context.Products
-                .Where(p => productIds.Contains(p.Id))
+                .AsNoTracking()
+                .Where(p => productIds.Contains(p.Id) && p.Status != ProductStatus.Locked)
                 .ToListAsync();
             if (productIds.Count() != products.Count())
             {
@@ -237,6 +238,44 @@ namespace api.Services
                 throw new BadRequestException(
                     new ApiError(errResponse));
             }
+        }
+
+        public async Task<List<ProductInOrder>> MakeSureUpdateProductsInOrderValid(
+            int orderId,
+            List<ProductInOrder> productsInOrder)
+        {
+            productsInOrder = UniqueListByProductId(productsInOrder);
+
+            /** Make sure all order details in list are existed */
+            var orderDetailIds = productsInOrder
+                .Select(x => x.Id)
+                .ToList();
+            var existedOrderDetails = await _context.OrderDetails
+                .AsNoTracking()
+                .Where(od => od.OrderId == orderId &&
+                    orderDetailIds.Contains(od.Id))
+                .ToListAsync();
+            if (orderDetailIds.Count() != existedOrderDetails.Count())
+            {
+                throw new NotFoundException();
+            }
+
+            /** Validate product valid */ 
+            var productIds = existedOrderDetails
+                .Select(x => x.ProductId)
+                .ToList();
+            await MakeSureListProductIdValid(productIds);
+
+            /** Assign product id to each product in order
+             * to prevent map to entity lost productId */
+            foreach (var od in existedOrderDetails)
+            {
+                var matchedProductInOrder = productsInOrder
+                    .SingleOrDefault(x => x.Id == od.Id);
+                matchedProductInOrder.ProductId = od.ProductId;
+            }
+
+            return productsInOrder;
         }
     }
 }
