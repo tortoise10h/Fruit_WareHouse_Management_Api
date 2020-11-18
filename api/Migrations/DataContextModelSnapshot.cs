@@ -49,49 +49,49 @@ namespace api.Migrations
                         new
                         {
                             Id = "b979036b-d165-4bea-b6b6-16b22a3f54dd",
-                            ConcurrencyStamp = "e44694ab-eca3-47bf-97f8-ccf763b14de4",
+                            ConcurrencyStamp = "8a2fe063-4487-45e5-a33e-6b78e6673ed0",
                             Name = "Admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = "78c5228f-f600-4545-abcd-f4cc21d18e4c",
-                            ConcurrencyStamp = "9c19cbad-3991-497f-9f02-fabacaa002f8",
+                            ConcurrencyStamp = "8b7b4f77-382b-4231-b669-d005302aee72",
                             Name = "Sale",
                             NormalizedName = "sale"
                         },
                         new
                         {
                             Id = "cc2a0eb3-8736-441d-9130-5b421db3ac0e",
-                            ConcurrencyStamp = "8271ff6f-cd6c-4a4b-8eb7-efb3f6746ec1",
+                            ConcurrencyStamp = "07626c74-0539-4c33-9d8e-64f4fc6b5600",
                             Name = "SuperAdmin",
                             NormalizedName = "superadmin"
                         },
                         new
                         {
                             Id = "6b30cb05-12f7-46c2-b95f-8d783c1f9eb1",
-                            ConcurrencyStamp = "41285db6-d7c4-43f3-b20d-952acf72e469",
+                            ConcurrencyStamp = "556ba956-3e46-468f-8aa0-2d34a37398d2",
                             Name = "WarehouseKeeperManager",
                             NormalizedName = "warehousekeepermanager"
                         },
                         new
                         {
                             Id = "6665ddaa-72f9-4f90-a6b1-43eb68dea610",
-                            ConcurrencyStamp = "c4455bd2-dfc9-4842-8794-f499ba9e7cff",
+                            ConcurrencyStamp = "036a442d-a883-4fcf-b9dc-71ad9ec9fd35",
                             Name = "WarehouseKeeper",
                             NormalizedName = "warehousekeeper"
                         },
                         new
                         {
                             Id = "423e498c-fc67-4853-ac4f-f3cd91d32e87",
-                            ConcurrencyStamp = "188c5395-7e67-413c-a702-fe7296ab1def",
+                            ConcurrencyStamp = "55574bbe-255e-4366-8d03-d9d0c0189018",
                             Name = "Customer",
                             NormalizedName = "customer"
                         },
                         new
                         {
                             Id = "c2d4b743-d9da-443c-9f5a-c2682750c805",
-                            ConcurrencyStamp = "24e875d5-6c2c-4d1e-b33a-0cb6d834470e",
+                            ConcurrencyStamp = "4c81d4e6-f1d3-475c-9544-042be4c6ad4b",
                             Name = "Boss",
                             NormalizedName = "boss"
                         });
@@ -363,7 +363,7 @@ namespace api.Migrations
                         {
                             Id = "927e4f6a-62ed-4e13-b002-7e133eb47bbc",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7b948e7b-0faf-4084-8a24-162b924c6c95",
+                            ConcurrencyStamp = "7af7a299-7a45-4501-bc4b-7bd7277e0d13",
                             Email = "lilsuperadmin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Super Admin",
@@ -371,7 +371,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "LILSUPERADMIN@GMAIL.COM",
                             NormalizedUserName = "LILSUPERADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENjk8gg42RNIsRf3ktykm0qKGUKOxfQmvkUksEaP2ginZyz0Flg10xu7HUMDsLZFQg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFSjHSJFg9gIeYaFLSXLs4PXGvQQRLFJ5PVVUD07Pwfa88h6veMfQ20HYpFa0m1QQw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -381,7 +381,7 @@ namespace api.Migrations
                         {
                             Id = "308da0db-e863-4814-8930-de3540e5406d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "31d0b67a-fb36-4814-847d-3fb1d2982435",
+                            ConcurrencyStamp = "4ece60e5-03b2-443e-821a-a2afd883d72f",
                             Email = "yungadmin@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -389,7 +389,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "YUNGADMIN@GMAIL.COM",
                             NormalizedUserName = "YUNGADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEL6M+cUqUmGikAV9DuY7/HK1g/YSCBRtqNml8vngVcOkDkHXg8b+MhxfySSOrkHuVg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENWBZts7xTHiXmxLJYqHmqM11f5/zc+ppMOfbvBBOoUeb2LvuerwB1pgT06omx/SnQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -399,7 +399,7 @@ namespace api.Migrations
                         {
                             Id = "e7610feb-110c-47d0-9a88-1bfdc12742a4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0498ebba-b72a-4396-a396-561efbfad0cf",
+                            ConcurrencyStamp = "d9344b21-3f6d-4e21-9f1e-6b003429ccaf",
                             Email = "trankieuloan@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Loan",
@@ -407,7 +407,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRANKIEULOAN@GMAIL.COM",
                             NormalizedUserName = "TRANKIEULOAN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIn+/4Sz9FCz+eQWn2k8UXzi57WDmB2jzCXZ/B8nk/n0Ax9Pz/vbI6XIjjLla5h0ag==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEF08Pv+/gcz9EnMnpVf/Zi9W9SXgVZTNdEs9T5Aa3dcIgfw7FWPmO/heWmrGuyiWDg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -417,7 +417,7 @@ namespace api.Migrations
                         {
                             Id = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0f5cc710-99a8-48e7-8fa6-f49319c7dd06",
+                            ConcurrencyStamp = "b28cf63b-410f-4485-a937-506477c45228",
                             Email = "phamvinhson@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Sơn",
@@ -425,7 +425,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHAMVINHSON@GMAIL.COM",
                             NormalizedUserName = "PHAMVINHSON@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELhb+mSOQ6lUiiG7ERYECunt5MATKjJi/W7AVxhRCnyOLxRraqVWXEG99yihxikjEg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBLbNAsxw1NVHDIyUSpqXWJpgByyMifMDF4R0wyUPidRNwqgM2UgVkgdnIM79isiLw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -435,7 +435,7 @@ namespace api.Migrations
                         {
                             Id = "08b84a20-7e7d-4353-bb53-74c79732beed",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "458568a5-4cbb-48bc-b091-847cee861a54",
+                            ConcurrencyStamp = "484a4d94-9e10-4745-8f5b-256bf0dc2ecc",
                             Email = "nguyentrunghieu@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Hiếu",
@@ -443,7 +443,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENTRUNGHIEU@GMAIL.COM",
                             NormalizedUserName = "NGUYENTRUNGHIEU@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAELQK9gAIYB/W6Nqu4NDB5W9X2UuNyaR180e8DWqZ3peEMFl2DAtSvwKX2TSFQkk1+w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIxYGI+Kph8SjXKQbF2VV/nMthRP4B8hIaf4j6eMKAtDGzyEZPyyGqI3UxkWIGe3zQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -453,7 +453,7 @@ namespace api.Migrations
                         {
                             Id = "b6256340-7bd0-4373-8549-c6a08053396b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5381fa44-1a6e-41c3-a953-c985c7f63510",
+                            ConcurrencyStamp = "f469ae61-5323-4fe7-a676-c40f363ef833",
                             Email = "nguyennhuloc@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Lộc",
@@ -461,7 +461,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENNHULOC@GMAIL.COM",
                             NormalizedUserName = "NGUYENNHULOC@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKJEX5yyosUuySSmbuXWkG0+a7k1CSPMxEk4j0SO5lBxQvHdeRT6UduQ1aVfxrRuKg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA6XYRLgZNpe7iFZbgptGJOs0knVX1Q0BvtA89WENf732PXIztfZI6XWvUCKQg5S/A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -471,7 +471,7 @@ namespace api.Migrations
                         {
                             Id = "6f8ce951-2f66-4a9e-a4fa-7a14f85b54c6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9b344fe5-26fe-44dd-a65b-9be3db307b9c",
+                            ConcurrencyStamp = "f67f8f5e-22ed-4224-920e-052e497426da",
                             Email = "caothivananh@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Anh",
@@ -479,7 +479,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CAOTHIVANANH@GMAIL.COM",
                             NormalizedUserName = "CAOTHIVANANH@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAENdENrJ8bVzb35wxIhesAzwd44UhvKR21kRgsoHh1YwxmCzJropWon00Wdidez8PuQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENQzb7jijgQPqLFrZ/YkIfBRwNgBQPt6Q/gC9gX7/phjvSzTCZ7cXZnE9xCLdvys3g==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -489,7 +489,7 @@ namespace api.Migrations
                         {
                             Id = "a0c9e67b-d593-4a56-93cd-063ec5d5d035",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1c74ad03-c82e-4452-85e3-08520318fae3",
+                            ConcurrencyStamp = "99edc0c8-6d5b-4f61-8af2-4ae43e8fbf79",
                             Email = "tranthaonguyen@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Nguyên",
@@ -497,7 +497,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRANTHAONGUYEN@GMAIL.COM",
                             NormalizedUserName = "TRANTHAONGUYEN@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEO82vgvkOJZUX21eKMHLyiiLO0N53eCV1SB0u/orM5WhKSWGIQyzaj3q84edkZcAyw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEH9x6q94qdQPurL47dm7NpIINuQr6Jgw+8L6UhaZr3NSdLt+3r0nlvKqZR92nIBdAA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -507,7 +507,7 @@ namespace api.Migrations
                         {
                             Id = "fd4fd02a-238d-4efc-a187-14d205a841f0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "14c50638-f6f0-4ae1-a036-8b55b4ada197",
+                            ConcurrencyStamp = "ae158058-a4ac-4b8b-98c0-9e3e73222f38",
                             Email = "truongthitramanh@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Anh",
@@ -515,7 +515,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUONGTHITRAMANH@GMAIL.COM",
                             NormalizedUserName = "TRUONGTHITRAMANH@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAECurl/IvMl8/9G3ICByN9i4OI/otTbXPL4l6SGW9z2VsCuE+L9t8FL+oONjzOZUIog==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENtcXM41F70MpJRAa1CcUUCZmn/vMogl1s5Fmxqj9SwBmnfu4vQiudGSayUBmFXe8Q==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -525,7 +525,7 @@ namespace api.Migrations
                         {
                             Id = "3b488e0f-eb92-4994-a555-cbe4ecdf3672",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ecef957f-0aec-48ec-a532-7ffb3b7a9fa3",
+                            ConcurrencyStamp = "cd205014-4251-44f6-8c64-49e69cb12f8b",
                             Email = "caobaquat@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Quát",
@@ -533,7 +533,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "CAOBAQUAT@GMAIL.COM",
                             NormalizedUserName = "CAOBAQUAT@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJwxadyN8GUuIyoBb8XoXrX9AOfU87TWV8UHztmau1SzdoqCqUJDEfrR3OQC68nI9A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGutgkSwQ41RxtlLt7GUqPhNTCQSL9lupdqeXXVZyEGYkbRVZhk/5LN9SBxl4TrA5w==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -543,7 +543,7 @@ namespace api.Migrations
                         {
                             Id = "52999f6b-a605-45b0-b98f-b8880fc46027",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e85461d6-787c-4ec0-a291-3d9f62df5695",
+                            ConcurrencyStamp = "e82cc074-8fe2-461f-bb5f-4f9d22b6e9b2",
                             Email = "huynhtranthanh@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Thành",
@@ -551,7 +551,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HUYNHTRANTHANH@GMAIL.COM",
                             NormalizedUserName = "HUYNHTRANTHANH@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEx1YjoWMs58sJFz27AMbvv4TaeyvxiilerlUO5alUxLUCvMY+SHXQoNGh0Tr/EyoA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBs4xN//UpgbgxKyIAsyQFvzuzafTwqx60XVEp2y364V/Gmjx/HZXcJbkiMDdwxqhg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -561,7 +561,7 @@ namespace api.Migrations
                         {
                             Id = "39b465e2-c398-494f-bb62-d1eb02aa5471",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bc92730a-437b-4a2e-b51c-fea61cde5d3e",
+                            ConcurrencyStamp = "98fe09bb-a92f-4ade-9683-33065b965c87",
                             Email = "nguyenthanhlong@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Long",
@@ -569,7 +569,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENTHANHLONG@GMAIL.COM",
                             NormalizedUserName = "NGUYENTHANHLONG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDXfTZP8LReLk+JuxegAzCSah1f0xb+IfAXDexWpyAGF32cJvPqXUKh6w3FMt7a8Cg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBJ/ERO35+Jg+mB3S1J7leLm5AP7pUy0ZpHOVO/rvtYL15+yYviwSn0IctVSNDEHtA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -579,7 +579,7 @@ namespace api.Migrations
                         {
                             Id = "ce4b2f5c-1fb9-4fe1-945c-20eca474ce16",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "68a4bd80-0163-41f4-a022-77939dfc67a2",
+                            ConcurrencyStamp = "095607aa-75c6-407e-bd20-106b62440032",
                             Email = "hoxuanhuong@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Hương",
@@ -587,7 +587,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "HOXUANHUONG@GMAIL.COM",
                             NormalizedUserName = "HOXUANHUONG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGO5l9Wv2kwgo/zoBYBI/mDdSawmSA9M3EvfLwhnd6lBvjzyaV/Wv7muuHv7qMPCpA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKBAPJhdAsnRhiB6VtC/cIRvHgeVKHXyD1NK5In1vqXCcAdquVdBxkGJV3kzFurN6A==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -597,7 +597,7 @@ namespace api.Migrations
                         {
                             Id = "fd9a7449-e604-48c1-a638-c564e17c1bc0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "02ea282c-3a71-4d1b-8461-72502380a443",
+                            ConcurrencyStamp = "a9c55cf4-aae8-4db3-98f5-bb9fe101c18d",
                             Email = "nguyenhue@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Huệ",
@@ -605,7 +605,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "NGUYENHUE@GMAIL.COM",
                             NormalizedUserName = "NGUYENHUE@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIdJzb8KRhrnzHXM5pN31o1wEuK5oSf2/qBv+JVTuBmCwDl+eZHqNxZ3qPuDE7Wx1Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGaB3AQfELG3BwO6OcrRfpwAxSd3ceXuYTJaI5RMNFv6BvpwL05t4gJgdhh1ySA1kw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -615,7 +615,7 @@ namespace api.Migrations
                         {
                             Id = "57b2db13-1d08-48a4-adca-41d837bb8937",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "171565f3-e8e0-47d6-b4c8-e80883c25686",
+                            ConcurrencyStamp = "e455e595-0369-42b8-b015-0297d4e0c95f",
                             Email = "phungthanhdo@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Độ",
@@ -623,7 +623,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHUNGTHANHDO@GMAIL.COM",
                             NormalizedUserName = "PHUNGTHANHDO@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEtn9UeTasvPpxmICRE9GmI8Q51jbe0fXDsWZuT7O5gSPeJZk5qDlmqH5tgMQJoEEw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEJOtSmWpCmrjZLlkvYisxO43dNdLKQVgp3EvcW9w2d2BI8hLq0/i8Qw1zYWopEQYIg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -633,7 +633,7 @@ namespace api.Migrations
                         {
                             Id = "3a6a1f70-8f67-4f8a-b1f9-267e5d621edb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "25108bed-41dc-48dc-9da0-1052c3786dee",
+                            ConcurrencyStamp = "bf0c7d88-d7ad-478d-ac66-a519313f0078",
                             Email = "phantantrung@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Trung",
@@ -641,7 +641,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "PHANTANTRUNG@GMAIL.COM",
                             NormalizedUserName = "PHANTANTRUNG@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOA7MjZPo4DWLGpRrYAq3/LmI1cKwOMQVQF7hKya6Jv3Q4NEb/48O01/ngcFW8UN5w==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHWDdi+/3wEejuG5NqnEmgjLFR9KN/yiY9HL2ZZtbEeQY3rwL8tGgaLQS4p5WvnmxA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -651,7 +651,7 @@ namespace api.Migrations
                         {
                             Id = "5ce20f05-c625-43fc-ae25-a7514e9520db",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5ab2b12a-02a0-470e-8c26-151be7050444",
+                            ConcurrencyStamp = "7fa4a8dc-672a-4303-90e6-3923a9194c79",
                             Email = "truongtuantu@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Tú",
@@ -659,7 +659,7 @@ namespace api.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "TRUONGTUANTU@GMAIL.COM",
                             NormalizedUserName = "TRUONGTUANTU@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPKlmuP2TagMmmGgAzCDIG5evQ18UZjh6axIPGMq5M2J4NMk6x405ntMGozu5vrHHg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEHodcfVIChgFBj47pPKh4VE54Cz6bPClA2DXccS1L63CuAawwYZPcZlsL2lLiV3Sw==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
