@@ -53,6 +53,20 @@ namespace api.Extensions
                 .WithMany(p => p.SupplierProducts)
                 .HasForeignKey(sp => sp.ProductId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            /** [InventoryRecordDetail] and [Product] */
+            modelBuilder.Entity<InventoryRecordDetail>()
+                .HasOne<Product>(ird => ird.Product)
+                .WithMany(p => p.InventoryRecordDetails)
+                .HasForeignKey(ird => ird.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            /** [InventoryRecordDetail] and [InventoryRecordForm] */
+            modelBuilder.Entity<InventoryRecordDetail>()
+                .HasOne<InventoryRecordForm>(ird => ird.InventoryRecordForm)
+                .WithMany(irf => irf.InventoryRecordDetails)
+                .HasForeignKey(ird => ird.InventoryRecordId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public static void ConfigTablesRequirements(this ModelBuilder modelBuilder)
