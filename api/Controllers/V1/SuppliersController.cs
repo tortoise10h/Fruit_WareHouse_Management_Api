@@ -11,11 +11,13 @@ using api.CQRS.Suppliers.Queries.GetAllSupplierProducts;
 using api.CQRS.Suppliers.Queries.GetAllSuppliers;
 using api.CQRS.Suppliers.Queries.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.V1
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,Sale,WarehouseKeeper,WarehouseKeeperManager,Boss")]
     public class SuppliersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -45,7 +47,6 @@ namespace api.Controllers.V1
         }
 
 
-        [Authorize(Roles = "Admin,Boss")]
         [HttpGet(ApiRoutes.Suppliers.GetAll)]
         public async Task<IActionResult> GetAll([FromQuery] GetAllSuppliersQuery query)
         {
