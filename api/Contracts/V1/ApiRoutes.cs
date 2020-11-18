@@ -98,5 +98,17 @@ namespace api.Contracts.V1
             public const string DeleteInventoryRecordDetail = Base + "/inventoryRecordForms/{inventoryRecordFormId}/inventoryRecordDetails";
 
         }
+
+        public static class GoodsDeliveryNotes
+        {
+            public const string Create = Base + "/goodsDeliveryNotes";
+            public const string GetAll = Base + "/goodsDeliveryNotes";
+            public const string GetById = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}";
+            public const string Update = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}";
+            public const string Delete = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}";
+            public const string AddProductsToGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails";
+            public const string BulkUpdateProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails/bulkUpdate";
+            public const string BulkDeleteProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails/bulkDelete";
+        }
     }
 }

@@ -1,3 +1,5 @@
+using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryDetails;
+using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingDetail;
@@ -77,6 +79,14 @@ namespace api.MapperProfiles
             //** InventoryRecordDetail */
             CreateMap<CreateInventoryDetailCommand, InventoryRecordDetail>();
             CreateMap<UpdateInventoryDetailCommand, InventoryRecordDetail>();
+
+            /** GoodsDeliveryNote */
+            CreateMap<CreateGoodsDeliveryNotesCommand, GoodsDeliveryNote>();
+            //CreateMap<UpdateGoodsDeliveryNotesCommand, GoodsDeliveryNote>();
+
+            /** GoodsDeliveryDetail */
+            CreateMap<CreateGoodsDeliveryDetailsCommand, GoodsDeliveryDetail>();
+            //CreateMap<UpdateGoodsDeliveryDetailsCommand, GoodsDeliveryDetail>();
         }
     }
 }

@@ -20,7 +20,12 @@ namespace api.MapperProfiles
             /** Supplier */
             CreateMap<AddProductToSupplierDTO, SupplierProduct>();
 
+            /** InventoryRecordDetail */
             CreateMap<CreateProductInInventoryRecordDetail, InventoryRecordDetail>();
+
+            /** ProductInGoodsDeliveryNote - GoodsDeliveryDetail */
+            CreateMap<ProductInGoodsDeliveryNote, GoodsDeliveryDetail>();
+            CreateMap<GoodsDeliveryDetail, ProductInGoodsDeliveryNote>();
         }
     }
 }
