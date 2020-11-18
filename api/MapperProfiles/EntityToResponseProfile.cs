@@ -9,6 +9,7 @@ using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
 using api.Contracts.V1.ResponseModels.Orders;
 using api.Contracts.V1.ResponseModels.Suppliers;
 using api.Contracts.V1.ResponseModels.InventoryRecordForms;
+using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
 
 namespace api.MapperProfiles
 {
@@ -39,11 +40,16 @@ namespace api.MapperProfiles
             CreateMap<Supplier, SupplierResponse>();
 
             CreateMap<Supplier, SupplierResponse>();
+
             CreateMap<SupplierProduct, SupplierProductResponse>();
 
             CreateMap<InventoryRecordForm, InventoryRecordFormResponse>();
 
             CreateMap<InventoryRecordDetail, InventoryRecordDetailResponse>();
+
+            CreateMap<GoodsDeliveryNote, GoodsDeliveryNoteResponse>();
+
+            CreateMap<GoodsDeliveryDetail, GoodsDeliveryDetailResponse>();
         }
     }
 }
