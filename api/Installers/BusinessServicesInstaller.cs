@@ -23,6 +23,7 @@ namespace api.Installers
             services.AddScoped<IPurchaseProposalServices, PurchaseProposalServices>();
             services.AddScoped<IGoodsReceivingNoteServices, GoodsReceivingNoteServices>();
             services.AddScoped<IOrderServices, OrderServices>();
+            services.AddScoped<IInventoryRecordFormServices, InventoryRecordFormServices>();
         }
     }
 }
