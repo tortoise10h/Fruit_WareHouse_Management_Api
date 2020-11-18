@@ -110,6 +110,16 @@ namespace api.Extensions
             modelBuilder
                 .Entity<OrderDetail>()
                 .HasQueryFilter(od => EF.Property<bool>(od, "IsDeleted") == false);
+
+            /** GoodsDeliveryNote */
+            modelBuilder
+                .Entity<GoodsDeliveryNote>()
+                .HasQueryFilter(gdn => EF.Property<bool>(gdn, "IsDeleted") == false);
+
+            /** GoodsDeliveryDetail */
+            modelBuilder
+                .Entity<GoodsDeliveryDetail>()
+                .HasQueryFilter(gdd => EF.Property<bool>(gdd, "IsDeleted") == false);
         }
 
         public static void Seed(this ModelBuilder modelBuilder)
