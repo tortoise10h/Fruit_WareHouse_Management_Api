@@ -83,7 +83,6 @@ namespace api.Controllers.V1
             return Created("", result);
         }
 
-        [Authorize(Roles = "Admin,Boss")]
         [HttpGet(ApiRoutes.Suppliers.GetAllSupplierProducts)]
         public async Task<IActionResult> GetAllSupplierProducts([FromRoute] int supplierId, [FromQuery] GetAllSupplierProductsQuery query)
         {
