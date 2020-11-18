@@ -72,7 +72,8 @@ namespace api.CQRS.InventoryRecordForms.Commands.DeleteInventoryDetail
 
             // Validate inventory record detail exist
             var inventoryRecordDetails = await _context.InventoryRecordDetails
-                .Where(p => inventoryDetails.Contains(p.Id))
+                .Where(p => p.InventoryRecordId == request.InventoryRecordFormId &&
+                    inventoryDetails.Contains(p.Id))
                 .ToListAsync();
 
             if (DistinctInventoryDetails.Count() != inventoryRecordDetails.Count())
