@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Helpers;
 
 namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20201118021725_InventoryRecord")]
+    partial class InventoryRecord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -939,7 +941,7 @@ namespace api.Migrations
                     b.Property<double>("QuantityReturned")
                         .HasColumnType("float");
 
-                    b.Property<double>("QuantitySold")
+                    b.Property<double>("QuantitySaled")
                         .HasColumnType("float");
 
                     b.Property<double>("SinglePrice")

@@ -86,5 +86,17 @@ namespace api.Contracts.V1
             public const string AddProductsToSupplier = Base + "/suppliers/{supplierId}/products";
             public const string RemoveProductsFromSupplier = Base + "/suppliers/{supplierId}/products";
         }
+
+        public static class InventoryRecordForms
+        {
+            public const string CreateInventoryRecordForm = Base + "/inventoryRecordForms";
+            public const string UpdateInventoryRecordForm = Base + "/inventoryRecordForms/{inventoryRecordFormId}";
+            public const string GetAll = Base + "/inventoryRecordForms";
+            public const string GetById = Base + "/inventoryRecordForms/{inventoryRecordFormId}";
+            public const string CreateInventoryRecordDetail = Base + "/inventoryRecordForms/{inventoryRecordFormId}/inventoryRecordDetails";
+            public const string UpdateInventoryRecordDetail = Base + "/inventoryRecordForms/{inventoryRecordFormId}/inventoryRecordDetails";
+            public const string DeleteInventoryRecordDetail = Base + "/inventoryRecordForms/{inventoryRecordFormId}/inventoryRecordDetails";
+
+        }
     }
 }
