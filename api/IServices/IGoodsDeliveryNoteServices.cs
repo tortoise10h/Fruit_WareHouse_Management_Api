@@ -25,5 +25,10 @@ namespace api.IServices
             List<OrderDetail> orderDetails,
             List<ProductInGoodsDeliveryNote> productsInGoodsDeliveryNote
             );
+
+        List<ProductInGoodsDeliveryNote> ValidateWhenUpdateProductsInGoodsDeliveryNote(List<GoodsDeliveryDetail> goodsDeliveryDetails,
+            List<OrderDetail> orderDetails,
+            List<ProductInGoodsDeliveryNote> productsInGoodsDeliveryNote
+            );
     }
 }

@@ -1,5 +1,6 @@
 using api.Contracts.V1.Dtos;
 using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryDetails;
+using api.CQRS.GoodsDeliveryNotes.Commands.UpdateGoodsDeliveryDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingDetail;
 using api.CQRS.Orders.Commands.CreateOrderDetails;
@@ -27,8 +28,8 @@ namespace api.MapperProfiles
             CreateMap<CreateGoodsDeliveryDetailsCommand, ProductInGoodsDeliveryNote>();
             CreateMap<ProductInGoodsDeliveryNote, CreateGoodsDeliveryDetailsCommand>();
 
-            //CreateMap<UpdateGoodsDeliveryDetailsCommand, ProductInOrder>();
-            //CreateMap<ProductInOrder, UpdateGoodsDeliveryDetailsCommand>();
+            CreateMap<UpdateGoodsDeliveryDetailsCommand, ProductInGoodsDeliveryNote>();
+            CreateMap<ProductInGoodsDeliveryNote, UpdateGoodsDeliveryDetailsCommand>();
         }
     }
 }
