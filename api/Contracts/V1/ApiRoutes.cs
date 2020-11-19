@@ -110,5 +110,16 @@ namespace api.Contracts.V1
             public const string BulkUpdateProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails/bulkUpdate";
             public const string BulkDeleteProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails/bulkDelete";
         }
+
+        public static class ProductRemoveForms
+        {
+            public const string CreateProductRemoveForm = Base + "/productRemoveForms";
+            public const string UpdateProductRemoveForm = Base + "/productRemoveForms/{productRemoveFormId}";
+            public const string GetAll = Base + "/productRemoveForms";
+            public const string GetById = Base + "/productRemoveForms/{productRemoveFormId}";
+            public const string CreateProductRemoveDetail = Base + "/productRemoveForms/{productRemoveFormId}/productRemoveDetails";
+            public const string UpdateProductRemoveDetail = Base + "/productRemoveForms/{productRemoveFormId}/productRemoveDetails";
+            public const string DeleteProductRemoveDetail = Base + "/productRemoveForms/{productRemoveFormId}/productRemoveDetails";
+        }
     }
 }

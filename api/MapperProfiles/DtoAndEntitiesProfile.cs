@@ -26,6 +26,9 @@ namespace api.MapperProfiles
             /** ProductInGoodsDeliveryNote - GoodsDeliveryDetail */
             CreateMap<ProductInGoodsDeliveryNote, GoodsDeliveryDetail>();
             CreateMap<GoodsDeliveryDetail, ProductInGoodsDeliveryNote>();
+
+            /** ProductRemoveDetail */
+            CreateMap<CreateProductInProductRemoveDetail, ProductRemoveDetail>();
         }
     }
 }
