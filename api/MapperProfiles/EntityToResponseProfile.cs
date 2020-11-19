@@ -10,6 +10,7 @@ using api.Contracts.V1.ResponseModels.Orders;
 using api.Contracts.V1.ResponseModels.Suppliers;
 using api.Contracts.V1.ResponseModels.InventoryRecordForms;
 using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
+using api.Contracts.V1.ResponseModels.ProductRemoveForms;
 
 namespace api.MapperProfiles
 {
@@ -50,6 +51,10 @@ namespace api.MapperProfiles
             CreateMap<GoodsDeliveryNote, GoodsDeliveryNoteResponse>();
 
             CreateMap<GoodsDeliveryDetail, GoodsDeliveryDetailResponse>();
+
+            CreateMap<ProductRemoveForm, ProductRemoveFormResponse>();
+
+            CreateMap<ProductRemoveDetail, ProductRemoveDetailResponse>();
         }
     }
 }
