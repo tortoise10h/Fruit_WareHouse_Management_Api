@@ -347,5 +347,25 @@ namespace api.Services
             return null;
 
         }
+
+        public List<ProductInGoodsDeliveryNote> ValidateWhenUpdateProductsInGoodsDeliveryNote( List<GoodsDeliveryDetail> goodsDeliveryDetails,
+            List<OrderDetail> orderDetails,
+            List<ProductInGoodsDeliveryNote> productsInGoodsDeliveryNote
+            )
+        {
+            /** Unique list by product Id */
+            productsInGoodsDeliveryNote = UniqueListById(productsInGoodsDeliveryNote);
+            
+            /** Make sure updated products must be existed in goods receiving note */
+            if (goodsDeliveryDetails.Count != productsInGoodsDeliveryNote.Count)
+            {
+                throw new NotFoundException();
+            }
+
+            /** Make sure new product valid in purchase proposal */
+            ValidateProductsValidInOrder(orderDetails, productsInGoodsDeliveryNote);
+
+            return productsInGoodsDeliveryNote;
+        }
     }
 }

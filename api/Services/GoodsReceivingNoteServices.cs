@@ -309,8 +309,7 @@ namespace api.Services
 
         }
         
-        public List<ProductInGoodsReceivingNote> ValidateWhenUpdateProductsInGoodsReceivingNote(
-            List<GoodsReceivingDetail> goodsReceivingDetails,
+        public List<ProductInGoodsReceivingNote> ValidateWhenUpdateProductsInGoodsReceivingNote( List<GoodsReceivingDetail> goodsReceivingDetails,
             List<PurchaseProposalDetail> purchaseProposalDetails,
             List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
             )
