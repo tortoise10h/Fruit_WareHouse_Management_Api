@@ -2,6 +2,7 @@
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes;
+using api.CQRS.GoodsDeliveryNotes.Commands.UpdateGoodsDeliveryNotes;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -54,21 +55,21 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "WarehouseKeeper,Boss,WarehouseKeeperManager")]
-        //[HttpPut(ApiRoutes.GoodsDeliveryNotes.Update)]
-        //public async Task<IActionResult> Update([FromRoute] int goodsReceivingNoteId, [FromBody] UpdateGoodsReceivingNoteCommand command)
-        //{
-        //    command.Id = goodsReceivingNoteId;
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "WarehouseKeeper,Boss,WarehouseKeeperManager")]
+        [HttpPut(ApiRoutes.GoodsDeliveryNotes.Update)]
+        public async Task<IActionResult> Update([FromRoute] int goodsDeliveryNoteId, [FromBody] UpdateGoodsDeliveryNotesCommand command)
+        {
+            command.Id = goodsDeliveryNoteId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        GoodsReceivingNoteResponse => NoContent(),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         [HttpGet(ApiRoutes.GoodsDeliveryNotes.GetById)]
         public async Task<IActionResult> GetById([FromRoute] int goodsDeliveryNoteId)

@@ -55,7 +55,7 @@ namespace api.Services
         public List<ProductInOrder> UniqueListByProductId(List<ProductInOrder> productsInOrder)
         {
 
-            /** Make sure all product id in list is uniqe */
+            /** Make sure all product id in list is unique */
             productsInOrder = productsInOrder
                 .GroupBy(x => x.ProductId)
                 .Select(x => x.First())
