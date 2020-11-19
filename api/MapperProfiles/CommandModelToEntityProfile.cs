@@ -15,6 +15,10 @@ using api.CQRS.Orders.Commands.UpdateOrderDetails;
 using api.CQRS.Orders.Commands.UpdateOrders;
 using api.CQRS.ProductCategories.Commands.CreateProductCategory;
 using api.CQRS.ProductCategories.Commands.UpdateProductCategory;
+using api.CQRS.ProductRemoveForms.Commands.CreateProductRemoveDetail;
+using api.CQRS.ProductRemoveForms.Commands.CreateProductRemoveForm;
+using api.CQRS.ProductRemoveForms.Commands.UpdateProductRemoveDetail;
+using api.CQRS.ProductRemoveForms.Commands.UpdateProductRemoveForm;
 using api.CQRS.Products.Commands.CreateProducts;
 using api.CQRS.Products.Commands.UpdateProducts;
 using api.CQRS.ProductUnits.Commands.CreateProductUnits;
@@ -88,6 +92,14 @@ namespace api.MapperProfiles
             /** GoodsDeliveryDetail */
             CreateMap<CreateGoodsDeliveryDetailsCommand, GoodsDeliveryDetail>();
             //CreateMap<UpdateGoodsDeliveryDetailsCommand, GoodsDeliveryDetail>();
+
+            //** ProductRemoveForm */
+            CreateMap<CreateProductRemoveFormCommand, ProductRemoveForm>();
+            CreateMap<UpdateProductRemoveFormCommand, ProductRemoveForm>();
+
+            //** ProductRemoveDetail */
+            CreateMap<CreateProductRemoveDetailCommand, ProductRemoveDetail>();
+            CreateMap<UpdateProductRemoveDetailCommand, ProductRemoveDetail>();
         }
     }
 }

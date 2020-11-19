@@ -67,6 +67,20 @@ namespace api.Extensions
                 .WithMany(irf => irf.InventoryRecordDetails)
                 .HasForeignKey(ird => ird.InventoryRecordId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            /** [ProductRemoveDetail] and [Product] */
+            modelBuilder.Entity<ProductRemoveDetail>()
+                .HasOne<Product>(prd => prd.Product)
+                .WithMany(p => p.ProductRemoveDetails)
+                .HasForeignKey(prd => prd.ProductId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            /** [ProductRemoveDetail] and [ProductRemoveForm] */
+            modelBuilder.Entity<ProductRemoveDetail>()
+                .HasOne<ProductRemoveForm>(prd => prd.ProductRemoveForm)
+                .WithMany(p => p.ProductRemoveDetails)
+                .HasForeignKey(prd => prd.ProductRemoveFormId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public static void ConfigTablesRequirements(this ModelBuilder modelBuilder)

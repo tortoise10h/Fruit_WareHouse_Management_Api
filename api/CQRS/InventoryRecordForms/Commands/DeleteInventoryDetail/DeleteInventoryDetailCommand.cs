@@ -16,7 +16,7 @@ namespace api.CQRS.InventoryRecordForms.Commands.DeleteInventoryDetail
     public class DeleteInventoryDetailCommand : IRequest<Result<List<InventoryRecordDetailResponse>>>
     {
         public int InventoryRecordFormId { get; set; }
-        public List<int> InventoryDetailsIds { get; set; }
+        public List<int> InventoryDetailIds { get; set; }
     }
 
     public class DeleteInventoryDetailHandler : IRequestHandler<DeleteInventoryDetailCommand, Result<List<InventoryRecordDetailResponse>>>
@@ -53,11 +53,11 @@ namespace api.CQRS.InventoryRecordForms.Commands.DeleteInventoryDetail
                     );
             }
 
-            var inventoryDetails = request.InventoryDetailsIds
+            var inventoryDetails = request.InventoryDetailIds
                 .ToList();
 
             // Validate inventory record detail is unique
-            var DistinctInventoryDetails = request.InventoryDetailsIds
+            var DistinctInventoryDetails = request.InventoryDetailIds
                 .Distinct()
                 .ToList();
 

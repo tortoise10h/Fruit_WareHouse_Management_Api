@@ -91,6 +91,31 @@ namespace api.CQRS.InventoryRecordForms.Commands.UpdateInventoryForms
                 }
             }
 
+            //** Update product quantity when request status is done */
+            if (request.Status == InventoryRecordFormStatus.Done)
+            {
+                var inventoryRecordDetails = await _context.InventoryRecordDetails
+                    .Where(ird => ird.InventoryRecordId == request.Id)
+                    .ToListAsync();
+
+                var productsToUpdate = inventoryRecordDetails
+                    .Select(x => new { x.ProductId, x.ActualQuantity });
+
+                var products = await _context.Products
+                    .Where(p => productsToUpdate.Select(x => x.ProductId).Contains(p.Id))
+                    .ToListAsync();
+
+                foreach (var p in products)
+                {
+                    var update = productsToUpdate
+                        .FirstOrDefault(x => x.ProductId == p.Id);
+
+                    p.Quantity = update.ActualQuantity;
+                }
+
+                _context.Products.UpdateRange(products);
+            }
+
             _mapper.Map<UpdateInventoryFormCommand, InventoryRecordForm>(request, inventoryRecordForm);
             _context.InventoryRecordForms.Update(inventoryRecordForm);
 

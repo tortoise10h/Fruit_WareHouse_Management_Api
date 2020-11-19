@@ -29,6 +29,8 @@ namespace api.Helpers
         public DbSet<InventoryRecordDetail> InventoryRecordDetails { get; set; }
         public DbSet<GoodsDeliveryNote> GoodsDeliveryNotes { get; set; }
         public DbSet<GoodsDeliveryDetail> GoodsDeliveryDetails { get; set; }
+        public DbSet<ProductRemoveForm> ProductRemoveForms { get; set; }
+        public DbSet<ProductRemoveDetail> ProductRemoveDetails { get; set; }
 
         protected readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
