@@ -149,6 +149,16 @@ namespace api.Services
                     throw new BadRequestException(
                         new ApiError("Chỉ được hoàn tất phiếu xuất kho chỉ khi phiếu khi đã duyệt"));
                 }
+
+                /** Make sure products in goods delivery note are enough quantity in storage */
+                var goodsDeliveryDetails = await _context.GoodsDeliveryDetails
+                    .Where(x => x.GoodsDeliveryNoteId == goodsDeliveryNote.Id)
+                    .Include(x => x.Product)
+                    .ToListAsync();
+                var products = goodsDeliveryDetails.Select(x => x.Product).ToList();
+
+                CheckProductsEnoughQuantityWhenDone(goodsDeliveryDetails, products);
+
             } else if (newStatus == GoodsDeliveryNoteStatus.Approved)
             {
                 if (goodsDeliveryNote.Status != GoodsDeliveryNoteStatus.Pending)
@@ -176,6 +186,49 @@ namespace api.Services
 
         }
 
+        public void CheckProductsEnoughQuantityWhenDone(List<GoodsDeliveryDetail> goodsDeliveryDetails, List<Product> products)
+        {
+            var productIdsToExport = goodsDeliveryDetails.Select(x => x.ProductId).ToList();
+
+            products = products.Where(x => x.Status != ProductStatus.Locked).ToList();
+
+            /** Make sure all exported products are existed and not locked */
+            if (productIdsToExport.Count != products.Count)
+            {
+                var existedProductIds = products.Select(x => x.Id).ToList();
+
+                var inValidProductIds = productIdsToExport.Except(existedProductIds);
+
+                string errResponse = "";
+                foreach (var pId in inValidProductIds)
+                {
+                    errResponse += $"Sản phẩm với id [{pId}] không tồn tại hoặc đã bị khoá<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
+
+            /** Make sure all exported products enough quantity */
+            string err = "";
+            foreach (var gdd in goodsDeliveryDetails)
+            {
+                var matchedProduct = products
+                    .SingleOrDefault(x => x.Id == gdd.ProductId);
+
+                if (gdd.Quantity > matchedProduct.Quantity)
+                {
+                    err += $"Số lượng còn lại của sản phẩm với id [{gdd.ProductId}] (SL: {matchedProduct.Quantity}) không đủ so với số lượng cần xuất kho (SL: {gdd.Quantity})<br/>"; 
+                }
+            }
+
+            if (err.Equals("") == false)
+            {
+                throw new BadRequestException(
+                    new ApiError(err));
+            }
+        }
+
         public async Task HandleBusinessWhenStatusIsChanged(
             DataContext ctx,
             GoodsDeliveryNote goodsDeliveryNote,
@@ -189,39 +242,59 @@ namespace api.Services
                     var goodsDeliveryDetails = await ctx.GoodsDeliveryDetails
                         .Where(x => x.GoodsDeliveryNoteId == goodsDeliveryNote.Id)
                         .ToListAsync();
-                    var productIdsOfGoodsDeliveryNote = goodsDeliveryDetails
-                        .Select(x => x.ProductId)
-                        .ToList();
 
                     var orderDetailsShouldBeHandled = await ctx.OrderDetails
                         .Include(x => x.Product)
-                        .Where(x => productIdsOfGoodsDeliveryNote.Contains(x.ProductId) && 
-                            x.OrderId == goodsDeliveryNote.OrderId)
+                        .Where(x => x.OrderId == goodsDeliveryNote.OrderId)
                         .ToListAsync();
-                    var productsShouldBeHandled = orderDetailsShouldBeHandled
+
+                    /** Update quantity of product in order and in storage */
+                    foreach (var goodsDeliveryDetail in goodsDeliveryDetails)
+                    {
+                        var matchedOrderDetail = orderDetailsShouldBeHandled
+                            .SingleOrDefault(x => x.ProductId == goodsDeliveryDetail.ProductId);
+
+                        matchedOrderDetail.QuantitySold += goodsDeliveryDetail.Quantity;
+                        matchedOrderDetail.QuantityNeed = matchedOrderDetail.Quantity - matchedOrderDetail.QuantitySold;
+
+                        matchedOrderDetail.Product.QuantityForSale -= goodsDeliveryDetail.Quantity;
+                        matchedOrderDetail.Product.Quantity -= goodsDeliveryDetail.Quantity;
+                    }
+
+                    ///** Update quantity of product in storage */
+                    //foreach (var product in productsShouldBeHandled)
+                    //{
+                    //    var matchedProductInGoodsDeliveryNote = goodsDeliveryDetails
+                    //        .SingleOrDefault(x => x.ProductId == product.Id);
+
+                    //    product.QuantityForSale -= matchedProductInGoodsDeliveryNote.Quantity;
+                    //    product.Quantity -= matchedProductInGoodsDeliveryNote.Quantity;
+                    //}
+
+                    var productsToUpdate = orderDetailsShouldBeHandled
                         .Select(x => x.Product)
                         .ToList();
 
-                    /** Update quantity of product in order */
-                    foreach (var orderDetail in orderDetailsShouldBeHandled)
+                    /** Order will be changed to exported status when all quantity need
+                     * of each order detail in it = 0 */
+                    bool isOrderExported = true;
+                    foreach (var od in orderDetailsShouldBeHandled)
                     {
-                        var matchedProductInGoodsDeliveryNote = goodsDeliveryDetails
-                            .SingleOrDefault(x => x.ProductId == orderDetail.ProductId);
-
-                        orderDetail.QuantitySold += matchedProductInGoodsDeliveryNote.Quantity;
-                        orderDetail.QuantityNeed = orderDetail.Quantity - orderDetail.QuantitySold;
+                        if (od.QuantityNeed > 0)
+                        {
+                            isOrderExported = false;
+                        }
                     }
 
-                    /** Update quantity of product in storage */
-                    foreach (var product in productsShouldBeHandled)
+                    if (isOrderExported)
                     {
-                        var matchedProductInGoodsDeliveryNote = goodsDeliveryDetails
-                            .SingleOrDefault(x => x.ProductId == product.Id);
+                        var updatedOrder = new Order { Id = goodsDeliveryNote.OrderId };
+                        ctx.Attach(updatedOrder);
 
-                        product.QuantityForSale -= matchedProductInGoodsDeliveryNote.Quantity;
+                        updatedOrder.Status = OrderStatus.Exported;
                     }
 
-                    ctx.Products.UpdateRange(productsShouldBeHandled);
+                    ctx.Products.UpdateRange(productsToUpdate);
                     ctx.OrderDetails.UpdateRange(orderDetailsShouldBeHandled);
                 } 
             }
