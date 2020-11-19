@@ -1,6 +1,7 @@
 ﻿using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
+using api.CQRS.GoodsDeliveryNotes.Commands.BulkCreateGoodsDeliveryDetails;
 using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.UpdateGoodsDeliveryNotes;
 using MediatR;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using src.CQRS.GoodsDeliveryNotes.Queries;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace api.Controllers.V1
@@ -88,23 +90,23 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
-        //[HttpPost(ApiRoutes.GoodsDeliveryNotes.AddProductToGoodReceivingNote)]
-        //public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int goodsReceivingNoteId, [FromBody] BulkCreateGoodsReceivingDetailCommand command)
-        //{
-        //    command.GoodsReceivingNoteId = goodsReceivingNoteId;
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpPost(ApiRoutes.GoodsDeliveryNotes.AddProductsToGoodsDeliveryNote)]
+        public async Task<IActionResult> AddProductToPurchaseProposalForm([FromRoute] int goodsDeliveryNoteId, [FromBody] BulkCreateGoodsDeliveryDetailsCommand command)
+        {
+            command.GoodsDeliveryNoteId = goodsDeliveryNoteId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        response => Created("", new Response<List<GoodsReceivingDetailResponse>>(
-        //            response
-        //        )),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => Created("", new Response<List<GoodsDeliveryDetailResponse>>(
+                    response
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         //[Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
         //[HttpPut(ApiRoutes.GoodsDeliveryNotes.BulkUpdateProductInGoodsReceivingNote)]

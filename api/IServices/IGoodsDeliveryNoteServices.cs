@@ -19,5 +19,11 @@ namespace api.IServices
             DataContext ctx,
             GoodsDeliveryNote goodsDeliveryNote,
             GoodsDeliveryNoteStatus newStatus);
+
+        Task<List<ProductInGoodsDeliveryNote>> ValidateWhenAddNewProductToExistedGoodsDeliveryNote(
+            int goodsDeliveryNoteId,
+            List<OrderDetail> orderDetails,
+            List<ProductInGoodsDeliveryNote> productsInGoodsDeliveryNote
+            );
     }
 }
