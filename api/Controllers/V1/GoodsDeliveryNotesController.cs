@@ -2,6 +2,7 @@
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.BulkCreateGoodsDeliveryDetails;
+using api.CQRS.GoodsDeliveryNotes.Commands.BulkDeleteGoodsDeliveryDetails;
 using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.UpdateGoodsDeliveryNotes;
 using MediatR;
@@ -124,20 +125,20 @@ namespace api.Controllers.V1
         //    );
         //}
 
-        //[Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
-        //[HttpDelete(ApiRoutes.GoodsDeliveryNotes.BulkDeleteProductInGoodsReceivingNote)]
-        //public async Task<IActionResult> BulkDeletePurchaseProposalDetaiils([FromRoute] int goodsReceivingNoteId, [FromBody] BulkDeleteGoodsReceivingDetailCommand command)
-        //{
-        //    command.GoodsReceivingNoteId = goodsReceivingNoteId;
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpDelete(ApiRoutes.GoodsDeliveryNotes.BulkDeleteProductsInGoodsDeliveryNote)]
+        public async Task<IActionResult> BulkDeletePurchaseProposalDetaiils([FromRoute] int goodsDeliveryNoteId, [FromBody] BulkDeleteGoodsDeliveryDetailsCommand command)
+        {
+            command.GoodsDeliveryNoteId = goodsDeliveryNoteId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        response => NoContent(),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
     }
 }
