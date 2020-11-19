@@ -58,7 +58,7 @@ namespace api.Contracts.V1
             public const string GetById = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}";
             public const string Update = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}";
             public const string Delete = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}";
-            public const string AddProductToGoodReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails";
+            public const string AddProductToGoodReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsDeliveryDetails";
             public const string BulkUpdateProductInGoodsReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails/bulkUpdate";
             public const string BulkDeleteProductInGoodsReceivingNote = Base + "/goodsReceivingNotes/{goodsReceivingNoteId}/goodsReceivingDetails/bulkDelete";
         }
@@ -106,9 +106,9 @@ namespace api.Contracts.V1
             public const string GetById = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}";
             public const string Update = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}";
             public const string Delete = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}";
-            public const string AddProductsToGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails";
-            public const string BulkUpdateProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails/bulkUpdate";
-            public const string BulkDeleteProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsReceivingDetails/bulkDelete";
+            public const string AddProductsToGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsDeliveryDetails";
+            public const string BulkUpdateProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsDeliveryDetails/bulkUpdate";
+            public const string BulkDeleteProductsInGoodsDeliveryNote = Base + "/goodsDeliveryNotes/{goodsDeliveryNoteId}/goodsDeliveryDetails/bulkDelete";
         }
 
         public static class ProductRemoveForms

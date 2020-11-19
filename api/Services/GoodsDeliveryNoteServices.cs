@@ -261,16 +261,6 @@ namespace api.Services
                         matchedOrderDetail.Product.Quantity -= goodsDeliveryDetail.Quantity;
                     }
 
-                    ///** Update quantity of product in storage */
-                    //foreach (var product in productsShouldBeHandled)
-                    //{
-                    //    var matchedProductInGoodsDeliveryNote = goodsDeliveryDetails
-                    //        .SingleOrDefault(x => x.ProductId == product.Id);
-
-                    //    product.QuantityForSale -= matchedProductInGoodsDeliveryNote.Quantity;
-                    //    product.Quantity -= matchedProductInGoodsDeliveryNote.Quantity;
-                    //}
-
                     var productsToUpdate = orderDetailsShouldBeHandled
                         .Select(x => x.Product)
                         .ToList();
@@ -298,6 +288,63 @@ namespace api.Services
                     ctx.OrderDetails.UpdateRange(orderDetailsShouldBeHandled);
                 } 
             }
+
+        }
+
+        public async Task<List<ProductInGoodsDeliveryNote>> ValidateWhenAddNewProductToExistedGoodsDeliveryNote(
+            int goodsDeliveryNoteId,
+            List<OrderDetail> orderDetails,
+            List<ProductInGoodsDeliveryNote> productsInGoodsDeliveryNote
+            )
+        {
+            /** Unique list by product Id */
+            productsInGoodsDeliveryNote = UniqueListByProductId(productsInGoodsDeliveryNote);
+            
+            /** Make sure new products don't exist in goods delivery note */
+            var productIdsInGoodsDeliveryNote = productsInGoodsDeliveryNote
+                .Select(x => x.ProductId)
+                .ToList();
+
+            var existedGoodsDeliveryNote = await ValidateProductAlreadyExistInGoodsDeliveryNote(
+                productIdsInGoodsDeliveryNote,
+                goodsDeliveryNoteId);
+
+            if (existedGoodsDeliveryNote != null)
+            {
+
+                string errResponse = "";
+                foreach (var gdd in existedGoodsDeliveryNote)
+                {
+                    errResponse += $"Sản phẩm với id [{gdd.ProductId}] đã tồn tại trong phiếu xuất kho<br/>";
+                }
+
+                throw new BadRequestException(
+                    new ApiError(errResponse));
+            }
+
+            await ValidateListProductIdsExistAndNotLocked(productIdsInGoodsDeliveryNote);
+
+            /** Make sure new product valid in order */
+            ValidateProductsValidInOrder(orderDetails, productsInGoodsDeliveryNote);
+
+            return productsInGoodsDeliveryNote;
+        }
+
+        public async Task<List<GoodsDeliveryDetail>> ValidateProductAlreadyExistInGoodsDeliveryNote(
+            List<int> productIdsInGoodsDeliveryNote,
+            int goodsDeliveryNoteId)
+        {
+            var goodsDeliveryDetails = await _context.GoodsDeliveryDetails
+                .Where(x => productIdsInGoodsDeliveryNote.Contains(x.ProductId) && 
+                    x.GoodsDeliveryNoteId == goodsDeliveryNoteId)
+                .ToListAsync();
+
+            if (goodsDeliveryDetails.Count > 0)
+            {
+                return goodsDeliveryDetails;
+            }
+
+            return null;
 
         }
     }
