@@ -3,6 +3,7 @@ using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.BulkCreateGoodsDeliveryDetails;
 using api.CQRS.GoodsDeliveryNotes.Commands.BulkDeleteGoodsDeliveryDetails;
+using api.CQRS.GoodsDeliveryNotes.Commands.BulkUpdateGoodsDeliveryDetail;
 using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.UpdateGoodsDeliveryNotes;
 using MediatR;
@@ -109,21 +110,21 @@ namespace api.Controllers.V1
             );
         }
 
-        //[Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
-        //[HttpPut(ApiRoutes.GoodsDeliveryNotes.BulkUpdateProductInGoodsReceivingNote)]
-        //public async Task<IActionResult> BulkUpdatePurchaseProposalDetails([FromRoute] int goodsReceivingNoteId, [FromBody] BulkUpdateGoodsReceivingDetailCommand command)
-        //{
-        //    command.GoodsReceivingNoteId = goodsReceivingNoteId;
-        //    var result = await _mediator.Send(command);
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpPut(ApiRoutes.GoodsDeliveryNotes.BulkUpdateProductsInGoodsDeliveryNote)]
+        public async Task<IActionResult> BulkUpdatePurchaseProposalDetails([FromRoute] int goodsDeliveryNoteId, [FromBody] BulkUpdateGoodsDeliveryDetailsCommand command)
+        {
+            command.GoodsDeliveryNoteId = goodsDeliveryNoteId;
+            var result = await _mediator.Send(command);
 
-        //    return result.Match<IActionResult>(
-        //        response => NoContent(),
-        //        exp =>
-        //        {
-        //            throw exp;
-        //        }
-        //    );
-        //}
+            return result.Match<IActionResult>(
+                response => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
 
         [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
         [HttpDelete(ApiRoutes.GoodsDeliveryNotes.BulkDeleteProductsInGoodsDeliveryNote)]
