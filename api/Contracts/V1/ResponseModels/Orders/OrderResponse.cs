@@ -1,4 +1,5 @@
 ﻿using api.Common.Enums;
+using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
 using api.Contracts.V1.ResponseModels.User;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,6 @@ namespace api.Contracts.V1.ResponseModels.Orders
 
         public UserResponse User { get; set; }
         public List<OrderDetailResponse> OrderDetails { get; set; }
+        public List<GoodsDeliveryNoteResponse> GoodsDeliveryNotes { get; set; }
     }
 }

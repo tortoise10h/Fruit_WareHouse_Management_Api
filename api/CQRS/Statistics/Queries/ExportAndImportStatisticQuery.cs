@@ -13,13 +13,13 @@ using E = api.Entities;
 
 namespace src.CQRS.PurchaseProposalForms.Queries
 {
-    public class ExportAndImportStatisticQuery : IRequest<Result<RevenueAndExpenditureStatisticResponse>>
+    public class ExportAndImportStatisticQuery : IRequest<Result<ExportAndImportStatisticResponse>>
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
     }
 
-    public class ExportAndImportStatisticHandler : IRequestHandler<ExportAndImportStatisticQuery, Result<RevenueAndExpenditureStatisticResponse>>
+    public class ExportAndImportStatisticHandler : IRequestHandler<ExportAndImportStatisticQuery, Result<ExportAndImportStatisticResponse>>
     {
         private readonly DataContext _context;
 
@@ -28,34 +28,74 @@ namespace src.CQRS.PurchaseProposalForms.Queries
             _context = context;
         }
 
-        public async Task<Result<RevenueAndExpenditureStatisticResponse>> Handle(ExportAndImportStatisticQuery query, CancellationToken cancellationToken)
+        public async Task<Result<ExportAndImportStatisticResponse>> Handle(ExportAndImportStatisticQuery query, CancellationToken cancellationToken)
         {
-            var succeededOrders = await _context.Orders
-                .Where(x => x.Status == OrderStatus.Done &&
-                    x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
+            var orderResult = await _context.Orders
+                .Where(x => x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
                     x.CreatedAt.Date.CompareTo(query.ToDate.Date) <= 0)
-                .Include(x => x.OrderDetails)
+                .GroupBy(x => x.Status)
+                .Select(item => new
+                {
+                    Amount = item.Count(),
+                    Status = item.Key
+                })
                 .ToListAsync();
 
-            double revenue = 0;
-            foreach (var order in succeededOrders)
-            {
-                double revenueOfSinlgeOrder = order.OrderDetails
-                    .Sum(od => (od.Quantity * od.SinglePrice) - (od.QuantityReturned * od.SinglePrice));
-
-                revenue += revenueOfSinlgeOrder;
-            }
-
-            var expenditure = _context.GoodsReceivingNotes
-                .Where(x => x.Status == GoodsReceivingNoteStatus.Done && 
-                    x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
+            var exportResult = await _context.GoodsDeliveryNotes
+                .Where(x => x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
                     x.CreatedAt.Date.CompareTo(query.ToDate.Date) <= 0)
-                .Sum(x => x.TotalPrice);
+                .GroupBy(x => x.Status)
+                .Select(item => new
+                {
+                    Amount = item.Count(),
+                    Status = item.Key
+                })
+                .ToListAsync();
 
-            return new RevenueAndExpenditureStatisticResponse
+            var purchaseProposalFormResult = await _context.PurchaseProposalForms
+                .Where(x => x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
+                    x.CreatedAt.Date.CompareTo(query.ToDate.Date) <= 0)
+                .GroupBy(x => x.Status)
+                .Select(item => new
+                {
+                    Amount = item.Count(),
+                    Status = item.Key
+                })
+                .ToListAsync();
+            
+            var importResult = await _context.GoodsReceivingNotes
+                .Where(x => x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
+                    x.CreatedAt.Date.CompareTo(query.ToDate.Date) <= 0)
+                .GroupBy(x => x.Status)
+                .Select(item => new
+                {
+                    Amount = item.Count(),
+                    Status = item.Key
+                })
+                .ToListAsync();
+
+            return new ExportAndImportStatisticResponse
             {
-                Revenue = revenue,
-                Expenditure = expenditure
+                Order = new
+                {
+                    Total = orderResult.Sum(x => x.Amount),
+                    Details = orderResult
+                },
+                GoodsDeliveryNote = new
+                {
+                    Total = exportResult.Sum(x => x.Amount),
+                    Details = exportResult
+                },
+                PurchaseProposalForm = new
+                {
+                    Total = purchaseProposalFormResult.Sum(x => x.Amount),
+                    Details = purchaseProposalFormResult
+                },
+                GoodsReceivingNote = new
+                {
+                    Total = importResult.Sum(x => x.Amount),
+                    Details = importResult
+                },
             };
         }
     }
