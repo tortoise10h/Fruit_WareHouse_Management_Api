@@ -45,12 +45,12 @@ namespace api.Controllers.V1
         }
 
         [HttpGet(ApiRoutes.Statistics.RevenueAndExpeditureStatistic)]
-        public async Task<IActionResult> GetRevenueAndExpediture([FromQuery] RevenueAndExpeditureStatisticQuery query)
+        public async Task<IActionResult> GetRevenueAndExpenditure([FromQuery] RevenueAndExpenditureStatisticQuery query)
         {
             var result = await _mediator.Send(query);
 
             return result.Match<IActionResult>(
-                data => Ok(new Response<RevenueAndExpeditureStatisticResponse>(
+                data => Ok(new Response<RevenueAndExpenditureStatisticResponse>(
                     data
                 )),
                 exp =>

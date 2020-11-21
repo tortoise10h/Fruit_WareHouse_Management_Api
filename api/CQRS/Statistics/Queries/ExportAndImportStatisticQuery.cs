@@ -13,22 +13,22 @@ using E = api.Entities;
 
 namespace src.CQRS.PurchaseProposalForms.Queries
 {
-    public class RevenueAndExpeditureStatisticQuery : IRequest<Result<RevenueAndExpeditureStatisticResponse>>
+    public class ExportAndImportStatisticQuery : IRequest<Result<RevenueAndExpenditureStatisticResponse>>
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
     }
 
-    public class RevenueAndExpeditureStatisticHandler : IRequestHandler<RevenueAndExpeditureStatisticQuery, Result<RevenueAndExpeditureStatisticResponse>>
+    public class ExportAndImportStatisticHandler : IRequestHandler<ExportAndImportStatisticQuery, Result<RevenueAndExpenditureStatisticResponse>>
     {
         private readonly DataContext _context;
 
-        public RevenueAndExpeditureStatisticHandler(DataContext context)
+        public ExportAndImportStatisticHandler(DataContext context)
         {
             _context = context;
         }
 
-        public async Task<Result<RevenueAndExpeditureStatisticResponse>> Handle(RevenueAndExpeditureStatisticQuery query, CancellationToken cancellationToken)
+        public async Task<Result<RevenueAndExpenditureStatisticResponse>> Handle(ExportAndImportStatisticQuery query, CancellationToken cancellationToken)
         {
             var succeededOrders = await _context.Orders
                 .Where(x => x.Status == OrderStatus.Done &&
@@ -46,16 +46,16 @@ namespace src.CQRS.PurchaseProposalForms.Queries
                 revenue += revenueOfSinlgeOrder;
             }
 
-            var expediture = _context.GoodsReceivingNotes
+            var expenditure = _context.GoodsReceivingNotes
                 .Where(x => x.Status == GoodsReceivingNoteStatus.Done && 
                     x.CreatedAt.Date.CompareTo(query.FromDate.Date) >= 0 &&
                     x.CreatedAt.Date.CompareTo(query.ToDate.Date) <= 0)
                 .Sum(x => x.TotalPrice);
 
-            return new RevenueAndExpeditureStatisticResponse
+            return new RevenueAndExpenditureStatisticResponse
             {
                 Revenue = revenue,
-                Expediture = expediture
+                Expenditure = expenditure
             };
         }
     }
