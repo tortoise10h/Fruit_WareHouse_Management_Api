@@ -127,5 +127,12 @@ namespace api.Contracts.V1
             public const string RevenueAndExpeditureStatistic = Base + "/statistics/revenueAndExpediture";
             public const string ExportAndImportStatistic = Base + "/statistics/exportAndImport";
         }
+
+        public static class Users
+        {
+            public const string Create = Base + "/users";
+            public const string Update = Base + "/users/{userId}";
+            public const string GetAll = Base + "/users";
+        }
     }
 }
