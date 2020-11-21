@@ -124,6 +124,7 @@ namespace api.Contracts.V1
         public static class Statistics
         {
             public const string BestSellingProductsStatistic = Base + "/statistics/bestSellingProducts";
+            public const string RevenueAndExpeditureStatistic = Base + "/statistics/revenueAndExpediture";
         }
     }
 }
