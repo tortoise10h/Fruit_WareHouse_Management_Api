@@ -59,5 +59,21 @@ namespace api.Controllers.V1
                 }
             );
         }
+
+        [HttpGet(ApiRoutes.Statistics.ExportAndImportStatistic)]
+        public async Task<IActionResult> GetExportAndImport([FromQuery] ExportAndImportStatisticQuery query)
+        {
+            var result = await _mediator.Send(query);
+
+            return result.Match<IActionResult>(
+                data => Ok(new Response<ExportAndImportStatisticResponse>(
+                    data
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
     }
 }
