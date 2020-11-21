@@ -32,7 +32,7 @@ namespace src.CQRS.Orders.Queries
         {
             var queryable = _context.Orders.AsQueryable();
             queryable = queryable.AsNoTracking();
-            // TODO: Include goods delivery note
+            queryable = queryable.Include(x => x.GoodsDeliveryNotes);
             queryable = queryable
                 .Join(_context.Users,
                     o => o.CreatedBy,
@@ -47,7 +47,8 @@ namespace src.CQRS.Orders.Queries
                         CreatedAt = o.CreatedAt,
                         LastModifiedAt = o.LastModifiedAt,
                         TotalPrice = o.TotalPrice,
-                        User = u
+                        User = u,
+                        GoodsDeliveryNotes = o.GoodsDeliveryNotes
                     }
                 );
 
