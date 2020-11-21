@@ -73,7 +73,9 @@ namespace src.CQRS.PurchaseProposalForms.Queries
                     ProductId = item.ProductId,
                     TotalQuantitySold = item.TotalQuantitySold,
                     TotalPrice = item.TotalPrice,
-                    ProductName = matchedProduct.Name
+                    ProductName = matchedProduct.Name,
+                    ProductSKU = matchedProduct.SKU,
+                    ProductDefaultUnit = matchedProduct.DefaultUnit
                 });
             }
             return result;

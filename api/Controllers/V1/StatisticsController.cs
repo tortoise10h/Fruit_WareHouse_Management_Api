@@ -43,5 +43,21 @@ namespace api.Controllers.V1
                 }
             );
         }
+
+        [HttpGet(ApiRoutes.Statistics.RevenueAndExpeditureStatistic)]
+        public async Task<IActionResult> GetRevenueAndExpediture([FromQuery] RevenueAndExpeditureStatisticQuery query)
+        {
+            var result = await _mediator.Send(query);
+
+            return result.Match<IActionResult>(
+                data => Ok(new Response<RevenueAndExpeditureStatisticResponse>(
+                    data
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
     }
 }
