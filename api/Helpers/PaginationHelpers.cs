@@ -72,30 +72,18 @@ namespace api.Helpers
             bool isAscending
         )
         {
-            var type = typeof(TEntity);
-            var field = type.GetField(sortName);
-            var parameter = Expression.Parameter(type, "p");
-            PropertyInfo property = typeof(TEntity).GetProperty(sortName);
-            if (property == null)
+            if (isAscending)
             {
-                /** If field name is provided by client is not exist 
-                 * then take the default field
-                 */
-                property = typeof(TEntity).GetProperty(PaginationDefault.SortName);
+                queryable = queryable
+                    .OrderBy($"{sortName}");
+            }
+            else
+            {
+                queryable = queryable
+                    .OrderBy($"{sortName} desc");
             }
 
-            Expression propertyAccess = Expression.MakeMemberAccess(parameter, property);
-
-            var orderByExp = Expression.Lambda(propertyAccess, parameter);
-            MethodCallExpression resultExp = Expression.Call(
-                typeof(Queryable),
-                isAscending ? "OrderBy" : "OrderByDescending",
-                new[] { type, property.PropertyType },
-                queryable.Expression,
-                Expression.Quote(orderByExp)
-            );
-
-            return queryable.Provider.CreateQuery<TEntity>(resultExp);
+            return queryable;
         }
         public IQueryable<TEntity> CustomFilterQuery<TEntity>(
             IQueryable<TEntity> queryable,
@@ -166,8 +154,26 @@ namespace api.Helpers
                                     throw new BadRequestException(new ApiError("The correct value when using in dynamic filter is 'value,value,value,value'"));
                                 }
 
+                                string[] valArr = entry.Value.Split(",");
+                                string values = "";
+                                int c;
+                                bool isInt = Int32.TryParse(valArr[0], out c);
+
+                                if (!isInt)
+                                {
+                                    foreach (var str in valArr)
+                                    {
+                                        values += $"\"{str}\",";
+                                    }
+                                    values = values.Remove(values.Length - 1);
+                                }
+                                else
+                                {
+                                    values = entry.Value;
+                                }
+
                                 queryable = queryable
-                                    .Where($"{entry.Key} IN ({entry.Value})");
+                                    .Where($"{entry.Key} IN ({values})");
                                 break;
                             }
                         case "notin":
@@ -179,8 +185,26 @@ namespace api.Helpers
                                     throw new BadRequestException(new ApiError("The correct value when using not in dynamic filter is 'value,value,value,value'"));
                                 }
 
+                                string[] valArr = entry.Value.Split(",");
+                                string values = "";
+                                int c;
+                                bool isInt = Int32.TryParse(valArr[0], out c);
+
+                                if (!isInt)
+                                {
+                                    foreach (var str in valArr)
+                                    {
+                                        values += $"\"{str}\",";
+                                    }
+                                    values = values.Remove(values.Length - 1);
+                                }
+                                else
+                                {
+                                    values = entry.Value;
+                                }
+
                                 queryable = queryable
-                                    .Where($"!({entry.Key} IN ({entry.Value}))");
+                                    .Where($"!({entry.Key} IN ({values}))");
                                 break;
                             }
                         case "between":

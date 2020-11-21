@@ -28,6 +28,7 @@ using api.CQRS.PurchaseProposalForms.Commands.UpdateProducts;
 using api.CQRS.PurchaseProposalForms.Commands.UpdatePurchaseProposalDetails;
 using api.CQRS.Suppliers.Commands.CreateSupplier;
 using api.CQRS.Suppliers.Commands.UpdateSupplier;
+using api.CQRS.Users.Commands.CreateUsers;
 using api.Entities;
 using AutoMapper;
 
@@ -100,6 +101,9 @@ namespace api.MapperProfiles
             //** ProductRemoveDetail */
             CreateMap<CreateProductRemoveDetailCommand, ProductRemoveDetail>();
             CreateMap<UpdateProductRemoveDetailCommand, ProductRemoveDetail>();
+
+            //** User */
+            CreateMap<CreateUserCommand, ApplicationUser>();
         }
     }
 }
