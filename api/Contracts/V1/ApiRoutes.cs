@@ -121,5 +121,9 @@ namespace api.Contracts.V1
             public const string UpdateProductRemoveDetail = Base + "/productRemoveForms/{productRemoveFormId}/productRemoveDetails";
             public const string DeleteProductRemoveDetail = Base + "/productRemoveForms/{productRemoveFormId}/productRemoveDetails";
         }
+        public static class Statistics
+        {
+            public const string BestSellingProductsStatistic = Base + "/statistics/bestSellingProducts";
+        }
     }
 }
