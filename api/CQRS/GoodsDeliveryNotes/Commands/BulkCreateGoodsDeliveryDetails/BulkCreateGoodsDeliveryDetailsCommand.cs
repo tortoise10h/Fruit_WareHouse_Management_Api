@@ -23,7 +23,7 @@ using System.Threading.Tasks;
 using E = api.Entities;
 
 namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkCreateGoodsDeliveryDetails
-{ 
+{
     public class BulkCreateGoodsDeliveryDetailsCommand : IRequest<Result<List<GoodsDeliveryDetailResponse>>>
     {
         public int GoodsDeliveryNoteId { get; set; }
@@ -35,12 +35,14 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkCreateGoodsDeliveryDetails
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IGoodsDeliveryNoteServices _goodsDeliveryNoteServices;
+        private readonly IPriceCalculateHelpers _priceCalculateHelpers;
 
-        public BulkCreateGoodsDeliveryDetailsHandler(DataContext context, IMapper mapper, IGoodsDeliveryNoteServices goodsDeliveryNoteService)
+        public BulkCreateGoodsDeliveryDetailsHandler(DataContext context, IMapper mapper, IGoodsDeliveryNoteServices goodsDeliveryNoteService, IPriceCalculateHelpers priceCalculateHelpers)
         {
             _context = context;
             _mapper = mapper;
             _goodsDeliveryNoteServices = goodsDeliveryNoteService;
+            _priceCalculateHelpers = priceCalculateHelpers;
         }
 
         public async Task<Result<List<GoodsDeliveryDetailResponse>>> Handle(
@@ -85,13 +87,25 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkCreateGoodsDeliveryDetails
                 productsInGoodsDeliveryNote
                 );
 
-            foreach(var gdd in goodsDeliveryDetailEntties)
+            foreach (var gdd in goodsDeliveryDetailEntties)
             {
+                var matchedOrderDetail = orderDetails
+                    .SingleOrDefault(x => x.ProductId == gdd.ProductId);
+
                 gdd.GoodsDeliveryNoteId = request.GoodsDeliveryNoteId;
+                gdd.SinglePrice = matchedOrderDetail.SinglePrice;
+                gdd.TotalPrice = _priceCalculateHelpers.CalculateTotalPriceOfProduct(
+                    gdd.Quantity,
+                    gdd.SinglePrice
+                );
             }
 
+            goodsDeliveryNote.TotalPrice += goodsDeliveryDetailEntties
+                .Sum(x => x.TotalPrice);
+
             await _context.GoodsDeliveryDetails.AddRangeAsync(goodsDeliveryDetailEntties);
-            var created = await _context.SaveChangesAsync(); 
+            _context.GoodsDeliveryNotes.Update(goodsDeliveryNote);
+            var created = await _context.SaveChangesAsync();
 
             if (created > 0)
             {
