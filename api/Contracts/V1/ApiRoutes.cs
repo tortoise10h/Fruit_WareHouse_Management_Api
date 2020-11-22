@@ -136,5 +136,13 @@ namespace api.Contracts.V1
             public const string BanUser = Base + "/users/ban/{userId}";
             public const string GetAll = Base + "/users";
         }
+
+        public static class MerchandiseReturnProposals
+        {
+            public const string Create = Base + "/merchandiseReturnProposals";
+            public const string Update = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
+            public const string Delete = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
+            public const string GetAll = Base + "/merchandiseReturnProposals";
+        }
     }
 }
