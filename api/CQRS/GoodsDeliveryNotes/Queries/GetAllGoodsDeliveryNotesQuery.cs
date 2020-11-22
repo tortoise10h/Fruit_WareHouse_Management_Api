@@ -48,6 +48,7 @@ namespace src.CQRS.GoodsDeliveryNotes.Queries
                         CreatedAt = gdn.CreatedAt,
                         LastModifiedAt = gdn.LastModifiedAt,
                         OrderId = gdn.OrderId,
+                        TotalPrice = gdn.TotalPrice,
                         User = u
                     }
                 );

@@ -14,6 +14,7 @@ namespace api.Contracts.V1.ResponseModels.GoodsDeliveryNotes
         public string Description { get; set; }
         public string ExceptionReason { get; set; }
         public int OrderId { get; set; }
+        public double TotalPrice { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastModifiedAt { get; set; }
         public string CreatedBy { get; set; }
