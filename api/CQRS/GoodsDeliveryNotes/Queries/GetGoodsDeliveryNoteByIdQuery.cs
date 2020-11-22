@@ -63,12 +63,13 @@ namespace src.CQRS.GoodsDeliveryNotes.Queries
                         CreatedAt = gdn.CreatedAt,
                         LastModifiedAt = gdn.LastModifiedAt,
                         OrderId = gdn.OrderId,
+                        TotalPrice = gdn.TotalPrice,
                         User = u,
                         GoodsDeliveryDetails = gdn.GoodsDeliveryDetails
                     }
                 );
 
-            var goodsDeliveryNote = await queryable.FirstOrDefaultAsync(); 
+            var goodsDeliveryNote = await queryable.FirstOrDefaultAsync();
 
             if (goodsDeliveryNote == null)
             {

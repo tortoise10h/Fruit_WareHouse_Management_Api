@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using E = api.Entities;
 
 namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkDeleteGoodsDeliveryDetails
-{ 
+{
     public class BulkDeleteGoodsDeliveryDetailsCommand : IRequest<Result<List<GoodsDeliveryDetailResponse>>>
     {
         public int GoodsDeliveryNoteId { get; set; }
@@ -76,6 +76,11 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkDeleteGoodsDeliveryDetails
                     new NotFoundException()
                 );
             }
+
+            // if products in goods delivery note are deleted then re-caculate total price
+            // of it again by subtract all deleted products price
+            goodsDeliveryNote.TotalPrice = deletedGoodsDeliveryDetails
+                .Sum(x => x.TotalPrice);
 
             _context.GoodsDeliveryDetails.RemoveRange(deletedGoodsDeliveryDetails);
 

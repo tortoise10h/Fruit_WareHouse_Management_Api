@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using E = api.Entities;
 
 namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkUpdateGoodsDeliveryDetail
-{ 
+{
     public class BulkUpdateGoodsDeliveryDetailsCommand : IRequest<Result<List<GoodsDeliveryDetailResponse>>>
     {
         public int GoodsDeliveryNoteId { get; set; }
@@ -33,12 +33,14 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkUpdateGoodsDeliveryDetail
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IGoodsDeliveryNoteServices _goodsDeliveryNoteServices;
+        private readonly IPriceCalculateHelpers _priceCalculateHelpers;
 
-        public BulkUpdateGoodsDeliveryDetailsHandler(DataContext context, IMapper mapper, IGoodsDeliveryNoteServices goodsDeliveryNoteServices)
+        public BulkUpdateGoodsDeliveryDetailsHandler(DataContext context, IMapper mapper, IGoodsDeliveryNoteServices goodsDeliveryNoteServices, IPriceCalculateHelpers priceCalculateHelpers)
         {
             _context = context;
             _mapper = mapper;
             _goodsDeliveryNoteServices = goodsDeliveryNoteServices;
+            _priceCalculateHelpers = priceCalculateHelpers;
         }
 
         public async Task<Result<List<GoodsDeliveryDetailResponse>>> Handle(
@@ -74,6 +76,11 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkUpdateGoodsDeliveryDetail
                 .Where(x => x.GoodsDeliveryNoteId == request.GoodsDeliveryNoteId &&
                     goodsDeliveryDetailIds.Contains(x.Id))
                 .ToListAsync();
+
+            // Remove the old to price to update the new price later
+            goodsDeliveryNote.TotalPrice -= existedGoodsDeliveryDetails
+                .Sum(x => x.TotalPrice);
+
             var productsInGoodsDeliveryNote = new List<ProductInGoodsDeliveryNote>();
             _mapper.Map<List<UpdateGoodsDeliveryDetailsCommand>, List<ProductInGoodsDeliveryNote>>(
                 request.GoodsDeliveryDetails, productsInGoodsDeliveryNote);
@@ -88,7 +95,7 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkUpdateGoodsDeliveryDetail
                 product.ProductId = matchedGoodsDeliveryDetail.ProductId;
             }
 
-            /** Validate valid updated products */ 
+            /** Validate valid updated products */
             productsInGoodsDeliveryNote = _goodsDeliveryNoteServices
                 .ValidateWhenUpdateProductsInGoodsDeliveryNote(
                     existedGoodsDeliveryDetails,
@@ -97,11 +104,20 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.BulkUpdateGoodsDeliveryDetail
 
             foreach (var p in productsInGoodsDeliveryNote)
             {
-                var matchedGoodsReceivingDetail = existedGoodsDeliveryDetails
+                var matchedGoodsDeliveryDetail = existedGoodsDeliveryDetails
                     .SingleOrDefault(x => x.ProductId == p.ProductId);
+
                 _mapper.Map<ProductInGoodsDeliveryNote, GoodsDeliveryDetail>(
-                    p, matchedGoodsReceivingDetail);
+                    p, matchedGoodsDeliveryDetail);
+                matchedGoodsDeliveryDetail.TotalPrice = _priceCalculateHelpers
+                    .CalculateTotalPriceOfProduct(
+                        matchedGoodsDeliveryDetail.Quantity,
+                        matchedGoodsDeliveryDetail.SinglePrice
+                    );
             }
+
+            goodsDeliveryNote.TotalPrice += existedGoodsDeliveryDetails
+                .Sum(x => x.TotalPrice);
 
             _context.GoodsDeliveryDetails.UpdateRange(existedGoodsDeliveryDetails);
             _context.Update(goodsDeliveryNote);

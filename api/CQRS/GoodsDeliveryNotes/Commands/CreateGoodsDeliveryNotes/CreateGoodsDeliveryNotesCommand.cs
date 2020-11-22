@@ -3,13 +3,11 @@ using api.Contracts.V1.Dtos;
 using api.Contracts.V1.Exceptions;
 using api.Contracts.V1.ResponseModels.GoodsDeliveryNotes;
 using api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryDetails;
-using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.Entities;
 using api.Helpers;
-using api.IServices; 
+using api.IServices;
 using AutoMapper;
 using LanguageExt.Common;
-using LanguageExt.Pipes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,7 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using E = api.Entities;
 
 namespace api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes
 {
@@ -33,12 +30,14 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes
         private readonly DataContext _context;
         private readonly IMapper _mapper;
         private readonly IGoodsDeliveryNoteServices _goodsDeliveryNoteServices;
+        private readonly IPriceCalculateHelpers _priceCalculateHelpers;
 
-        public CreateGoodsDeliveryNotesHandler(DataContext context, IMapper mapper, IGoodsDeliveryNoteServices goodsDeliveryNoteServices)
+        public CreateGoodsDeliveryNotesHandler(DataContext context, IMapper mapper, IGoodsDeliveryNoteServices goodsDeliveryNoteServices, IPriceCalculateHelpers priceCalculateHelpers)
         {
             _context = context;
             _mapper = mapper;
             _goodsDeliveryNoteServices = goodsDeliveryNoteServices;
+            _priceCalculateHelpers = priceCalculateHelpers;
         }
 
         public async Task<Result<GoodsDeliveryNoteResponse>> Handle(
@@ -72,10 +71,27 @@ namespace api.CQRS.GoodsDeliveryNotes.Commands.CreateGoodsDeliveryNotes
             /** Prepare entity to save to DB */
             _mapper.Map<List<ProductInGoodsDeliveryNote>, List<CreateGoodsDeliveryDetailsCommand>>(
                 productsInGoodsDeliveryNote, request.GoodsDeliveryDetails);
+
             var goodsDeliveryNoteEntity = _mapper.Map<GoodsDeliveryNote>(
                 request);
 
+            // Map price to goods delivery note and detail
+            foreach (var goodsDeliveryDetail in goodsDeliveryNoteEntity.GoodsDeliveryDetails)
+            {
+                var matchedOrderDetail = orderDetails
+                    .SingleOrDefault(od => od.ProductId == goodsDeliveryDetail.ProductId);
+
+                goodsDeliveryDetail.SinglePrice = matchedOrderDetail.SinglePrice;
+                goodsDeliveryDetail.TotalPrice = _priceCalculateHelpers
+                    .CalculateTotalPriceOfProduct(
+                        goodsDeliveryDetail.Quantity,
+                        goodsDeliveryDetail.SinglePrice
+                    );
+            }
+
             goodsDeliveryNoteEntity.Status = GoodsDeliveryNoteStatus.New;
+            goodsDeliveryNoteEntity.TotalPrice += goodsDeliveryNoteEntity.GoodsDeliveryDetails
+                .Sum(x => x.TotalPrice);
 
             await _context.AddAsync(goodsDeliveryNoteEntity);
             var created = await _context.SaveChangesAsync();

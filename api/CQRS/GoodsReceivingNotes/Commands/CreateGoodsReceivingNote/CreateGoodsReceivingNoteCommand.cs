@@ -5,7 +5,7 @@ using api.Contracts.V1.ResponseModels.GoodsReceivingNotes;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.Entities;
 using api.Helpers;
-using api.IServices; 
+using api.IServices;
 using AutoMapper;
 using LanguageExt.Common;
 using LanguageExt.Pipes;
@@ -100,13 +100,14 @@ namespace api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote
             goodsReceivingNoteEntity.Status = GoodsReceivingNoteStatus.New;
 
             // Calculate total price of each goods receiving detail item
-            goodsReceivingNoteEntity.GoodsReceivingDetails = _goodsReceivingNoteServices.CalculatePriceOfProducsInGoodsReceivingNote(
-                goodsReceivingNoteEntity.GoodsReceivingDetails.ToList());
+            goodsReceivingNoteEntity.GoodsReceivingDetails = _goodsReceivingNoteServices
+                .CalculatePriceOfProducsInGoodsReceivingNote(
+                    goodsReceivingNoteEntity.GoodsReceivingDetails.ToList());
 
             // After has total price of each goods receiving item then
             // calculate total price of this goods receiving note
             goodsReceivingNoteEntity.TotalPrice = goodsReceivingNoteEntity.GoodsReceivingDetails
-                .Sum(x => x.TotalPrice); 
+                .Sum(x => x.TotalPrice);
 
             await _context.GoodsReceivingNotes.AddAsync(goodsReceivingNoteEntity);
             var created = await _context.SaveChangesAsync();
