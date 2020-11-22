@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace api.Services
 {
-    public class OrderServices: IOrderServices
+    public class OrderServices : IOrderServices
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -100,14 +100,6 @@ namespace api.Services
                     throw new BadRequestException(
                         new ApiError("Chỉ cho phép thay đổi trạng thái thành 'Đang xử lý' khi đơn hàng đang ở trạng thái 'Mới'"));
                 }
-
-            } else if (newStatus == OrderStatus.Cancelled)
-            {
-                if (order.Status == OrderStatus.Processing)
-                {
-                    // TODO: if order is processing => need to check goods delivery note valid
-                }
-
                 /** Make sure all product in order enough quantity */
                 var orderDetails = await _context.OrderDetails
                     .Where(x => x.OrderId == order.Id)
@@ -118,11 +110,59 @@ namespace api.Services
                     _mapper.Map<List<ProductInOrder>>(orderDetails),
                     products
                     );
-            } else if (newStatus == OrderStatus.Exported)
+
+            }
+            else if (newStatus == OrderStatus.Cancelled)
+            {
+                if (order.Status != OrderStatus.New)
+                {
+                    // TODO: if order is processing => need to check goods delivery note valid
+                    /** Only allow to cancel order when all exported products have been turned */
+                    var goodsDeliveryNotes = await _context.GoodsDeliveryNotes
+                        .Include(x => x.GoodsDeliveryDetails)
+                        .Where(x => x.OrderId == order.Id &&
+                            x.Status != GoodsDeliveryNoteStatus.Cancelled)
+                        .ToListAsync();
+
+                    /** Do not allow to cancel if there is some goods delivery notes have
+                     * status different from Done */
+                    bool isThereSomeDifferentFromDone = goodsDeliveryNotes
+                        .Any(x => x.Status != GoodsDeliveryNoteStatus.Done);
+
+                    if (isThereSomeDifferentFromDone)
+                    {
+                        throw new BadRequestException(
+                            new ApiError("Không được huỷ đơn hàng này vì vẫn còn phiếu xuất chưa xử lý"));
+                    }
+
+                    /** If there is only Done goods delivery note then check all exported
+                     * products have to be returned */
+                    bool isAllReturned = true;
+                    foreach (var item in goodsDeliveryNotes)
+                    {
+                        var isUnHandleProductExist = item.GoodsDeliveryDetails
+                            .Any(x => x.Quantity != x.QuantityReturned);
+
+                        if (isUnHandleProductExist == true)
+                        {
+                            isAllReturned = false;
+                        }
+                    }
+
+                    if (isAllReturned == false)
+                    {
+                        throw new BadRequestException(
+                            new ApiError("Không được huỷ đơn hàng này vì tồn tại phiếu xuất chưa hoàn tất trả hàng"));
+                    }
+                }
+
+            }
+            else if (newStatus == OrderStatus.Exported)
             {
                 throw new BadRequestException(
                     new ApiError("Không được phép chuyển sang trạng thái này"));
-            } else if (newStatus == OrderStatus.New)
+            }
+            else if (newStatus == OrderStatus.New)
             {
                 /** Do not allow to switch back from Processing to New */
                 if (order.Status != OrderStatus.New)
@@ -130,7 +170,8 @@ namespace api.Services
                     throw new BadRequestException(
                         new ApiError("Không được phép chuyển về trạng thái 'Mới' khi đơn hàng đã được xử lý"));
                 }
-            } else if (newStatus == OrderStatus.Done)
+            }
+            else if (newStatus == OrderStatus.Done)
             {
                 if (order.Status != OrderStatus.Exported)
                 {
@@ -146,7 +187,7 @@ namespace api.Services
             Order order,
             OrderStatus newStatus)
         {
-            /** We don't have a busines with the New status */
+            /** We don't have a business with the New status */
             if (newStatus != OrderStatus.New)
             {
                 var orderDetails = await ctx.OrderDetails
@@ -168,9 +209,14 @@ namespace api.Services
                     productsShouldBeHandled = IncreaseProductQuantityForSaleWhenProcessing(
                         productsShouldBeHandled,
                         orderDetails);
-                } else if (newStatus == OrderStatus.Cancelled)
+                }
+                else if (newStatus == OrderStatus.Cancelled)
                 {
                     // TODO: Handle product quantity for sale when cancel order
+                    productsShouldBeHandled = DecreaseProductQuantityForSaleWhenCancelled(
+                        productsShouldBeHandled,
+                        orderDetails
+                    );
                 }
                 ctx.Products.UpdateRange(productsShouldBeHandled);
             }
@@ -191,11 +237,25 @@ namespace api.Services
 
             return productsShouldBeHandled;
         }
+        public List<Product> DecreaseProductQuantityForSaleWhenCancelled(
+            List<Product> productsShouldBeHandled,
+            List<OrderDetail> orderDetails)
+        {
+            foreach (var p in productsShouldBeHandled)
+            {
+                var matchedOrderDetail = orderDetails
+                    .SingleOrDefault(x => x.ProductId == p.Id);
+
+                p.QuantityForSale -= matchedOrderDetail.QuantityNeed;
+            }
+
+            return productsShouldBeHandled;
+        }
 
         public async Task<List<ProductInOrder>> MakeSureProductsValidWhenAddToOrder(
             List<ProductInOrder> productsInOrder)
         {
-            /** Make sure all product id in list is uniqe */
+            /** Make sure all product id in list is unique */
             productsInOrder = UniqueListByProductId(productsInOrder);
 
             var productIds = productsInOrder
@@ -260,7 +320,7 @@ namespace api.Services
                 throw new NotFoundException();
             }
 
-            /** Validate product valid */ 
+            /** Validate product valid */
             var productIds = existedOrderDetails
                 .Select(x => x.ProductId)
                 .ToList();
