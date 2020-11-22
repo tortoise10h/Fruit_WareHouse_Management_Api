@@ -7,6 +7,7 @@ using api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseReturnDe
 using api.CQRS.MerchandiseReturnProposals.Commands.BulkDeleteMerchandiseReturnDetail;
 using api.CQRS.MerchandiseReturnProposals.Commands.BulkUpdateMerchandiseReturnDetail;
 using api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnProposal;
+using api.CQRS.MerchandiseReturnProposals.Commands.UpdateMerchandiseReturnProposal;
 using api.CQRS.MerchandiseReturnProposals.Queries.GetAllMerchandiseReturnProposal;
 using api.CQRS.MerchandiseReturnProposals.Queries.GetMerchandiseReturnProposalById;
 using MediatR;
@@ -32,6 +33,17 @@ namespace api.Controllers.V1
         {
             var result = await _mediator.Send(command);
             return Created("", result);
+        }
+
+        [Authorize(Roles = "Admin,Boss,Sale")]
+        [HttpPut(ApiRoutes.MerchandiseReturnProposals.Update)]
+        public async Task<IActionResult> Update(
+            [FromRoute] int merchandiseReturnProposalId,
+            [FromBody] UpdateMerchandiseReturnProposalCommand command)
+        {
+            command.Id = merchandiseReturnProposalId;
+            await _mediator.Send(command);
+            return NoContent();
         }
 
         [Authorize(Roles = "Admin,Boss,Sale")]
@@ -66,7 +78,7 @@ namespace api.Controllers.V1
 
         [Authorize(Roles = "Admin,Boss,Sale")]
         [HttpPut(ApiRoutes.MerchandiseReturnProposals.BulkUpdateProductsInMerchandiseReturnProposal)]
-        public async Task<IActionResult> BulkUpdatePurchaseProposalDetails(
+        public async Task<IActionResult> BulkUpdateMerchandiseReturnDetail(
             [FromRoute] int merchandiseReturnProposalId,
             [FromBody] BulkUpdateMerchandiseReturnDetailCommand command)
         {
@@ -77,7 +89,7 @@ namespace api.Controllers.V1
 
         [Authorize(Roles = "Admin,Boss,Sale")]
         [HttpDelete(ApiRoutes.MerchandiseReturnProposals.BulkDeleteProductsInMerchandiseReturnProposal)]
-        public async Task<IActionResult> BulkDeleteProductsInMerchandiseReturnProposal(
+        public async Task<IActionResult> BulkDeleteMerchandiseReturnDetail(
             [FromRoute] int merchandiseReturnProposalId,
             [FromBody] BulkDeleteMerchandiseReturnDetailCommand command)
         {
