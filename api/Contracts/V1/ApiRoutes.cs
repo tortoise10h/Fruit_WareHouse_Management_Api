@@ -144,6 +144,9 @@ namespace api.Contracts.V1
             public const string Delete = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
             public const string GetAll = Base + "/merchandiseReturnProposals";
             public const string GetById = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
+            public const string AddProductsToMerchandiseReturnProposal = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}/merchandiseReturnDetails";
+            public const string BulkUpdateProductsInMerchandiseReturnProposal = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}/merchandiseReturnDetails/bulkUpdate";
+            public const string BulkDeleteProductsInMerchandiseReturnProposal = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}/merchandiseReturnDetails/bulkDelete";
         }
     }
 }

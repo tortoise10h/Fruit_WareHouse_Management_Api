@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.MerchandiseReturnProposals;
+using api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseReturnDetail;
+using api.CQRS.MerchandiseReturnProposals.Commands.BulkDeleteMerchandiseReturnDetail;
 using api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnProposal;
 using api.CQRS.MerchandiseReturnProposals.Queries.GetAllMerchandiseReturnProposal;
 using api.CQRS.MerchandiseReturnProposals.Queries.GetMerchandiseReturnProposalById;
@@ -41,11 +44,33 @@ namespace api.Controllers.V1
 
         [Authorize(Roles = "Admin,Boss,Sale")]
         [HttpGet(ApiRoutes.MerchandiseReturnProposals.GetById)]
-        public async Task<IActionResult> GetBySku([FromRoute] int merchandiseReturnProposalId)
+        public async Task<IActionResult> GetById([FromRoute] int merchandiseReturnProposalId)
         {
             var query = new GetMerchandiseReturnProposalByIdQuery(merchandiseReturnProposalId);
             var result = await _mediator.Send(query);
             return Ok(new Response<MerchandiseReturnProposalResponse>(result));
+        }
+
+        [Authorize(Roles = "Admin,Boss,Sale")]
+        [HttpPost(ApiRoutes.MerchandiseReturnProposals.AddProductsToMerchandiseReturnProposal)]
+        public async Task<IActionResult> AddProductsToMerchandiseReturnProposal(
+            [FromRoute] int merchandiseReturnProposalId,
+            [FromBody] BulkCreateMerchandiseReturnDetailCommand command)
+        {
+            command.MerchandiseReturnProposalId = merchandiseReturnProposalId;
+            var result = await _mediator.Send(command);
+            return Created("", new Response<List<MerchandiseReturnDetailResponse>>(result));
+        }
+
+        [Authorize(Roles = "Admin,Boss,Sale")]
+        [HttpDelete(ApiRoutes.MerchandiseReturnProposals.BulkDeleteProductsInMerchandiseReturnProposal)]
+        public async Task<IActionResult> BulkDeleteProductsInMerchandiseReturnProposal(
+            [FromRoute] int merchandiseReturnProposalId,
+            [FromBody] BulkDeleteMerchandiseReturnDetailCommand command)
+        {
+            command.MerchandiseReturnProposalId = merchandiseReturnProposalId;
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }

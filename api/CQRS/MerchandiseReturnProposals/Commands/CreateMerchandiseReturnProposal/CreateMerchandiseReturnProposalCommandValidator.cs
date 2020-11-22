@@ -11,10 +11,6 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnPr
                 .MaximumLength(255)
                     .WithMessage("Mô tả tối đa là 255 ký tự");
 
-            RuleFor(x => x.ExceptionReason)
-                .NotEmpty()
-                    .WithMessage("Xin hãy nhập lý do");
-
             RuleFor(x => x.GoodsDeliveryNoteId)
                 .NotNull()
                     .WithMessage("Id của phiếu xuất kho không được để trống")
@@ -23,7 +19,7 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnPr
 
             RuleFor(x => x.MerchandiseReturnDetails)
                 .Must(x => x != null && x.Count > 0)
-                    .WithMessage("Phiếu đề nghị trả hàng phải có có ít nhất một sản phẩm");
+                    .WithMessage("Phiếu đề nghị trả hàng phải có ít nhất một sản phẩm");
 
             RuleForEach(x => x.MerchandiseReturnDetails)
                 .SetValidator(new CreateMerchandiseReturnDetailCommandValidator());
