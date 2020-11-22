@@ -52,6 +52,8 @@ namespace api.CQRS.Users.Commands.UpdateUsers
                 );
             }
 
+            var role = await _userManager.GetRolesAsync(user);
+
             /** Only superadmin and admin can update user */
             var currentUserId = _httpContextAccessor.HttpContext.User
                     .Claims
@@ -68,18 +70,18 @@ namespace api.CQRS.Users.Commands.UpdateUsers
                         new ApiError("Bạn không có quyền cập nhật tài khoản")));
             }
 
-            if (userRole == RoleName.Admin && currentUser.Id != request.UserId && request.RoleName == RoleName.Admin)
+            if (userRole == RoleName.Admin && currentUser.Id != request.UserId && role[0] == RoleName.Admin)
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
-                        new ApiError("Bạn không có quyền cập nhật tài khoản các Admin khác")));
+                        new ApiError("Bạn không có quyền cập nhật tài khoản của các Admin khác")));
             }
 
-            if (userRole == RoleName.Admin && request.RoleName == RoleName.SuperAdmin)
+            if (userRole == RoleName.Admin && (request.RoleName == RoleName.SuperAdmin || request.RoleName == RoleName.Admin))
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
-                        new ApiError("Bạn không có quyền cập nhật tài khoản SuperAdmin")));
+                        new ApiError("Bạn không có quyền cập nhật chức vụ tài khoản lên Admin hoặc SuperAdmin")));
             }
 
             //** Validate email exist */
@@ -99,7 +101,6 @@ namespace api.CQRS.Users.Commands.UpdateUsers
             user.NormalizedEmail = request.Email.ToUpper();
             user.PhoneNumber = request.PhoneNumber;
 
-            var role = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRoleAsync(user, role[0]);
             await _userManager.AddToRoleAsync(user, request.RoleName);
 

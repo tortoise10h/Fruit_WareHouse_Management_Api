@@ -36,7 +36,14 @@ namespace api.CQRS.Auth.Commands.Login
             if (user == null)
             {
                 return new Result<LoginResult>(
-                    new BadRequestException(new ApiError("Use does not exist"))
+                    new BadRequestException(new ApiError("Tài khoản không tồn tại"))
+                );
+            }
+
+            if (user != null && user.LockoutEnabled == true)
+            {
+                return new Result<LoginResult>(
+                    new BadRequestException(new ApiError("Tài khoản đã bị khoá"))
                 );
             }
 

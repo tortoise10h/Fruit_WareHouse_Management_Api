@@ -89,7 +89,8 @@ namespace api.CQRS.Users.Commands.CreateUsers
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, request.Password),
                 PhoneNumber = request.PhoneNumber,
-                SecurityStamp = string.Empty
+                SecurityStamp = string.Empty,
+                CreatedAt = DateTime.Now
             };
 
             var role = await _context.Roles
