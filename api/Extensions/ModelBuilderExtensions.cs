@@ -134,6 +134,9 @@ namespace api.Extensions
             modelBuilder
                 .Entity<GoodsDeliveryDetail>()
                 .HasQueryFilter(gdd => EF.Property<bool>(gdd, "IsDeleted") == false);
+
+            modelBuilder
+              .Entity<MerchandiseReturnProposal>().Ignore(mrp => mrp.User);
         }
 
         public static void Seed(this ModelBuilder modelBuilder)

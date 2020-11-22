@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using api.Common.Enums;
 
 namespace api.Entities
@@ -10,5 +11,7 @@ namespace api.Entities
         public MerchandiseReturnProposalStatus Status { get; set; }
         public int GoodsDeliveryNoteId { get; set; }
         public GoodsDeliveryNote GoodsDeliveryNote { get; set; }
+        public ICollection<MerchandiseReturnDetail> MerchandiseReturnDetails { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }
