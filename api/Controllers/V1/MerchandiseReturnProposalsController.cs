@@ -5,6 +5,7 @@ using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.MerchandiseReturnProposals;
 using api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseReturnDetail;
 using api.CQRS.MerchandiseReturnProposals.Commands.BulkDeleteMerchandiseReturnDetail;
+using api.CQRS.MerchandiseReturnProposals.Commands.BulkUpdateMerchandiseReturnDetail;
 using api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnProposal;
 using api.CQRS.MerchandiseReturnProposals.Queries.GetAllMerchandiseReturnProposal;
 using api.CQRS.MerchandiseReturnProposals.Queries.GetMerchandiseReturnProposalById;
@@ -60,6 +61,18 @@ namespace api.Controllers.V1
             command.MerchandiseReturnProposalId = merchandiseReturnProposalId;
             var result = await _mediator.Send(command);
             return Created("", new Response<List<MerchandiseReturnDetailResponse>>(result));
+        }
+
+
+        [Authorize(Roles = "Admin,Boss,Sale")]
+        [HttpPut(ApiRoutes.MerchandiseReturnProposals.BulkUpdateProductsInMerchandiseReturnProposal)]
+        public async Task<IActionResult> BulkUpdatePurchaseProposalDetails(
+            [FromRoute] int merchandiseReturnProposalId,
+            [FromBody] BulkUpdateMerchandiseReturnDetailCommand command)
+        {
+            command.MerchandiseReturnProposalId = merchandiseReturnProposalId;
+            await _mediator.Send(command);
+            return NoContent();
         }
 
         [Authorize(Roles = "Admin,Boss,Sale")]
