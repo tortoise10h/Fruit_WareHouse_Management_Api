@@ -40,7 +40,7 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnPr
                 throw new BadRequestException(new ApiError("Chỉ được tạo phiếu đề nghị trả hàng cho phiếu xuất kho 'đã hoàn tất'"));
             }
 
-            var goodsDeliveryDetails = goodsDeliveryNote.GoodsDeliveryDetails.ToList();
+            var goodsDeliveryDetails = goodsDeliveryNote.GoodsDeliveryDetails;
 
             /** Make sure all product id in list is unique */
             var merchandiseReturnDetails = request.MerchandiseReturnDetails
@@ -73,17 +73,10 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnPr
                     new ApiError(errorResponse));
             }
 
+            /** Map to entity: merchandiseReturnProposal and merchandiseReturnDetails */
             var merchandiseReturnProposal = _mapper.Map<MerchandiseReturnProposal>(request);
             merchandiseReturnProposal.Status = MerchandiseReturnProposalStatus.New;
             await _context.AddAsync(merchandiseReturnProposal);
-
-            var merchandiseReturnDetailEntities = _mapper.Map<List<MerchandiseReturnDetail>>(merchandiseReturnDetails);
-            foreach (var merchandiseReturnDetailEntity in merchandiseReturnDetailEntities)
-            {
-                merchandiseReturnDetailEntity.MerchandiseReturnProposal = merchandiseReturnProposal;
-            }
-
-            await _context.AddRangeAsync(merchandiseReturnDetailEntities);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<MerchandiseReturnProposalResponse>(merchandiseReturnProposal);
