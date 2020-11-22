@@ -132,6 +132,8 @@ namespace api.Contracts.V1
         {
             public const string Create = Base + "/users";
             public const string Update = Base + "/users/{userId}";
+            public const string Delete = Base + "/users/{userId}";
+            public const string BanUser = Base + "/users/ban/{userId}";
             public const string GetAll = Base + "/users";
         }
     }
