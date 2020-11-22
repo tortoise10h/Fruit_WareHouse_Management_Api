@@ -3,12 +3,11 @@ using api.Contracts.V1.ResponseModels.MerchandiseReturnProposals;
 using api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnDetail;
 using MediatR;
 
-namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnProposal
+namespace api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseReturnDetail
 {
-    public class CreateMerchandiseReturnProposalCommand : IRequest<MerchandiseReturnProposalResponse>
+    public class BulkCreateMerchandiseReturnDetailCommand : IRequest<List<MerchandiseReturnDetailResponse>>
     {
-        public string Description { get; set; }
-        public int GoodsDeliveryNoteId { get; set; }
+        public int MerchandiseReturnProposalId { get; set; }
         public ICollection<CreateMerchandiseReturnDetailCommand> MerchandiseReturnDetails { get; set; }
     }
 }
