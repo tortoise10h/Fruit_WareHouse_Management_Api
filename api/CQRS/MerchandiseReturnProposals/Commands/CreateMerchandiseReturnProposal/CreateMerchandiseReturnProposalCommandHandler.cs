@@ -9,6 +9,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnProposal
 {
@@ -64,11 +65,6 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnPr
                 {
                     errorResponse += $"Số lượng trả lại của sản phẩm với id[{ merchandiseReturnDetail.ProductId}] là: { merchandiseReturnDetail.Quantity} lớn hơn số lượng đã xuất kho (đã trừ số lượng những lần trả lại trước nếu có): { matchedGoodsDeliveryDetail.Quantity - matchedGoodsDeliveryDetail.QuantityReturned}< br /> ";
                 }
-                else
-                {
-                    // Is valid, update quantity returned in matchedGoodsDeliveryDetail
-                    matchedGoodsDeliveryDetail.QuantityReturned += merchandiseReturnDetail.QuantityReturned;
-                }
             }
 
             if (!errorResponse.Equals(""))
@@ -77,9 +73,18 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnPr
                     new ApiError(errorResponse));
             }
 
-
             var merchandiseReturnProposal = _mapper.Map<MerchandiseReturnProposal>(request);
             merchandiseReturnProposal.Status = MerchandiseReturnProposalStatus.New;
+            await _context.AddAsync(merchandiseReturnProposal);
+
+            var merchandiseReturnDetailEntities = _mapper.Map<List<MerchandiseReturnDetail>>(merchandiseReturnDetails);
+            foreach (var merchandiseReturnDetailEntity in merchandiseReturnDetailEntities)
+            {
+                merchandiseReturnDetailEntity.MerchandiseReturnProposal = merchandiseReturnProposal;
+            }
+
+            await _context.AddRangeAsync(merchandiseReturnDetailEntities);
+            await _context.SaveChangesAsync();
 
             return _mapper.Map<MerchandiseReturnProposalResponse>(merchandiseReturnProposal);
         }

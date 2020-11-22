@@ -8,7 +8,6 @@ namespace api.Contracts.V1.ResponseModels.MerchandiseReturnProposals
         public int Id { get; set; }
         public int Quantity { get; set; }
         public int QuantityReturned { get; set; }
-        public int QuantityRemoved { get; set; }
         public string Description { get; set; }
         public ProductResponse Product { get; set; }
     }

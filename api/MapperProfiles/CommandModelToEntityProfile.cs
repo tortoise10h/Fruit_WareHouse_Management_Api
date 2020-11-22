@@ -9,6 +9,7 @@ using api.CQRS.InventoryRecordForms.Commands.CreateInventoryDetail;
 using api.CQRS.InventoryRecordForms.Commands.CreateInventoryForms;
 using api.CQRS.InventoryRecordForms.Commands.UpdateInventoryDetail;
 using api.CQRS.InventoryRecordForms.Commands.UpdateInventoryForms;
+using api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnDetail;
 using api.CQRS.MerchandiseReturnProposals.Commands.CreateMerchandiseReturnProposal;
 using api.CQRS.Orders.Commands.CreateOrderDetails;
 using api.CQRS.Orders.Commands.CreateOrders;
@@ -108,6 +109,7 @@ namespace api.MapperProfiles
 
             //** MerchandiseReturnProposal */
             CreateMap<CreateMerchandiseReturnProposalCommand, MerchandiseReturnProposal>();
+            CreateMap<CreateMerchandiseReturnDetailCommand, MerchandiseReturnDetail>();
 
         }
     }
