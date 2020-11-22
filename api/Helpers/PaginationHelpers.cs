@@ -209,16 +209,18 @@ namespace api.Helpers
                             }
                         case "between":
                             {
-                                string betweenRegex = @"^(\b[^\,]+\,[^\,]+\b)$";
-                                var match = Regex.Match(entry.Value, betweenRegex, RegexOptions.IgnoreCase);
+                                string requestValue = entry.Value.ToString();
+                                string betweenRegex = @"^([^\,]+\,[^\,]+)$";
+                                var match = Regex.Match(
+                                    requestValue, betweenRegex, RegexOptions.IgnoreCase);
                                 if (!match.Success)
                                 {
                                     throw new BadRequestException(new ApiError("The correct value when using between dynamic filter is 'value,value'"));
                                 }
 
-                                var values = entry.Value.ToString().Split(",");
+                                var values = requestValue.Split(",");
                                 queryable = queryable
-                                    .Where($"{entry.Key} >= {values[0]} && {entry.Key} <= {values[1]}");
+                                    .Where($"{entry.Key} >= \"{values[0]}\" && {entry.Key} <= \"{values[1]}\"");
                                 break;
                             }
                         default:
