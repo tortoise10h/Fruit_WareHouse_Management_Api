@@ -66,6 +66,11 @@ namespace api.CQRS.Users.Queries
             {
                 var matchedUserRole = userRoles
                     .SingleOrDefault(x => x.UserId == item.Id);
+
+                var matchedStatus = queryable
+                    .SingleOrDefault(x => x.Id == item.Id);
+
+                item.Status = matchedStatus.LockoutEnabled;
                 item.RoleName = matchedUserRole.RoleName;
             }
 
