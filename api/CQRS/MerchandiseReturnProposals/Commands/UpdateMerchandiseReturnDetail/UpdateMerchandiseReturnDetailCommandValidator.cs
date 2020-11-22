@@ -16,7 +16,6 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.UpdateMerchandiseReturnDe
                 .GreaterThan(0)
                   .WithMessage("Số lượng trả lại của sản phẩm không được phép nhỏ hơn 0");
 
-
             RuleFor(x => x.QuantityReturned)
                    .NotNull()
                        .WithMessage("Số lượng đã trả của sản phẩm không được để trống")
