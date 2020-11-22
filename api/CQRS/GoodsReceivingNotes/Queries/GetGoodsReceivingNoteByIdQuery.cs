@@ -38,7 +38,6 @@ namespace api.CQRS.GoodsReceivingNotes.Queries
             GetGoodsReceivingNoteByIdQuery request,
             CancellationToken cancellationToken)
         {
-            // TODO: include supplier of this goods receiving note (if exists)
             var queryable = _context.GoodsReceivingNotes.AsQueryable();
             queryable = queryable.AsNoTracking();
 

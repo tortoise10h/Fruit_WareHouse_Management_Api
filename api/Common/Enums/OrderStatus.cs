@@ -9,8 +9,8 @@ namespace api.Common.Enums
     {
         New = 1,
         Processing = 2,
-        Done = 4,
         Exported = 3,
+        Done = 4,
         Cancelled = 5,
     }
 }
