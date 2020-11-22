@@ -28,7 +28,6 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseRetu
         public async Task<List<MerchandiseReturnDetailResponse>> Handle(BulkCreateMerchandiseReturnDetailCommand request, CancellationToken cancellationToken)
         {
             var merchandiseReturnProposal = await _context.MerchandiseReturnProposals
-                .Include(mrd => mrd.MerchandiseReturnDetails)
                 .SingleOrDefaultAsync(mrp => mrp.Id == request.MerchandiseReturnProposalId);
 
             if (merchandiseReturnProposal == null)
@@ -41,25 +40,26 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseRetu
                 throw new BadRequestException(new ApiError("Chỉ được thêm sản phẩm khi phiếu đề nghị trả hàng ở trạng thái 'Mới'"));
             }
 
-
             /** Make sure all product id in list is unique */
             var merchandiseReturnDetails = request.MerchandiseReturnDetails
                 .GroupBy(x => x.ProductId)
-                .Select(x => x.First())
-                .ToList();
+                .Select(x => x.First());
 
-            var existedMerchandiseReturnDetails = merchandiseReturnProposal.MerchandiseReturnDetails;
+            /**  Check new product returns must not exist on the existed merchandise return details */
+            var newProductIds = merchandiseReturnDetails.Select(x => x.ProductId);
 
-            /**  Check product returns must not exist on the existed merchandise return details */
-            var esxitedProductIds = existedMerchandiseReturnDetails.Select(x => x.ProductId);
-            var newProductIds = request.MerchandiseReturnDetails.Select(x => x.ProductId);
-            var duplicateProductIds = esxitedProductIds.Intersect(newProductIds);
-            if (duplicateProductIds.Count() > 0)
+            var duplicateMerchandiseReturnDetails = await _context.MerchandiseReturnDetails
+                .Where(x => x.MerchandiseReturnProposalId == request.MerchandiseReturnProposalId &&
+                    newProductIds.Contains(x.ProductId))
+                .ToListAsync();
+
+            if (duplicateMerchandiseReturnDetails.Count() > 0)
             {
+                var duplicateProductIds = duplicateMerchandiseReturnDetails.Select(x => x.ProductId);
                 throw new BadRequestException(new ApiError("Sản phẩm id " + string.Join(", ", duplicateProductIds) + " đã tồn tại trong phiếu trả hàng"));
             }
 
-            /** Check product returns must exist on the delivery note */
+            /** Check new product returns must exist on the delivery note */
             var goodsDeliveryDetails = await _context.GoodsDeliveryDetails
                 .Where(gdnd => gdnd.GoodsDeliveryNoteId == merchandiseReturnProposal.GoodsDeliveryNoteId)
                 .ToListAsync();
@@ -83,8 +83,7 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.BulkCreateMerchandiseRetu
 
             if (!errorResponse.Equals(""))
             {
-                throw new BadRequestException(
-                    new ApiError(errorResponse));
+                throw new BadRequestException(new ApiError(errorResponse));
             }
 
             var merchandiseReturnDetailEntities = _mapper.Map<List<MerchandiseReturnDetail>>(merchandiseReturnDetails);

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace api.CQRS.MerchandiseReturnProposals.Commands.BulkUpdateMerchandiseReturnDetail
 {
-    public class BulkUpdateMerchandiseReturnDetailCommand : IRequest<MerchandiseReturnProposalResponse>
+    public class BulkUpdateMerchandiseReturnDetailCommand : IRequest<List<MerchandiseReturnDetailResponse>>
     {
         public int MerchandiseReturnProposalId { get; set; }
         public ICollection<UpdateMerchandiseReturnDetailCommand> MerchandiseReturnDetails { get; set; }
