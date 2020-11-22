@@ -141,7 +141,6 @@ namespace api.Contracts.V1
         {
             public const string Create = Base + "/merchandiseReturnProposals";
             public const string Update = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
-            public const string Delete = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
             public const string GetAll = Base + "/merchandiseReturnProposals";
             public const string GetById = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}";
             public const string AddProductsToMerchandiseReturnProposal = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}/merchandiseReturnDetails";
