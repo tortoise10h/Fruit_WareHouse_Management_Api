@@ -95,7 +95,7 @@ namespace api.CQRS.ProductRemoveForms.Commands.CreateProductRemoveDetail
             {
                 return new Result<List<ProductRemoveDetailResponse>>(
                     new BadRequestException(
-                        new ApiError("Có sản phẩm đã tồn tại ở phiếu huỶ sản phẩm")
+                        new ApiError("Có sản phẩm đã tồn tại ở phiếu huỷ sản phẩm")
                     )
                 );
             }

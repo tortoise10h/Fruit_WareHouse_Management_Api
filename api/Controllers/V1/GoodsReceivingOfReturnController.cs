@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Contracts.V1;
 using api.Contracts.V1.ResponseModels;
 using api.Contracts.V1.ResponseModels.GoodsReceivingReturn;
 using api.CQRS.GoodsReceivingReturn.Commands.CreateGoodsReceivingOfReturn;
+using api.CQRS.GoodsReceivingReturn.Commands.CreateGoodsReceivingOfReturnDetail;
+using api.CQRS.GoodsReceivingReturn.Commands.DeleteGoodsReceivingOfReturnDetail;
 using api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturn;
+using api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturnDetail;
 using api.CQRS.GoodsReceivingReturn.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -83,6 +87,66 @@ namespace api.Controllers.V1
                 data => Ok(new Response<PagedResponse<GoodsReceivingOfReturnResponse>>(
                     data
                 )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        /*-------------------------------------|
+        |                                      |
+        |    GOODS RECEIVING OF RETURN DETAIL  |
+        |                                      |
+        |--------------------------------------| */
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpPost(ApiRoutes.GoodsReceivingOfReturn.CreateGoodsReceivingOfReturnDetail)]
+        public async Task<IActionResult> CreateGoodsReceivingOfReturnDetail(
+            [FromBody] CreateGoodsReceivingOfReturnDetailCommand command
+        )
+        {
+            var result = await _mediator.Send(command);
+
+            return result.Match<IActionResult>(
+                response => Created("", new Response<List<GoodsReceivingOfReturnDetailResponse>>(
+                    response
+                )),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpPut(ApiRoutes.GoodsReceivingOfReturn.UpdateGoodsReceivingOfReturnDetail)]
+        public async Task<IActionResult> UpdateGoodsReceivingOfReturnDetail(
+            [FromRoute] int goodsReceivingOfReturnId,
+            [FromBody] UpdateGoodsReceivingOfReturnDetailCommand command)
+        {
+            command.GoodsReceivingOfReturnId = goodsReceivingOfReturnId;
+            var result = await _mediator.Send(command);
+
+            return result.Match<IActionResult>(
+                response => NoContent(),
+                exp =>
+                {
+                    throw exp;
+                }
+            );
+        }
+
+        [Authorize(Roles = "WarehouseKeeper,WarehouseKeeperManager,Boss")]
+        [HttpDelete(ApiRoutes.GoodsReceivingOfReturn.DeleteCreateGoodsReceivingOfReturnDetail)]
+        public async Task<IActionResult> DeleteInventoryRecordDetail(
+            [FromRoute] int goodsReceivingOfReturnId,
+            [FromBody] DeleteGoodsReceivingOfReturnDetailCommand command)
+        {
+            command.GoodsReceivingOfReturnId = goodsReceivingOfReturnId;
+            var result = await _mediator.Send(command);
+
+            return result.Match<IActionResult>(
+                response => NoContent(),
                 exp =>
                 {
                     throw exp;
