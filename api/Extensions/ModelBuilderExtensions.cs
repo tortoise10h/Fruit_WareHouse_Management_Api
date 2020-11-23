@@ -135,8 +135,21 @@ namespace api.Extensions
                 .Entity<GoodsDeliveryDetail>()
                 .HasQueryFilter(gdd => EF.Property<bool>(gdd, "IsDeleted") == false);
 
+            /** GoodsReceivingOfReturn */
+            modelBuilder
+                .Entity<GoodsReceivingOfReturn>()
+                .HasQueryFilter(grr => EF.Property<bool>(grr, "IsDeleted") == false);
+
+            /** GoodsReceivingOfReturnDetail */
+            modelBuilder
+                .Entity<GoodsReceivingOfReturnDetail>()
+                .HasQueryFilter(grrd => EF.Property<bool>(grrd, "IsDeleted") == false);
+
             modelBuilder
               .Entity<MerchandiseReturnProposal>().Ignore(mrp => mrp.User);
+
+            modelBuilder
+              .Entity<GoodsReceivingOfReturn>().Ignore(mrp => mrp.User);
         }
 
         public static void Seed(this ModelBuilder modelBuilder)
@@ -236,6 +249,8 @@ namespace api.Extensions
                         NormalizedUserName = "lilsuperadmin@gmail.com".ToUpper(),
                         Email = "lilsuperadmin@gmail.com",
                         NormalizedEmail = "lilsuperadmin@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234573",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -249,6 +264,8 @@ namespace api.Extensions
                         NormalizedUserName = "yungadmin@gmail.com".ToUpper(),
                         Email = "yungadmin@gmail.com",
                         NormalizedEmail = "yungadmin@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234576",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -262,6 +279,8 @@ namespace api.Extensions
                         NormalizedUserName = "trankieuloan@gmail.com".ToUpper(),
                         Email = "trankieuloan@gmail.com",
                         NormalizedEmail = "trankieuloan@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234581",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -275,6 +294,8 @@ namespace api.Extensions
                         NormalizedUserName = "phamvinhson@gmail.com".ToUpper(),
                         Email = "phamvinhson@gmail.com",
                         NormalizedEmail = "phamvinhson@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234586",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -288,6 +309,8 @@ namespace api.Extensions
                         NormalizedUserName = "nguyentrunghieu@gmail.com".ToUpper(),
                         Email = "nguyentrunghieu@gmail.com",
                         NormalizedEmail = "nguyentrunghieu@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234566",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -301,6 +324,8 @@ namespace api.Extensions
                         NormalizedUserName = "nguyennhuloc@gmail.com".ToUpper(),
                         Email = "nguyennhuloc@gmail.com",
                         NormalizedEmail = "nguyennhuloc@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234585",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -314,6 +339,8 @@ namespace api.Extensions
                         NormalizedUserName = "caothivananh@gmail.com".ToUpper(),
                         Email = "caothivananh@gmail.com",
                         NormalizedEmail = "caothivananh@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234584",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -327,6 +354,8 @@ namespace api.Extensions
                         NormalizedUserName = "tranthaonguyen@gmail.com".ToUpper(),
                         Email = "tranthaonguyen@gmail.com",
                         NormalizedEmail = "tranthaonguyen@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234582",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -340,6 +369,8 @@ namespace api.Extensions
                         NormalizedUserName = "truongthitramanh@gmail.com".ToUpper(),
                         Email = "truongthitramanh@gmail.com",
                         NormalizedEmail = "truongthitramanh@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234580",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -353,6 +384,8 @@ namespace api.Extensions
                         NormalizedUserName = "caobaquat@gmail.com".ToUpper(),
                         Email = "caobaquat@gmail.com",
                         NormalizedEmail = "caobaquat@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234570",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -366,6 +399,8 @@ namespace api.Extensions
                         NormalizedUserName = "huynhtranthanh@gmail.com".ToUpper(),
                         Email = "huynhtranthanh@gmail.com",
                         NormalizedEmail = "huynhtranthanh@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234571",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -379,6 +414,8 @@ namespace api.Extensions
                         NormalizedUserName = "nguyenthanhlong@gmail.com".ToUpper(),
                         Email = "nguyenthanhlong@gmail.com",
                         NormalizedEmail = "nguyenthanhlong@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234568",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -392,6 +429,8 @@ namespace api.Extensions
                         NormalizedUserName = "hoxuanhuong@gmail.com".ToUpper(),
                         Email = "hoxuanhuong@gmail.com",
                         NormalizedEmail = "hoxuanhuong@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234583",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -405,6 +444,8 @@ namespace api.Extensions
                         NormalizedUserName = "nguyenhue@gmail.com".ToUpper(),
                         Email = "nguyenhue@gmail.com",
                         NormalizedEmail = "nguyenhue@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234564",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -418,6 +459,8 @@ namespace api.Extensions
                         NormalizedUserName = "phungthanhdo@gmail.com".ToUpper(),
                         Email = "phungthanhdo@gmail.com",
                         NormalizedEmail = "phungthanhdo@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234572",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -431,6 +474,8 @@ namespace api.Extensions
                         NormalizedUserName = "phantantrung@gmail.com".ToUpper(),
                         Email = "phantantrung@gmail.com",
                         NormalizedEmail = "phantantrung@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234561",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -444,6 +489,8 @@ namespace api.Extensions
                         NormalizedUserName = "truongtuantu@gmail.com".ToUpper(),
                         Email = "truongtuantu@gmail.com",
                         NormalizedEmail = "truongtuantu@gmail.com".ToUpper(),
+                        PhoneNumber = "0901234578",
+                        CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
                         SecurityStamp = string.Empty
@@ -575,6 +622,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 262,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00048"
                     },
                     new Product
@@ -589,6 +637,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 896,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00001"
                     },
                     new Product
@@ -603,6 +652,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 259,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00002"
                     },
                     new Product
@@ -617,6 +667,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 251,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00003"
                     },
                     new Product
@@ -631,6 +682,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 979,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00004"
                     },
                     new Product
@@ -645,6 +697,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 6,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00005"
                     },
                     new Product
@@ -659,6 +712,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 311,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00006"
                     },
                     new Product
@@ -673,6 +727,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 900,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00007"
                     },
                     new Product
@@ -687,6 +742,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 21,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00008"
                     },
                     new Product
@@ -701,6 +757,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 298,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00009"
                     },
                     new Product
@@ -715,6 +772,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 592,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00010"
                     },
                     new Product
@@ -729,6 +787,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 171,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00011"
                     },
                     new Product
@@ -743,6 +802,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 543,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00012"
                     },
                     new Product
@@ -757,6 +817,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 253,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00013"
                     },
                     new Product
@@ -771,6 +832,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 324,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00014"
                     },
                     new Product
@@ -785,6 +847,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 743,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00015"
                     },
                     new Product
@@ -799,6 +862,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 811,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00016"
                     },
                     new Product
@@ -813,6 +877,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 105,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00017"
                     },
                     new Product
@@ -827,6 +892,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 495,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00018"
                     },
                     new Product
@@ -841,6 +907,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 322,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00019"
                     },
                     new Product
@@ -855,6 +922,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 759,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00020"
                     },
                     new Product
@@ -869,6 +937,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 42,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00021"
                     },
                     new Product
@@ -883,6 +952,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 728,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00022"
                     },
                     new Product
@@ -897,6 +967,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 420,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCVN-00023"
                     },
                     new Product
@@ -911,6 +982,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 369,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00024"
                     },
                     new Product
@@ -925,6 +997,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 969,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00025"
                     },
                     new Product
@@ -939,6 +1012,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 818,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00026"
                     },
                     new Product
@@ -953,6 +1027,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 655,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00027"
                     },
                     new Product
@@ -967,6 +1042,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 852,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00028"
                     },
                     new Product
@@ -981,6 +1057,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 509,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00029"
                     },
                     new Product
@@ -995,6 +1072,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 904,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00030"
                     },
                     new Product
@@ -1009,6 +1087,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 29,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00031"
                     },
                     new Product
@@ -1023,6 +1102,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 306,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00032"
                     },
                     new Product
@@ -1037,6 +1117,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 976,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00033"
                     },
                     new Product
@@ -1051,6 +1132,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 726,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00034"
                     },
                     new Product
@@ -1065,6 +1147,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 998,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00035"
                     },
                     new Product
@@ -1079,6 +1162,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 675,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00036"
                     },
                     new Product
@@ -1093,6 +1177,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 389,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00037"
                     },
                     new Product
@@ -1107,6 +1192,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 813,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00038"
                     },
                     new Product
@@ -1121,6 +1207,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 885,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00039"
                     },
                     new Product
@@ -1135,6 +1222,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 672,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00040"
                     },
                     new Product
@@ -1149,6 +1237,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 485,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00041"
                     },
                     new Product
@@ -1163,6 +1252,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 802,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00042"
                     },
                     new Product
@@ -1177,6 +1267,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 764,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00043"
                     },
                     new Product
@@ -1191,6 +1282,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 439,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00044"
                     },
                     new Product
@@ -1205,6 +1297,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 21,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00045"
                     },
                     new Product
@@ -1219,6 +1312,7 @@ namespace api.Extensions
                         PurchasePrice = 20000,
                         Quantity = 819,
                         Status = ProductStatus.Available,
+                        CreatedAt = new DateTime(2020, 1, 1),
                         SKU = "SP-TCNK-00046"
                     }
                 );

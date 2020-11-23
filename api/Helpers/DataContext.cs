@@ -33,6 +33,8 @@ namespace api.Helpers
         public DbSet<ProductRemoveDetail> ProductRemoveDetails { get; set; }
         public DbSet<MerchandiseReturnProposal> MerchandiseReturnProposals { get; set; }
         public DbSet<MerchandiseReturnDetail> MerchandiseReturnDetails { get; set; }
+        public DbSet<GoodsReceivingOfReturn> GoodsReceivingOfReturns { get; set; }
+        public DbSet<GoodsReceivingOfReturnDetail> GoodsReceivingOfReturnDetails { get; set; }
 
         protected readonly IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
