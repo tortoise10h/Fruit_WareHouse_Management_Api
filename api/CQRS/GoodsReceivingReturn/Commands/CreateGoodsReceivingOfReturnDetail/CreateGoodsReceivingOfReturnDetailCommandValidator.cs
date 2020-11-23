@@ -14,9 +14,9 @@ namespace api.CQRS.GoodsReceivingReturn.Commands.CreateGoodsReceivingOfReturnDet
 
             RuleFor(x => x.Products)
                 .NotNull()
-                    .WithMessage("Khi thêm sản phẩm cho phiếu kiểm kho cần có ít nhất 1 sản phẩm")
+                    .WithMessage("Khi thêm sản phẩm cho phiếu nhập kho trả hàng cần có ít nhất 1 sản phẩm")
                 .Must(x => x != null && x.Count > 0)
-                    .WithMessage("Khi thêm sản phẩm cho phiếu kiểm kho cần có ít nhất 1 sản phẩm");
+                    .WithMessage("Khi thêm sản phẩm cho phiếu nhập kho trả hàng cần có ít nhất 1 sản phẩm");
 
             RuleForEach(x => x.Products)
                 .SetValidator(new CreateProductInGoodsReceivingOfReturnDetailValidator());
