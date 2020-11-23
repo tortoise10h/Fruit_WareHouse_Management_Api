@@ -34,6 +34,13 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.UpdateMerchandiseReturnPr
                 throw new NotFoundException();
             }
 
+            if (request.Status == MerchandiseReturnProposalStatus.New &&
+                merchandiseReturnProposal.Status != MerchandiseReturnProposalStatus.New)
+            {
+                throw new BadRequestException(
+                    new ApiError("Trạng thái không hợp lệ"));
+            }
+
             if (request.Status == MerchandiseReturnProposalStatus.Processing)
             {
                 var merchandiseReturnDetails = merchandiseReturnProposal.MerchandiseReturnDetails;
