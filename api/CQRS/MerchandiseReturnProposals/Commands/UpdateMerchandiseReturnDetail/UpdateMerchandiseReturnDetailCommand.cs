@@ -7,7 +7,6 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.UpdateMerchandiseReturnDe
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public int QuantityReturned { get; set; }
         public string Description { get; set; }
     }
 }
