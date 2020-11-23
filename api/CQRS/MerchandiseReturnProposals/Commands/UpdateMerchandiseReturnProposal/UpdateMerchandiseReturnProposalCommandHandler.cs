@@ -44,17 +44,20 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.UpdateMerchandiseReturnPr
             if (request.Status == MerchandiseReturnProposalStatus.Processing)
             {
                 var merchandiseReturnDetails = merchandiseReturnProposal.MerchandiseReturnDetails;
+                var productIds = merchandiseReturnDetails
+                    .Select(x => x.ProductId)
+                    .ToList();
 
-                var goodsDeliveryDetails = await _context.GoodsDeliveryDetails
-                              .Where(gdd => gdd.GoodsDeliveryNoteId == merchandiseReturnProposal.GoodsDeliveryNoteId)
-                              .ToListAsync();
+                var products = await _context.Products
+                    .Where(x => productIds.Contains(x.Id))
+                    .ToListAsync();
 
                 foreach (var merchandiseReturnDetail in merchandiseReturnDetails)
                 {
-                    var matchedGoodsDeliveryDetail = goodsDeliveryDetails
-                        .SingleOrDefault(x => x.ProductId == merchandiseReturnDetail.ProductId);
+                    var matchedProduct = products
+                        .SingleOrDefault(x => x.Id == merchandiseReturnDetail.ProductId);
 
-                    matchedGoodsDeliveryDetail.QuantityReturned += merchandiseReturnDetail.QuantityReturned;
+                    matchedProduct.QuantityReturned += merchandiseReturnDetail.Quantity;
                 }
             }
 
