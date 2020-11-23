@@ -5,6 +5,8 @@ using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.CreateGoodsReceivingNote;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingDetail;
 using api.CQRS.GoodsReceivingNotes.Commands.UpdateGoodsReceivingNote;
+using api.CQRS.GoodsReceivingReturn.Commands.CreateGoodsReceivingOfReturn;
+using api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturn;
 using api.CQRS.InventoryRecordForms.Commands.CreateInventoryDetail;
 using api.CQRS.InventoryRecordForms.Commands.CreateInventoryForms;
 using api.CQRS.InventoryRecordForms.Commands.UpdateInventoryDetail;
@@ -117,6 +119,9 @@ namespace api.MapperProfiles
             CreateMap<CreateMerchandiseReturnDetailCommand, MerchandiseReturnDetail>();
             CreateMap<UpdateMerchandiseReturnDetailCommand, MerchandiseReturnDetail>();
 
+            //** GoodsReceivingOfReturn */
+            CreateMap<CreateGoodsReceivingOfReturnCommand, GoodsReceivingOfReturn>();
+            CreateMap<UpdateGoodsReceivingOfReturnCommand, GoodsReceivingOfReturn>();
         }
     }
 }

@@ -33,5 +33,6 @@ namespace api.Entities
         public ICollection<SupplierProduct> SupplierProducts { get; set; }
         public ICollection<InventoryRecordDetail> InventoryRecordDetails { get; set; }
         public ICollection<ProductRemoveDetail> ProductRemoveDetails { get; set; }
+        public ICollection<GoodsReceivingOfReturnDetail> GoodsReceivingOfReturnDetails { get; set; }
     }
 }
