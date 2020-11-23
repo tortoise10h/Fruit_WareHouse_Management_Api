@@ -17,7 +17,6 @@ namespace api.CQRS.MerchandiseReturnProposals.Commands.UpdateMerchandiseReturnPr
 
             RuleFor(x => x.Status)
                 .NotEqual(MerchandiseReturnProposalStatus.Done)
-                .NotEqual(MerchandiseReturnProposalStatus.New)
                     .WithMessage("Trạng thái không hợp lệ");
 
             When(x => x.Status == MerchandiseReturnProposalStatus.Cancelled, () =>
