@@ -147,5 +147,16 @@ namespace api.Contracts.V1
             public const string BulkUpdateProductsInMerchandiseReturnProposal = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}/merchandiseReturnDetails/bulkUpdate";
             public const string BulkDeleteProductsInMerchandiseReturnProposal = Base + "/merchandiseReturnProposals/{merchandiseReturnProposalId}/merchandiseReturnDetails/bulkDelete";
         }
+
+        public static class GoodsReceivingOfReturn
+        {
+            public const string CreateGoodsReceivingOfReturn = Base + "/goodsReceivingOfReturns";
+            public const string UpdateGoodsReceivingOfReturn = Base + "/goodsReceivingOfReturns/{goodsReceivingOfReturnId}";
+            public const string GetAll = Base + "/goodsReceivingOfReturns";
+            public const string GetById = Base + "/goodsReceivingOfReturns/{goodsReceivingOfReturnId}";
+            public const string CreateGoodsReceivingOfReturnDetail = Base + "/goodsReceivingOfReturns/{goodsReceivingOfReturnId}/goodsReceivingOfReturnDetails";
+            public const string UpdateGoodsReceivingOfReturnDetail = Base + "/goodsReceivingOfReturns/{goodsReceivingOfReturnId}/goodsReceivingOfReturnDetails";
+            public const string DeleteCreateGoodsReceivingOfReturnDetail = Base + "/goodsReceivingOfReturns/{goodsReceivingOfReturnId}/goodsReceivingOfReturnDetails";
+        }
     }
 }
