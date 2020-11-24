@@ -29,6 +29,10 @@ namespace api.MapperProfiles
 
             /** ProductRemoveDetail */
             CreateMap<CreateProductInProductRemoveDetail, ProductRemoveDetail>();
+
+            /** GoodsReceivingOfReturn */
+            CreateMap<CreateProductInGoodsReceivingOfReturnDetail, GoodsReceivingOfReturnDetail>();
+            CreateMap<GoodsReceivingOfReturnDetail, CreateProductInGoodsReceivingOfReturnDetail>();
         }
     }
 }
