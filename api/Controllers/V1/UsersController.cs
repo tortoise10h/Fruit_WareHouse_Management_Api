@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers.V1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,SuperAdmin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin,SuperAdmin,Boss")]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
