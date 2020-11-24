@@ -91,7 +91,79 @@ namespace api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturn
                 }
             }
 
-            //TODO: Còn lúc Done chưa làm, nhớ quay lại làm !!!!!!!!!!!!!
+            if (request.Status == GoodsReceivingOfReturnStatus.Done)
+            {
+                // Decrease Quantity of Product
+                var productsInGoodsRecivingOfReturnDetail = await _context.GoodsReceivingOfReturnDetails
+                    .Where(x => x.GoodsReceivingOfReturnId == goodsReceivingOfReturn.Id)
+                    .ToListAsync();
+
+                var productsToUpdate = productsInGoodsRecivingOfReturnDetail
+                    .Select(x => new { x.ProductId, x.Quantity });
+
+                var products = await _context.Products
+                    .Where(p => productsToUpdate.Select(x => x.ProductId).Contains(p.Id))
+                    .ToListAsync();
+
+                foreach (var p in products)
+                {
+                    var update = productsToUpdate
+                        .FirstOrDefault(x => x.ProductId == p.Id);
+
+                    p.QuantityReturned = p.QuantityReturned - update.Quantity;
+                }
+
+                // Increase QuanityReturned of MerchandiseReturnDetail
+                var productsInMerchandiseReturnDetail = await _context.MerchandiseReturnDetails
+                    .Where(x => x.MerchandiseReturnProposalId == goodsReceivingOfReturn.MerchandiseReturnProposalId)
+                    .ToListAsync();
+
+                foreach (var p in productsInMerchandiseReturnDetail)
+                {
+                    var update = productsToUpdate
+                        .FirstOrDefault(x => x.ProductId == p.ProductId);
+
+                    p.QuantityReturned = p.QuantityReturned + update.Quantity;
+                }
+
+                //Increase QuantityReturned of GoodsDeliveryDetail
+                var goodsDeliveryNoteId = await _context.MerchandiseReturnProposals
+                    .FirstOrDefaultAsync(x => x.Id == goodsReceivingOfReturn.MerchandiseReturnProposalId);
+
+                var productsInGoodsDeliveryDetail = await _context.GoodsDeliveryDetails
+                    .Where(x => x.GoodsDeliveryNoteId == goodsDeliveryNoteId.Id)
+                    .ToListAsync();
+
+                foreach (var p in productsInGoodsDeliveryDetail)
+                {
+                    var update = productsToUpdate
+                        .FirstOrDefault(x => x.ProductId == p.ProductId);
+
+                    p.QuantityReturned = p.QuantityReturned + update.Quantity;
+                }
+
+                bool isDone = true;
+                foreach (var p in productsInMerchandiseReturnDetail)
+                {
+                    if (p.Quantity != p.QuantityReturned)
+                    {
+                        isDone = false;
+                    }
+                }
+
+                if (isDone)
+                {
+                    var updatedMerchandiseReturnProposal = await _context.MerchandiseReturnProposals
+                        .FirstOrDefaultAsync(x => x.Id == goodsReceivingOfReturn.MerchandiseReturnProposalId);
+
+                    updatedMerchandiseReturnProposal.Status = MerchandiseReturnProposalStatus.Done;
+                    _context.MerchandiseReturnProposals.Update(updatedMerchandiseReturnProposal);
+                }
+
+                _context.Products.UpdateRange(products);
+                _context.MerchandiseReturnDetails.UpdateRange(productsInMerchandiseReturnDetail);
+                _context.GoodsDeliveryDetails.UpdateRange(productsInGoodsDeliveryDetail);
+            }
 
             _mapper.Map<UpdateGoodsReceivingOfReturnCommand, GoodsReceivingOfReturn>(request, goodsReceivingOfReturn);
             _context.GoodsReceivingOfReturns.Update(goodsReceivingOfReturn);
