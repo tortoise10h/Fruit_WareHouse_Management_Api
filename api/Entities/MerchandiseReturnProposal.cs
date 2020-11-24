@@ -12,6 +12,7 @@ namespace api.Entities
         public int GoodsDeliveryNoteId { get; set; }
         public GoodsDeliveryNote GoodsDeliveryNote { get; set; }
         public ICollection<MerchandiseReturnDetail> MerchandiseReturnDetails { get; set; }
+        public ICollection<GoodsReceivingOfReturn> GoodsReceivingOfReturns { get; set; }
         public ApplicationUser User { get; set; }
     }
 }
