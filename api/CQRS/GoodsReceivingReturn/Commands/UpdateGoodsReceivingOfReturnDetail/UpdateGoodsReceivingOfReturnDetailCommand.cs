@@ -105,7 +105,7 @@ namespace api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturnDet
                 var check2 = products
                     .FirstOrDefault(x => x.ProductId == g.ProductId);
 
-                if (check.Quantity > check2.Quantity)
+                if (check.Quantity + check2.QuantityReturned > check2.Quantity)
                 {
                     return new Result<List<GoodsReceivingOfReturnDetailResponse>>(
                         new BadRequestException(
