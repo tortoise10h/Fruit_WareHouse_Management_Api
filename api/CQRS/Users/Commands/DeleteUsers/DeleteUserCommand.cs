@@ -57,7 +57,7 @@ namespace api.CQRS.Users.Commands.DeleteUsers
             var roles = await _userManager.GetRolesAsync(currentUser);
             var userRole = roles.FirstOrDefault();
 
-            if (userRole != RoleName.Admin && userRole != RoleName.SuperAdmin)
+            if (userRole != RoleName.Admin && userRole != RoleName.SuperAdmin && userRole != RoleName.Boss)
             {
                 return new Result<UserResponse>(
                     new BadRequestException(

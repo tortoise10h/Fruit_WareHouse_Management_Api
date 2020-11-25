@@ -174,12 +174,6 @@ namespace api.Extensions
             string bossId1 = "e7610feb-110c-47d0-9a88-1bfdc12742a4";
             string bossId2 = "e9012ef1-cd3c-49a1-8726-7f8f8aba9f98";
 
-            string customer3Id = "08b84a20-7e7d-4353-bb53-74c79732beed";
-            string customer4Id = "b6256340-7bd0-4373-8549-c6a08053396b";
-            string customer5Id = "6f8ce951-2f66-4a9e-a4fa-7a14f85b54c6";
-            string customer6Id = "a0c9e67b-d593-4a56-93cd-063ec5d5d035";
-            string customer7Id = "fd4fd02a-238d-4efc-a187-14d205a841f0";
-
             string warehouseKeeperManagerId1 = "3b488e0f-eb92-4994-a555-cbe4ecdf3672";
             string warehouseKeeperManagerId2 = "52999f6b-a605-45b0-b98f-b8880fc46027";
 
@@ -295,81 +289,6 @@ namespace api.Extensions
                         Email = "phamvinhson@gmail.com",
                         NormalizedEmail = "phamvinhson@gmail.com".ToUpper(),
                         PhoneNumber = "0901234586",
-                        CreatedAt = new DateTime(2020, 1, 1),
-                        EmailConfirmed = true,
-                        PasswordHash = hasher.HashPassword(null, "12345678"),
-                        SecurityStamp = string.Empty
-                    },
-                    new ApplicationUser
-                    {
-                        Id = customer3Id,
-                        FirstName = "Hiếu",
-                        LastName = "Nguyễn Trung",
-                        UserName = "nguyentrunghieu@gmail.com",
-                        NormalizedUserName = "nguyentrunghieu@gmail.com".ToUpper(),
-                        Email = "nguyentrunghieu@gmail.com",
-                        NormalizedEmail = "nguyentrunghieu@gmail.com".ToUpper(),
-                        PhoneNumber = "0901234566",
-                        CreatedAt = new DateTime(2020, 1, 1),
-                        EmailConfirmed = true,
-                        PasswordHash = hasher.HashPassword(null, "12345678"),
-                        SecurityStamp = string.Empty
-                    },
-                    new ApplicationUser
-                    {
-                        Id = customer4Id,
-                        FirstName = "Lộc",
-                        LastName = "Nguyễn Như",
-                        UserName = "nguyennhuloc@gmail.com",
-                        NormalizedUserName = "nguyennhuloc@gmail.com".ToUpper(),
-                        Email = "nguyennhuloc@gmail.com",
-                        NormalizedEmail = "nguyennhuloc@gmail.com".ToUpper(),
-                        PhoneNumber = "0901234585",
-                        CreatedAt = new DateTime(2020, 1, 1),
-                        EmailConfirmed = true,
-                        PasswordHash = hasher.HashPassword(null, "12345678"),
-                        SecurityStamp = string.Empty
-                    },
-                    new ApplicationUser
-                    {
-                        Id = customer5Id,
-                        FirstName = "Anh",
-                        LastName = "Cao Thị Vân",
-                        UserName = "caothivananh@gmail.com",
-                        NormalizedUserName = "caothivananh@gmail.com".ToUpper(),
-                        Email = "caothivananh@gmail.com",
-                        NormalizedEmail = "caothivananh@gmail.com".ToUpper(),
-                        PhoneNumber = "0901234584",
-                        CreatedAt = new DateTime(2020, 1, 1),
-                        EmailConfirmed = true,
-                        PasswordHash = hasher.HashPassword(null, "12345678"),
-                        SecurityStamp = string.Empty
-                    },
-                    new ApplicationUser
-                    {
-                        Id = customer6Id,
-                        FirstName = "Nguyên",
-                        LastName = "Trần Thảo",
-                        UserName = "tranthaonguyen@gmail.com",
-                        NormalizedUserName = "tranthaonguyen@gmail.com".ToUpper(),
-                        Email = "tranthaonguyen@gmail.com",
-                        NormalizedEmail = "tranthaonguyen@gmail.com".ToUpper(),
-                        PhoneNumber = "0901234582",
-                        CreatedAt = new DateTime(2020, 1, 1),
-                        EmailConfirmed = true,
-                        PasswordHash = hasher.HashPassword(null, "12345678"),
-                        SecurityStamp = string.Empty
-                    },
-                    new ApplicationUser
-                    {
-                        Id = customer7Id,
-                        FirstName = "Anh",
-                        LastName = "Trương Thị Trâm",
-                        UserName = "truongthitramanh@gmail.com",
-                        NormalizedUserName = "truongthitramanh@gmail.com".ToUpper(),
-                        Email = "truongthitramanh@gmail.com",
-                        NormalizedEmail = "truongthitramanh@gmail.com".ToUpper(),
-                        PhoneNumber = "0901234580",
                         CreatedAt = new DateTime(2020, 1, 1),
                         EmailConfirmed = true,
                         PasswordHash = hasher.HashPassword(null, "12345678"),
@@ -518,31 +437,6 @@ namespace api.Extensions
                     {
                         RoleId = bossRoleId,
                         UserId = bossId2
-                    },
-                    new IdentityUserRole<string>
-                    {
-                        RoleId = customerRoleId,
-                        UserId = customer3Id
-                    },
-                    new IdentityUserRole<string>
-                    {
-                        RoleId = customerRoleId,
-                        UserId = customer4Id
-                    },
-                    new IdentityUserRole<string>
-                    {
-                        RoleId = customerRoleId,
-                        UserId = customer5Id
-                    },
-                    new IdentityUserRole<string>
-                    {
-                        RoleId = customerRoleId,
-                        UserId = customer6Id
-                    },
-                    new IdentityUserRole<string>
-                    {
-                        RoleId = customerRoleId,
-                        UserId = customer7Id
                     },
                     new IdentityUserRole<string>
                     {
