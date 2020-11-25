@@ -71,6 +71,13 @@ namespace api.CQRS.Users.Commands.DeleteUsers
                         new ApiError("Bạn không có quyền xoá tài khoản Admin và SuperAdmin")));
             }
 
+            if ((userRole == RoleName.Boss) && (role[0] == RoleName.Admin || role[0] == RoleName.SuperAdmin || role[0] == RoleName.Boss))
+            {
+                return new Result<UserResponse>(
+                    new BadRequestException(
+                        new ApiError("Bạn không có xoá tài khoản Quản trị viên, Quản trị viên cấp cao và Ban lãnh đạo")));
+            }
+
             var minutes = user.CreatedAt.Minute;
 
             if (minutes > 10)

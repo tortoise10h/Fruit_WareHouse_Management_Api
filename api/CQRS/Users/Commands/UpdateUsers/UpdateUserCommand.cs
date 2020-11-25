@@ -74,14 +74,21 @@ namespace api.CQRS.Users.Commands.UpdateUsers
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
-                        new ApiError("Bạn không có quyền cập nhật tài khoản của các Admin khác")));
+                        new ApiError("Bạn không có quyền cập nhật tài khoản của các Quản trị viên khác")));
             }
 
             if (userRole == RoleName.Admin && (request.RoleName == RoleName.SuperAdmin || request.RoleName == RoleName.Admin))
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
-                        new ApiError("Bạn không có quyền cập nhật chức vụ tài khoản lên Admin hoặc SuperAdmin")));
+                        new ApiError("Bạn không có quyền cập nhật tài khoản lên Quản trị viên hoặc Quản trị viên cấp cao")));
+            }
+
+            if ((userRole == RoleName.Boss) && (role[0] == RoleName.Admin || role[0] == RoleName.SuperAdmin || role[0] == RoleName.Boss))
+            {
+                return new Result<UserResponse>(
+                    new BadRequestException(
+                        new ApiError("Bạn không có cập nhật tài khoản lên Quản trị viên, Quản trị viên cấp cao và Ban lãnh đạo")));
             }
 
             //** Validate email exist */
