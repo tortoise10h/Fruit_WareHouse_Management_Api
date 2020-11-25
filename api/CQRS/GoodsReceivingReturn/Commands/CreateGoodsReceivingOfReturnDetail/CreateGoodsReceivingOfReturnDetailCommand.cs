@@ -94,7 +94,7 @@ namespace api.CQRS.GoodsReceivingReturn.Commands.CreateGoodsReceivingOfReturnDet
                 var check = request.Products
                     .FirstOrDefault(x => x.ProductId == p.ProductId);
 
-                if (check.Quantity > p.Quantity)
+                if (check.Quantity + p.QuantityReturned > p.Quantity)
                 {
                     return new Result<List<GoodsReceivingOfReturnDetailResponse>>(
                         new BadRequestException(
