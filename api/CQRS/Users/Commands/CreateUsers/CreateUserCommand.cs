@@ -60,11 +60,18 @@ namespace api.CQRS.Users.Commands.CreateUsers
                         new ApiError("Bạn không có quyền tạo tài khoản")));
             }
 
-            if (userRole == RoleName.Admin && request.RoleName == RoleName.Admin)
+            if ((userRole == RoleName.Admin) && (request.RoleName == RoleName.Admin || request.RoleName == RoleName.SuperAdmin))
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
-                        new ApiError("Bạn không có quyền tạo tài khoản Admin")));
+                        new ApiError("Bạn không có quyền tạo tài khoản Quản trị viên và Quản trị viên cấp cao")));
+            }
+
+            if ((userRole == RoleName.Boss) && (request.RoleName == RoleName.Admin || request.RoleName == RoleName.SuperAdmin || request.RoleName == RoleName.Boss))
+            {
+                return new Result<UserResponse>(
+                    new BadRequestException(
+                        new ApiError("Bạn không có quyền tạo tài khoản Quản trị viên, Quản trị viên cấp cao và Ban lãnh đạo")));
             }
 
             //** Validate email exist */

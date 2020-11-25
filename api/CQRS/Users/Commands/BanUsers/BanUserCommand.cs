@@ -69,7 +69,14 @@ namespace api.CQRS.Users.Commands.BanUsers
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
-                        new ApiError("Bạn không có quyền khoá tài khoản Admin và SuperAdmin")));
+                        new ApiError("Bạn không có quyền khoá tài khoản Quản trị viên và Quản trị viên cấp cao")));
+            }
+
+            if ((userRole == RoleName.Boss) && (role[0] == RoleName.Admin || role[0] == RoleName.SuperAdmin || role[0] == RoleName.Boss))
+            {
+                return new Result<UserResponse>(
+                    new BadRequestException(
+                        new ApiError("Bạn không có khoá tài khoản Quản trị viên, Quản trị viên cấp cao và Ban lãnh đạo")));
             }
 
             user.LockoutEnabled = request.Status;
