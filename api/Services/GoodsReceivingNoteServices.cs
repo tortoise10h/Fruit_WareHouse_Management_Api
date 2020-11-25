@@ -81,11 +81,12 @@ namespace api.Services
                 /** To check does new goods receiving detail valid in purchase proposal form */
                 var matchedPurchaseProposalDetail = purchaseProposalDetails
                     .SingleOrDefault(x => x.ProductId == product.ProductId);
-                
+
                 if (matchedPurchaseProposalDetail == null)
                 {
                     errorResponse += $"Sản phẩm với id [{product.ProductId}] không được yêu cầu trong phiếu đề nghị mua hàng này<br/>";
-                } else
+                }
+                else
                 {
                     // Quantity to buy left of each product in purchase proposal = 
                     // quantity - quantityPurchased
@@ -109,7 +110,7 @@ namespace api.Services
         public List<GoodsReceivingDetail> CalculatePriceOfProducsInGoodsReceivingNote(
             List<GoodsReceivingDetail> goodsReceivingDetails)
         {
-            foreach(var p in goodsReceivingDetails)
+            foreach (var p in goodsReceivingDetails)
             {
                 p.TotalPrice = p.Quantity * p.SinglePurchasePrice;
             }
@@ -120,7 +121,7 @@ namespace api.Services
         public List<ProductInGoodsReceivingNote> CalculatePriceOfProducsInGoodsReceivingNote(
             List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote)
         {
-            foreach(var p in productsInGoodsReceivingNote)
+            foreach (var p in productsInGoodsReceivingNote)
             {
                 p.TotalPrice = p.Quantity * p.SinglePurchasePrice;
             }
@@ -149,7 +150,8 @@ namespace api.Services
                         new ApiError("Chỉ được phép cập nhật trạng thái của phiếu nhập kho thành 'Chờ duyệt' khi trạng thái hiện tại là 'Mới'"));
                 }
 
-            } else if (newStatus == GoodsReceivingNoteStatus.Approved)
+            }
+            else if (newStatus == GoodsReceivingNoteStatus.Approved)
             {
                 /** Only Pending -> Approved */
                 if (oldSatus != GoodsReceivingNoteStatus.Pending)
@@ -157,7 +159,8 @@ namespace api.Services
                     throw new BadRequestException(
                         new ApiError("Chỉ được phép duyệt phiếu nhập kho khi trạng thái hiện tại là 'Chờ duyệt'"));
                 }
-            } else if (newStatus == GoodsReceivingNoteStatus.Done)
+            }
+            else if (newStatus == GoodsReceivingNoteStatus.Done)
             {
                 /** Only Approved -> Done */
                 if (oldSatus != GoodsReceivingNoteStatus.Approved)
@@ -165,7 +168,8 @@ namespace api.Services
                     throw new BadRequestException(
                         new ApiError("Chỉ được phép 'Hoàn tất' phiếu nhập kho khi trạng thái hiện tại của phiếu là 'Đã duyệt'"));
                 }
-            } else if (newStatus == GoodsReceivingNoteStatus.Cancelled)
+            }
+            else if (newStatus == GoodsReceivingNoteStatus.Cancelled)
             {
                 if (oldSatus == GoodsReceivingNoteStatus.Done ||
                     oldSatus == GoodsReceivingNoteStatus.Cancelled)
@@ -200,6 +204,7 @@ namespace api.Services
                 var matchedGoodsReceivingDetail = goodsReceivingDetails
                     .SingleOrDefault(x => x.ProductId == p.Id);
                 p.QuantityOrdered -= matchedGoodsReceivingDetail.Quantity;
+                p.Quantity += matchedGoodsReceivingDetail.Quantity;
             }
             foreach (var grd in goodsReceivingDetails)
             {
@@ -242,7 +247,8 @@ namespace api.Services
                 {
                     // That's mean we being late 
                     purchaseProposalForm.OnTimeOrNotStatus = PurchaseProposalFormOnTimeOrNotStatus.NotOnTime;
-                } else
+                }
+                else
                 {
                     // Yes, you're on time
                     purchaseProposalForm.OnTimeOrNotStatus = PurchaseProposalFormOnTimeOrNotStatus.OnTime;
@@ -262,7 +268,7 @@ namespace api.Services
         {
             /** Unique list by product Id */
             productsInGoodsReceivingNote = UniqueListByProductId(productsInGoodsReceivingNote);
-            
+
             /** Make sure new products don't exist in goods receiving note */
             var productIdsInGoodReceivingNote = productsInGoodsReceivingNote
                 .Select(x => x.ProductId)
@@ -296,7 +302,7 @@ namespace api.Services
             int goodsReceivingNoteId)
         {
             var goodsReceivingDetails = await _context.GoodsReceivingDetails
-                .Where(x => productIdsInGoodReceivingNote.Contains(x.ProductId) && 
+                .Where(x => productIdsInGoodReceivingNote.Contains(x.ProductId) &&
                     x.GoodsReceivingNoteId == goodsReceivingNoteId)
                 .ToListAsync();
 
@@ -308,15 +314,15 @@ namespace api.Services
             return null;
 
         }
-        
-        public List<ProductInGoodsReceivingNote> ValidateWhenUpdateProductsInGoodsReceivingNote( List<GoodsReceivingDetail> goodsReceivingDetails,
+
+        public List<ProductInGoodsReceivingNote> ValidateWhenUpdateProductsInGoodsReceivingNote(List<GoodsReceivingDetail> goodsReceivingDetails,
             List<PurchaseProposalDetail> purchaseProposalDetails,
             List<ProductInGoodsReceivingNote> productsInGoodsReceivingNote
             )
         {
             /** Unique list by product Id */
             productsInGoodsReceivingNote = UniqueListById(productsInGoodsReceivingNote);
-            
+
             /** Make sure updated products must be existed in goods receiving note */
             if (goodsReceivingDetails.Count != productsInGoodsReceivingNote.Count)
             {
@@ -339,7 +345,7 @@ namespace api.Services
 
             var productsOfSupplier = await _context.SupplierProducts
                 .Where(x => productIds.Contains(x.ProductId) && x.SupplierId == supplierId)
-                .ToListAsync(); 
+                .ToListAsync();
 
             if (productIds.Count != productsOfSupplier.Count)
             {
