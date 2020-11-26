@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,9 +79,10 @@ namespace api.CQRS.Users.Commands.DeleteUsers
                         new ApiError("Bạn không có xoá tài khoản Quản trị viên, Quản trị viên cấp cao và Ban lãnh đạo")));
             }
 
-            var minutes = user.CreatedAt.Minute;
+            var start = DateTime.Now;
+            var oldDate = user.CreatedAt;
 
-            if (minutes > 10)
+            if ((start - oldDate).TotalMinutes > 10)
             {
                 return new Result<UserResponse>(
                     new BadRequestException(
