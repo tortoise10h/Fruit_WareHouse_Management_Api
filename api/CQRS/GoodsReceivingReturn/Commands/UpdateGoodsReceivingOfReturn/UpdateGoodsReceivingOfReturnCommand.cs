@@ -111,6 +111,7 @@ namespace api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturn
                         .FirstOrDefault(x => x.ProductId == p.Id);
 
                     p.QuantityReturned = p.QuantityReturned - update.Quantity;
+                    p.Quantity = p.Quantity + update.Quantity;
                 }
 
                 // Increase QuanityReturned of MerchandiseReturnDetail
@@ -127,11 +128,11 @@ namespace api.CQRS.GoodsReceivingReturn.Commands.UpdateGoodsReceivingOfReturn
                 }
 
                 //Increase QuantityReturned of GoodsDeliveryDetail
-                var goodsDeliveryNoteId = await _context.MerchandiseReturnProposals
+                var merchandiseReturnProposal = await _context.MerchandiseReturnProposals
                     .FirstOrDefaultAsync(x => x.Id == goodsReceivingOfReturn.MerchandiseReturnProposalId);
 
                 var productsInGoodsDeliveryDetail = await _context.GoodsDeliveryDetails
-                    .Where(x => x.GoodsDeliveryNoteId == goodsDeliveryNoteId.Id)
+                    .Where(x => x.GoodsDeliveryNoteId == merchandiseReturnProposal.GoodsDeliveryNoteId)
                     .ToListAsync();
 
                 foreach (var p in productsInGoodsDeliveryDetail)
